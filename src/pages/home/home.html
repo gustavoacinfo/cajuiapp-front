@@ -1,7 +1,49 @@
-<ion-header >
-  <div class="header">
-    <img src="assets/imgs/logo.png" alt="logo">
-    <p>Portal do Aluno</p>
-  </div>
-</ion-header>
+<ion-header>
+    <ion-navbar color="secondary">
+      <ion-title>
+        <img src="assets/imgs/logo.png" alt="logo">
+      </ion-title>
+      <ion-buttons end>
+        <button ion-button tappable>
+          <ion-icon name="person"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+        <h5><ion-icon name="paper"></ion-icon> Disciplinas em curso</h5>
+        <hr>
+        <ion-list>
+            <button ion-item detail="false">
+              <h6> <b>Contabilidade e Custos</b> </h6>
+              <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+            </button>
+            <button ion-item detail="false">
+                <h6> <b>Contabilidade e Custos</b> </h6>
+                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+              </button>
+            <button ion-item detail="false">
+                <h6> <b>Contabilidade e Custos</b> </h6>
+                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+              </button>
+            <button ion-item detail="false">
+                <h6> <b>Contabilidade e Custos</b> </h6>
+                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+            </button>
+        </ion-list>
+    </ion-navbar>
+    <hr>
+    <ion-navbar color="light" class="body">
+        <h5><ion-icon name="time"></ion-icon> Aulas de hoje!</h5>
+        <hr>
+        <ion-list>
+            <ion-item>
+              <h6> <b></b> </h6>
+              <h6> <b></b> Nenhum horário localizado para hoje!</h6>
+            </ion-item>
+        </ion-list>
+    </ion-navbar>
+  </ion-content>
 

@@ -1,13 +1,6 @@
 page-home{
-    .header{
-        background-color: green;
-    }
-
-    p { text-align: center;
-        margin: auto;
-        display: block;
-        color: white;
-
+    .body{
+        background-color: 	rgb(224, 224, 224);
     }
     
     img {
@@ -15,6 +8,15 @@ page-home{
         margin: auto;
         display: block;
     }
+
+    .body {
+        border-radius: 5px;
+    }
+
+    h5{
+        padding: 5px;
+    }
+    
 
 }
 
