@@ -1,0 +1,44 @@
+<ion-content padding class="loginPage" scroll="false">
+  <ion-grid style="height: 100%" >
+    <ion-row justify-content-center align-items-center style="height: 80%" >
+      <ion-grid class="login-container">
+        <form #loginForm="ngForm" autocomplete="off"class="login-form">
+          <ion-row align-items-center>
+            <ion-col>
+            <img src="/assets/imgs/applogo.png"width="100px"height="151px">
+            </ion-col>
+          </ion-row >
+          <br>
+          <ion-row align-items-center >
+            <ion-col>
+            <h4> Entrar no sistema acadêmico</h4>
+            </ion-col>
+          </ion-row >
+          <ion-row class="login-campos" >
+            <ion-col >
+              <ion-list inset >
+                <ion-item >
+                <ion-input placeholder="Usuário" name="username" id="loginField" type="text" required  > </ion-input>
+                </ion-item>
+                <br>
+                <ion-item>
+                <ion-input placeholder="Senha" name="password" id="passwordField" type="password" required  ></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+            <div></div>
+            <button ion-button full color="secondary">Entrar</button>
+            </ion-col>
+          </ion-row>
+          <br>
+          <ion-row>
+            <h6>Alterar minha senha</h6>
+          </ion-row>
+        </form>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+  </ion-content>

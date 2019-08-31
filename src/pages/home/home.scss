@@ -1,3 +1,20 @@
-page-home {
+page-home{
+    .header{
+        background-color: green;
+    }
+
+    p { text-align: center;
+        margin: auto;
+        display: block;
+        color: white;
+
+    }
+    
+    img {
+        align-self: center;
+        margin: auto;
+        display: block;
+    }
 
 }
+

@@ -1,0 +1,29 @@
+page-login {
+    .loginPage{
+        background-image: url('../assets/imgs/fundo.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .login-container {
+        border-radius: 10px;
+        //width: 80%;
+        text-align: center;
+     }
+     h4 {
+         font-family: 'Times New Roman', Times, serif;
+     }
+
+     .login-campos {
+        border-radius: 5px;
+        opacity: 0.5;
+        text-align: center;
+     }
+     .login-logo{
+         vertical-align: center;
+         text-align: center;
+     }
+     .login-form{
+         opacity: none!important;
+     }
+}
