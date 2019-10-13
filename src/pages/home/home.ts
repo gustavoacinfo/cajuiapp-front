@@ -12,4 +12,8 @@ export class HomePage {
 
   }
 
+  informacoesDisciplina(){;
+    this.navCtrl.setRoot('DisciplinaPage');
+}
+
 }
