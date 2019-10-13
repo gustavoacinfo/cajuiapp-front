@@ -1,0 +1,37 @@
+page-registro {
+    .body{
+        background-color: 	rgb(224, 224, 224);
+        border-radius: 5px;
+    }
+    img {
+        align-self: center;
+        margin: auto;
+        display: block;
+    }
+
+    h4{
+        padding: 5px;
+    }
+    h5{
+        text-align: center;
+    }
+
+    .direita{
+        text-align: center;
+
+    }
+    .itens{
+        border-radius: 5px;
+    }
+
+    .green{
+        color: green;
+        text-align: right;
+    }
+
+    .red{
+        color: red;
+        text-align: right;
+    }
+
+}

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the DisciplinaPage page.
+ * Generated class for the RegistroPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,27 +10,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-disciplina',
-  templateUrl: 'disciplina.html',
+  selector: 'page-registro',
+  templateUrl: 'registro.html',
 })
-export class DisciplinaPage {
+export class RegistroPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
+    console.log('ionViewDidLoad RegistroPage');
   }
 
   home(){
     this.navCtrl.setRoot('HomePage');
   }
 
-  registrosDisciplina(){;
-    this.navCtrl.setRoot('RegistroPage');
-  }
-
-  avaliacoesDisciplina(){;
-    this.navCtrl.setRoot('AvaliacaoPage');
+  back(){
+    this.navCtrl.setRoot('DisciplinaPage');
   }
 
 }

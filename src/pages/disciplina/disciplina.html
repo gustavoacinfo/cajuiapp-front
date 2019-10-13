@@ -1,7 +1,12 @@
 <ion-header>
   <ion-navbar color="secondary">
+    <ion-buttons left>
+        <button ion-button tappable (click)="home()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
     <ion-title>
-      <img src="assets/imgs/logo.png" alt="logo">
+      <img (click)="home()"  src="assets/imgs/logo.png" alt="logo">
     </ion-title>
     <ion-buttons end>
       <button ion-button tappable>
@@ -12,31 +17,34 @@
 </ion-header>
 
 <ion-content padding class="body">
-  <h3><b>Informações da disciplina</b></h3> 
-  <ion-navbar color="light" class="body">
-      <h4><ion-icon name="book"> </ion-icon> Informática e Sociedade</h4>
-      <hr>
-      <ion-navbar color="lightgreen" class="itens">
-        <h5><b> Detalhes </b></h5>
-        <h6>Professor(es): <b>Alisson Garcez</b></h6>
-        <h6>Turma: <b> BCSI116NA</b></h6>
-        <h6>Periodo Letivo: <b> 1680 - 1/2019</b></h6>
+    <ion-navbar color="light" class="body">
+        <hr>
+        <h5><ion-icon name="book"></ion-icon> Informática e Sociedade</h5>
+        <hr>
+        <ion-list>
+            <ion-item>
+              <h5><b> Detalhes </b></h5>
+              <br>
+              <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+              <h6>Turma: <b> BCSI116NA</b></h6>
+              <h6>Periodo Letivo: <b> 1680 - 1/2019</b></h6>
+            </ion-item>
+            <button ion-item detail="false" (click)="registrosDisciplina()">
+                <h5><b> Registros de Aula</b></h5>
+                <br>
+                <h6>Carga Horária Total: <b>80hrs/aulas</b></h6>
+                <h6>Carga Horária Lançada: <b>36hrs/aulas</b></h6>
+                <h6>Quantidade de Faltas: <b>8 faltas</b></h6>
+              </button>
+            <button ion-item detail="false"  (click)="avaliacoesDisciplina()">
+                <h5><b>Avaliações</b>  </h5>
+                <br>
+                <h6>Quantidade de Avaliações: <b>4</b></h6>
+                <h6>Pontos Distribuidos: <b>75</b></h6>
+                <h6>Pontos Obtidos: <b>55</b></h6>
+              </button>
+        </ion-list>
+    </ion-navbar>
 
-      </ion-navbar>
-      <hr>
-      <ion-navbar color="lightgreen" class="itens">
-        <h5><b> Registros de Aula</b></h5>
-        <h6>Carga Horária Total: <b>80hrs/aulas</b></h6>
-        <h6>Carga Horária Lançada: <b>36hrs/aulas</b></h6>
-        <h6>Quantidade de Faltas: <b>8 faltas</b></h6>
-      </ion-navbar>
-      <hr>
-      <ion-navbar color="lightgreen" class="itens">
-        <h5><b>Avaliações</b>  </h5>
-        <h6>Quantidade de Avaliações: <b>4</b></h6>
-        <h6>Pontos Distribuidos: <b>75</b></h6>
-        <h6>Pontos Obtidos: <b>55</b></h6>
-      </ion-navbar>
-  </ion-navbar>
   
 </ion-content>
