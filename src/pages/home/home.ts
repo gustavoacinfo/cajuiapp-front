@@ -1,5 +1,6 @@
+import { OfertaService } from './../../services/domain/oferta.service';
 import { Component } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import { NavController, IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -8,12 +9,25 @@ import { NavController, IonicPage } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController, 
+    public NavParams: NavParams,
+    public ofertaService: OfertaService ) {
 
   }
 
-  informacoesDisciplina(){;
+  ionViewDidLoad(){
+    this.ofertaService.ofertasAluno()
+      .subscribe(response => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  informacoesDisciplina(){
     this.navCtrl.setRoot('DisciplinaPage');
-}
+  }
 
 }

@@ -1,3 +1,4 @@
+import { OfertaService } from './../services/domain/oferta.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule} from '@angular/core';
@@ -24,7 +25,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    OfertaService
   ],
 })
 export class AppModule {}

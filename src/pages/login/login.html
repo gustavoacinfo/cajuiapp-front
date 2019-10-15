@@ -19,11 +19,11 @@
             <ion-col >
               <ion-list>
                 <ion-item>
-                <ion-input placeholder="Usuário" name="username" id="loginField" type="text" required ></ion-input>
+                <ion-input [(ngModel)]="creds.usuario" placeholder="Usuário" name="usuario" id="loginField" type="text" required ></ion-input>
                 </ion-item>
                 <br>
                 <ion-item>
-                <ion-input placeholder="Senha" name="password" id="passwordField" type="password" required ></ion-input>
+                <ion-input [(ngModel)]="creds.senha" placeholder="Senha" name="senha" id="passwordField" type="password" required ></ion-input>
                 </ion-item>
               </ion-list>
             </ion-col>
