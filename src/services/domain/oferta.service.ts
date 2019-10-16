@@ -12,7 +12,7 @@ export class OfertaService{
     }
 
     ofertasAluno() : Observable <OfertaDTO[]>{
-        return this.http.get<OfertaDTO[]>(`${API_CONFIG.baseUrl}/oferta/aluno/{id}/periodo/{periodo_id}`)
+        return this.http.get<OfertaDTO[]>(`${API_CONFIG.baseUrl}/oferta/aluno/`)
     }
 
 }
