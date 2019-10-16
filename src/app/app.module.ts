@@ -1,4 +1,3 @@
-import { OfertaService } from './../services/domain/oferta.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule} from '@angular/core';
@@ -8,6 +7,7 @@ import { MyApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ProfessorOfertaService } from '../services/domain/professoroferta.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    OfertaService
+    ProfessorOfertaService
   ],
 })
 export class AppModule {}

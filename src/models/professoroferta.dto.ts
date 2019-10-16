@@ -1,5 +1,6 @@
-export interface OfertaDTO{
+export interface ProfessorOfertaDTO{
     id : string;
+    ofertaId : {
         periodoLetivoId : {
             id : string;
             ano : string;
@@ -39,5 +40,18 @@ export interface OfertaDTO{
             nome : string;
             turno : string;
         }
+    };
+    professorId : {
+        id : string;
+            username : string;
+            apelido :  string;
+            email : string;
+            unidadeId : {
+                id : string;
+                nome : string;
+            }
+            nome : String;
+    
     }
+}
 

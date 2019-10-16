@@ -1,6 +1,7 @@
-import { OfertaService } from './../../services/domain/oferta.service';
 import { Component } from '@angular/core';
 import { NavController, IonicPage, NavParams } from 'ionic-angular';
+import { ProfessorOfertaService } from '../../services/domain/professoroferta.service';
+import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
 
 @IonicPage()
 @Component({
@@ -9,17 +10,19 @@ import { NavController, IonicPage, NavParams } from 'ionic-angular';
 })
 export class HomePage {
 
+  items : ProfessorOfertaDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public NavParams: NavParams,
-    public ofertaService: OfertaService ) {
+    public professorofertaService: ProfessorOfertaService ) {
 
   }
 
   ionViewDidLoad(){
-    this.ofertaService.ofertasAluno()
+    this.professorofertaService.ofertasAluno()
       .subscribe(response => {
-        console.log(response);
+        this.items = response;
       },
       error => {
         console.log(error);

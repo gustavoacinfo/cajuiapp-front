@@ -16,21 +16,9 @@
         <h5><ion-icon name="paper"></ion-icon> Disciplinas em curso</h5>
         <hr>
         <ion-list>
-            <button ion-item detail="false" (click)="informacoesDisciplina()">
-              <h6> <b>Contabilidade e Custos</b> </h6>
-              <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
-            </button>
-            <button ion-item detail="false">
-                <h6> <b>Contabilidade e Custos</b> </h6>
-                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
-              </button>
-            <button ion-item detail="false">
-                <h6> <b>Contabilidade e Custos</b> </h6>
-                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
-              </button>
-            <button ion-item detail="false">
-                <h6> <b>Contabilidade e Custos</b> </h6>
-                <h6> <b>Professor(a):</b> Josue Reis Batista Junior</h6>
+            <button ion-item *ngFor="let item of items"  detail="false" (click)="informacoesDisciplina()">
+              <h6> <b> {{item.ofertaId.curriculoId.disciplinaId.nome}} </b> </h6>
+              <h6> <b>Professor(a):</b> {{item.professorId.nome}}</h6>
             </button>
         </ion-list>
     </ion-navbar>
