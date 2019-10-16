@@ -12,7 +12,7 @@ export class ProfessorOfertaService{
     }
 
     ofertasAluno() : Observable <ProfessorOfertaDTO[]>{
-        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/aluno/`)
+        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/aluno`)
     }
 
 }
