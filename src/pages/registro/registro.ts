@@ -34,7 +34,6 @@ export class RegistroPage {
   ionViewDidLoad() {
     this.registroService.registrosPorOferta(this.oferta.id)
     .subscribe(response => {
-      console.log(response);
       this.items = response;
     },
     error => {});

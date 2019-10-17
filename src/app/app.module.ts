@@ -1,3 +1,4 @@
+import { FaltaService } from './../services/domain/falta.service';
 import { RegistroService } from './../services/domain/registro.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +31,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ProfessorOfertaService,
     ErrorInterceptorProvider,
-    RegistroService 
+    RegistroService,
+    FaltaService
   ],
 })
 export class AppModule {}

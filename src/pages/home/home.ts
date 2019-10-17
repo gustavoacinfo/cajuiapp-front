@@ -23,7 +23,6 @@ export class HomePage {
     this.professorofertaService.ofertasAluno()
       .subscribe(response => {
         this.items = response;
-        console.log(this.items);
       },
       error => {});
   }

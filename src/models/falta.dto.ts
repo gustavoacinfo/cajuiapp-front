@@ -1,5 +1,9 @@
-export interface RegistroDTO {
-    id : string;
+export interface FaltaDTO{
+    matriculaId : {
+        id : string;
+    };
+    registroId : {
+        id : string;
         professorOfertaId : {
             id : string;
         ofertaId : {
@@ -60,9 +64,10 @@ export interface RegistroDTO {
     horaInicio : string;
     horaFim : string;
     descricao : string;
+    }
+    id : string;
     createdAt : string;
     updatedAt : string;
     createdBy : string;
     updatedBy : string;
-
 }
