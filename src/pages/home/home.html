@@ -16,7 +16,7 @@
         <h5><ion-icon name="paper"></ion-icon> Disciplinas em curso</h5>
         <hr>
         <ion-list>
-            <button ion-item *ngFor="let item of items"  detail="false" (click)="informacoesDisciplina()">
+            <button ion-item *ngFor="let item of items"  detail="false" (click)="informacoesDisciplina(item)">
               <h6> <b> {{item.ofertaId.curriculoId.disciplinaId.nome}} </b> </h6>
               <h6> <b>Professor(a):</b> {{item.professorId.nome}}</h6>
             </button>

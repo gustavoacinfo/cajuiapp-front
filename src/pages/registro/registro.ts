@@ -15,7 +15,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RegistroPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams) {
+
   }
 
   ionViewDidLoad() {
@@ -23,11 +27,11 @@ export class RegistroPage {
   }
 
   home(){
-    this.navCtrl.setRoot('HomePage');
+    this.navCtrl.push('HomePage');
   }
 
   back(){
-    this.navCtrl.setRoot('DisciplinaPage');
+    this.navCtrl.push('DisciplinaPage');
   }
 
 }

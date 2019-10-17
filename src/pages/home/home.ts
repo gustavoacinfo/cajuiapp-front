@@ -27,8 +27,11 @@ export class HomePage {
       error => {});
   }
 
-  informacoesDisciplina(){
-    this.navCtrl.setRoot('DisciplinaPage');
+  informacoesDisciplina(obj : Object){
+    this.navCtrl.push('DisciplinaPage', {obj});
   }
 
 }
+
+
+
