@@ -14,34 +14,14 @@
   <ion-content padding class="body">
       <ion-navbar color="light" class="body">
           <hr>
-          <h5> Informática e Sociedade</h5>
+          <h5> {{oferta.ofertaId.curriculoId.disciplinaId.nome}}</h5>
           <h5><ion-icon name="podium"></ion-icon> Registros</h5>
           <hr>
           <ion-list>
-          <ion-item>
-            <h6> <b>Descrição:</b> Apresentação de seminário</h6>
-            <h6>Data: <b> 10/10/2019</b>  Hora início: <b>19:00</b></h6>
+          <ion-item *ngFor="let item of items" >
+            <h6> <b>Descrição:</b> {{item.descricao}}</h6>
+            <h6>Data: <b> {{item.data}}</b>  Hora início: <b>{{item.horaInicio}}</b></h6>
             <h6 class="green"><b>PRESENTE</b></h6>
-          </ion-item>
-          <ion-item>
-            <h6> <b>Descrição:</b> Apresentação de seminário</h6>
-            <h6>Data: <b> 10/10/2019</b>  Hora início: <b>19:00</b></h6>
-            <h6 class="green"><b>PRESENTE</b></h6>
-          </ion-item>
-          <ion-item>
-            <h6> <b>Descrição:</b> Apresentação de seminário</h6>
-            <h6>Data: <b> 10/10/2019</b>  Hora início: <b>19:00</b></h6>
-            <h6 class="green"><b>PRESENTE</b></h6>
-          </ion-item>
-          <ion-item>
-            <h6> <b>Descrição:</b> Apresentação de seminário</h6>
-            <h6>Data: <b> 10/10/2019</b>  Hora início: <b>19:00</b></h6>
-            <h6 class="green"><b>PRESENTE</b></h6>
-          </ion-item>
-          <ion-item>
-            <h6> <b>Descrição:</b> Apresentação de seminário</h6>
-            <h6>Data: <b> 10/10/2019</b>  Hora início: <b>19:00</b></h6>
-            <h6 class="red"><b>FALTA</b></h6>
           </ion-item>
           </ion-list>
       </ion-navbar>

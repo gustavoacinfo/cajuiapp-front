@@ -1,3 +1,4 @@
+import { RegistroService } from './../services/domain/registro.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule} from '@angular/core';
@@ -28,7 +29,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ProfessorOfertaService,
-    ErrorInterceptorProvider 
+    ErrorInterceptorProvider,
+    RegistroService 
   ],
 })
 export class AppModule {}

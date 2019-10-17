@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
 
 /**
  * Generated class for the AvaliacaoPage page.
@@ -15,18 +16,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AvaliacaoPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  oferta : ProfessorOfertaDTO;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams) {
+
+      this.oferta = navParams.data.obj;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AvaliacaoPage');
   }
+
   home(){
-    this.navCtrl.setRoot('HomePage');
+    this.navCtrl.push('HomePage');
   }
 
   back(){
-    this.navCtrl.setRoot('DisciplinaPage');
+    this.navCtrl.push('DisciplinaPage');
   }
 
 }

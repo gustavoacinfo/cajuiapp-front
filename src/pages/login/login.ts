@@ -30,8 +30,13 @@ export class LoginPage {
   }
 
   login(){
-    console.log(this.creds);
-    this.navCtrl.setRoot('HomePage');
+    if(this.creds.usuario == 'aluno'){
+      console.log(this.creds);
+      this.navCtrl.setRoot('HomePage');
+    }else{
+      console.log(this.creds);
+      this.navCtrl.setRoot('ProfessorHomePage');
+    }
   }
 
 }

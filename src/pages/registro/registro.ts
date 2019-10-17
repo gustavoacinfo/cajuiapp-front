@@ -1,5 +1,8 @@
+import { RegistroService } from './../../services/domain/registro.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
+import { RegistroDTO } from '../../models/registro.dto';
 
 /**
  * Generated class for the RegistroPage page.
@@ -15,15 +18,27 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RegistroPage {
 
+  oferta : ProfessorOfertaDTO;
+
+  items : RegistroDTO[];
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public registroService : RegistroService) {
+
+      this.oferta = navParams.data.obj;
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegistroPage');
+    this.registroService.registrosPorOferta(this.oferta.id)
+    .subscribe(response => {
+      console.log(response);
+      this.items = response;
+    },
+    error => {});
+
   }
 
   home(){

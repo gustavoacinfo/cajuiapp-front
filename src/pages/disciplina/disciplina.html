@@ -29,10 +29,10 @@
                 <h5><b> Registros de Aula</b></h5>
                 <br>
                 <h6>Carga Horária Total: <b> {{items.ofertaId.curriculoId.disciplinaId.horaAula}} hrs/aulas</b></h6>
-                <h6>Carga Horária Lançada: <b>36hrs/aulas</b></h6>
+                <h6>Carga Horária Lançada: <b>{{quantRegistros}} hrs/aulas</b></h6>
                 <h6>Quantidade de Faltas: <b>8 faltas</b></h6>
               </button>
-            <button ion-item detail="false"  (click)="avaliacoesDisciplina()">
+            <button ion-item detail="false"  (click)="avaliacoesDisciplina(items)">
                 <h5><b>Avaliações</b>  </h5>
                 <br>
                 <h6>Quantidade de Avaliações: <b>4</b></h6>
