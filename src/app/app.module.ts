@@ -1,3 +1,4 @@
+import { NotaAvaliacaoService } from './../services/domain/nota-avaliacao.service';
 import { FaltaService } from './../services/domain/falta.service';
 import { RegistroService } from './../services/domain/registro.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,7 +33,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
     ProfessorOfertaService,
     ErrorInterceptorProvider,
     RegistroService,
-    FaltaService
+    FaltaService,
+    NotaAvaliacaoService
   ],
 })
 export class AppModule {}

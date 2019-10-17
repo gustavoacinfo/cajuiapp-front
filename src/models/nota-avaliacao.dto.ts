@@ -8,11 +8,13 @@ export interface NotaAvaliacaoDTO{
             id : string;
         }
         dataAvaliacao : string;
-        maxPontos : string;
+        maxPontos : number;
         nome : string;
-        createdAt : string;
-        updatedAt : string;
-        createdBy : string;
-        updatedBy : string;
     }
+    nota : number;
+    id : string;
+    createdAt : string;
+    updatedAt : string;
+    createdBy : string;
+    updatedBy : string;
 }

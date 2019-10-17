@@ -1,3 +1,4 @@
+import { NotaAvaliacaoService } from './../../services/domain/nota-avaliacao.service';
 import { FaltaService } from './../../services/domain/falta.service';
 import { RegistroService } from './../../services/domain/registro.service';
 import { ProfessorOfertaService } from './../../services/domain/professoroferta.service';
@@ -6,6 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
 import { RegistroDTO } from '../../models/registro.dto';
 import { FaltaDTO } from '../../models/falta.dto';
+import { NotaAvaliacaoDTO } from '../../models/nota-avaliacao.dto';
 
 /**
  * Generated class for the DisciplinaPage page.
@@ -27,16 +29,25 @@ export class DisciplinaPage {
 
   faltas : FaltaDTO[];
 
+  avaliacoes : NotaAvaliacaoDTO[];
+
   quantRegistros : number;
 
   quantFaltas : number;
+
+  quantAvaliacoes : number;
+
+  pontosDistribuidos : number;
+
+  pontosObtidos : number;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public professorofertaService: ProfessorOfertaService,
     public registroService : RegistroService,
-    public faltaService : FaltaService) {
+    public faltaService : FaltaService,
+    public notaavaliacaoService : NotaAvaliacaoService) {
 
       this.items = navParams.data.obj;
       
@@ -56,7 +67,21 @@ export class DisciplinaPage {
       this.quantFaltas = this.faltas.length;
     },
     error => {});
-    
+
+    this.notaavaliacaoService.avaliacoesPorOferta(this.items.id)
+    .subscribe(response => {
+      this.avaliacoes = response;
+      this.quantAvaliacoes = this.avaliacoes.length;
+    },
+    error => {});
+
+    this.pontosDistribuidos = this.notaavaliacaoService.somaPontosDistribuidos(this.avaliacoes, this.quantAvaliacoes);
+
+    console.log(this.pontosDistribuidos);
+
+    this.pontosObtidos = this.notaavaliacaoService.somaPontosObtidos(this.avaliacoes, this.quantAvaliacoes);
+
+    console.log(this.pontosDistribuidos);
   }
 
   home(){
