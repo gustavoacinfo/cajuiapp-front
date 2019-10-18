@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, IonicPage, NavParams } from 'ionic-angular';
-import { ProfessorOfertaService } from '../../services/domain/professoroferta.service';
-import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
+import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
+import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 
 @IonicPage()
 @Component({

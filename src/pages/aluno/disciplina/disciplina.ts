@@ -1,13 +1,13 @@
-import { NotaAvaliacaoService } from './../../services/domain/nota-avaliacao.service';
-import { FaltaService } from './../../services/domain/falta.service';
-import { RegistroService } from './../../services/domain/registro.service';
-import { ProfessorOfertaService } from './../../services/domain/professoroferta.service';
+import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
+import { FaltaService } from '../../../services/domain/falta.service';
+import { RegistroService } from '../../../services/domain/registro.service';
+import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
-import { RegistroDTO } from '../../models/registro.dto';
-import { FaltaDTO } from '../../models/falta.dto';
-import { NotaAvaliacaoDTO } from '../../models/nota-avaliacao.dto';
+import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
+import { RegistroDTO } from '../../../models/registro.dto';
+import { FaltaDTO } from '../../../models/falta.dto';
+import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
 /**
  * Generated class for the DisciplinaPage page.

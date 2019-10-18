@@ -1,10 +1,10 @@
-import { RegistroService } from './../../services/domain/registro.service';
+import { RegistroService } from '../../../services/domain/registro.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
-import { RegistroDTO } from '../../models/registro.dto';
-import { FaltaService } from '../../services/domain/falta.service';
-import { FaltaDTO } from '../../models/falta.dto';
+import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
+import { RegistroDTO } from '../../../models/registro.dto';
+import { FaltaService } from '../../../services/domain/falta.service';
+import { FaltaDTO } from '../../../models/falta.dto';
 
 /**
  * Generated class for the RegistroPage page.

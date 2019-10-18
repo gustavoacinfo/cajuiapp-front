@@ -1,8 +1,8 @@
-import { NotaAvaliacaoService } from './../../services/domain/nota-avaliacao.service';
+import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
-import { NotaAvaliacaoDTO } from '../../models/nota-avaliacao.dto';
+import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
+import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
 /**
  * Generated class for the AvaliacaoPage page.
