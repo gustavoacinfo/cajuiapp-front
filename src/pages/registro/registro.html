@@ -19,9 +19,12 @@
           <hr>
           <ion-list>
           <ion-item *ngFor="let item of items" >
-            <h6> <b>Descrição:</b> {{item.descricao}}</h6>
-            <h6>Data: <b> {{item.data}}</b>  Hora início: <b>{{item.horaInicio}}</b></h6>
-            <h6 class="green"><b>PRESENTE</b></h6>
+              <h6> <b>Descrição:</b> {{item.descricao}}</h6>
+              <h6>Data: <b> {{item.data}}</b>  Hora início: <b>{{item.horaInicio}}</b></h6>
+              <ion-item *ngFor="let falta of faltas" >
+                <h6 *ngIf="item.id == falta.registroId.id"  class="red"><b>FALTA</b></h6>
+                <h6 *ngIf="item.id != falta.registroId.id"  class="green"><b>PRESENTE</b></h6>
+              </ion-item>
           </ion-item>
           </ion-list>
       </ion-navbar>

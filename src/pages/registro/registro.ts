@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../models/professoroferta.dto';
 import { RegistroDTO } from '../../models/registro.dto';
+import { FaltaService } from '../../services/domain/falta.service';
+import { FaltaDTO } from '../../models/falta.dto';
 
 /**
  * Generated class for the RegistroPage page.
@@ -22,21 +24,32 @@ export class RegistroPage {
 
   items : RegistroDTO[];
 
+  faltas : FaltaDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public registroService : RegistroService) {
+    public registroService : RegistroService,
+    public faltaService : FaltaService) {
 
       this.oferta = navParams.data.obj;
 
   }
 
   ionViewDidLoad() {
-    this.registroService.registrosPorOferta(this.oferta.id)
+    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
     },
     error => {});
+
+    this.faltaService.faltasPorOferta(this.oferta.ofertaId.id)
+    .subscribe(response => {
+      this.faltas = response;
+    },
+    error => {});
+
+
 
   }
 
