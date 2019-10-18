@@ -18,31 +18,16 @@
           <h5><ion-icon name="document"></ion-icon> Avaliações</h5>
           <hr>
           <ion-list>
-          <ion-item>
-            <h6> <b>Avaliação:</b> Prova 01</h6>
-            <h6>Data: <b> 10/10/2019</b>  Max. Pontos: <b>25</b></h6>
-            <h6>Nota: <b>22</b></h6>
-          </ion-item>
-          <ion-item>
-              <h6> <b>Avaliação:</b> Prova 01</h6>
-              <h6>Data: <b> 10/10/2019</b>  Max. Pontos: <b>25</b></h6>
-              <h6>Nota: <b>22</b></h6>
-          </ion-item>
-          <ion-item>
-              <h6> <b>Avaliação:</b> Prova 01</h6>
-              <h6>Data: <b> 10/10/2019</b>  Max. Pontos: <b>25</b></h6>
-              <h6>Nota: <b>22</b></h6>
-          </ion-item>
-          <ion-item>
-              <h6> <b>Avaliação:</b> Prova 01</h6>
-              <h6>Data: <b> 10/10/2019</b>  Max. Pontos: <b>25</b></h6>
-              <h6>Nota: <b>22</b></h6>
-          </ion-item>
-         
+            <ion-item *ngFor="let item of items">
+              <h6 style="text-align: float left;"> Avaliação: <b>{{item.avaliacaoId.nome}}</b> </h6>
+              <h6 style="text-align: float right;"> Max. Pontos: <b>{{item.avaliacaoId.maxPontos}}</b></h6>
+              <h6 style="text-align: float left;">Data: <b> {{item.avaliacaoId.dataAvaliacao}}</b>  </h6>
+              <h6 style="text-align: float right;">Nota: <b>{{item.nota}}</b></h6>
+            </ion-item>
           </ion-list>
           <hr>
-          <h5>Total do pontos lançados: <b> 100 </b></h5>
-          <h5>Total de pontos obtidos: <b> 88 </b></h5>
+          <h5>Total de pontos lançados: <b> {{pontosDistribuidos}} </b></h5>
+          <h5>Total de pontos obtidos: <b> {{pontosObtidos}} </b></h5>
           <hr>
       </ion-navbar>
   
