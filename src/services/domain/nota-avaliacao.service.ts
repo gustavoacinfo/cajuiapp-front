@@ -15,21 +15,14 @@ export class NotaAvaliacaoService{
         return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/oferta/${id}`)
     }
 
-    somaPontosDistribuidos(notaAvaliacao : NotaAvaliacaoDTO[], quant : number){
-        let soma = 0;
-        for(var i=0; i<quant; i++){
-            soma += notaAvaliacao[i].avaliacaoId.maxPontos;
-        }
-        return soma;
+    pontosDistribuidos(id : String) : Observable <number> {
+        return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/distribuidos/${id}`)
     }
 
-    somaPontosObtidos(notaAvaliacao : NotaAvaliacaoDTO[], quant : number){
-        let soma = 0;
-        for(var i=0; i<quant; i++){
-            soma += notaAvaliacao[i].nota;
-        }
-        return soma;
+    pontosObtidos(id : String) : Observable <number> {
+        return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/obtidos/${id}`)
     }
+
 
    
 

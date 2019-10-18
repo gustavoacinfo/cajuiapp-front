@@ -1,6 +1,7 @@
 export interface ProfessorOfertaDTO{
     id : string;
     ofertaId : {
+        id : string;
         periodoLetivoId : {
             id : string;
             ano : string;

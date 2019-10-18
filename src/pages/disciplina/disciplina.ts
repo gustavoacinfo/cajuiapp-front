@@ -54,34 +54,40 @@ export class DisciplinaPage {
   }
 
   ionViewDidLoad(){
-    this.registroService.registrosPorOferta(this.items.id)
+
+    this.registroService.registrosPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.registros = response;
       this.quantRegistros = this.registros.length;
     },
     error => {});
 
-    this.faltaService.faltasPorOferta(this.items.id)
+    this.faltaService.faltasPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.faltas = response;
       this.quantFaltas = this.faltas.length;
     },
     error => {});
 
-    this.notaavaliacaoService.avaliacoesPorOferta(this.items.id)
+    this.notaavaliacaoService.avaliacoesPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.avaliacoes = response;
       this.quantAvaliacoes = this.avaliacoes.length;
     },
     error => {});
 
-    this.pontosDistribuidos = this.notaavaliacaoService.somaPontosDistribuidos(this.avaliacoes, this.quantAvaliacoes);
+    this.notaavaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
+    .subscribe(response => {
+      this.pontosDistribuidos = response;
+    },
+    error => {});
 
-    console.log(this.pontosDistribuidos);
+    this.notaavaliacaoService.pontosObtidos(this.items.ofertaId.id)
+    .subscribe(response => {
+      this.pontosObtidos = response;
+    },
+    error => {});
 
-    this.pontosObtidos = this.notaavaliacaoService.somaPontosObtidos(this.avaliacoes, this.quantAvaliacoes);
-
-    console.log(this.pontosDistribuidos);
   }
 
   home(){
