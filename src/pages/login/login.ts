@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { CredenciaisDTO } from '../../../models/credenciais.dto';
+import { CredenciaisDTO } from '../../models/credenciais.dto';
 
 /**
  * Generated class for the LoginPage page.
@@ -35,7 +35,7 @@ export class LoginPage {
       this.navCtrl.setRoot('HomePage');
     }else{
       console.log(this.creds);
-      this.navCtrl.setRoot('ProfessorHomePage');
+      this.navCtrl.setRoot('HomeProfessorPage');
     }
   }
 

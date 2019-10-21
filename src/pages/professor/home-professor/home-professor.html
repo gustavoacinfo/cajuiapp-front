@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>
+      <img src="assets/imgs/logo.png" alt="logo">
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable>
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="body">
+  <ion-navbar color="light" class="body">
+      <h5><ion-icon name="paper"></ion-icon> Diário de disciplinas </h5>
+      <hr>
+      <ion-list>
+          <button ion-item *ngFor="let item of items" (click)="acessarDisciplina(item)">
+            <h4 style="font-size: 17px;"> <b> {{item.ofertaId.curriculoId.disciplinaId.nome}} </b> </h4>
+            <h6> Curso: <b>{{item.ofertaId.periodoLetivoId.ocorrenciaCursoId.cursoId.nome}}</b> <br>
+              Carga Horária: <b>{{item.ofertaId.curriculoId.disciplinaId.horaAula}} hrs/aulas </b></h6>
+          </button>
+      </ion-list>
+  </ion-navbar>
+</ion-content>
