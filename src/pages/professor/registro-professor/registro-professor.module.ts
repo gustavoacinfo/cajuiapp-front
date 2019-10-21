@@ -4,7 +4,7 @@ import { RegistroProfessorPage } from './registro-professor';
 
 @NgModule({
   declarations: [
-    RegistroProfessorPage,
+    RegistroProfessorPage
   ],
   imports: [
     IonicPageModule.forChild(RegistroProfessorPage),

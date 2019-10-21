@@ -29,4 +29,9 @@ export class DisciplinaProfessorPage {
     //console.log('ionViewDidLoad DisciplinaProfessorPage');
   }
 
+  registrosDisciplina(obj : Object){;
+    this.navCtrl.push('RegistroProfessorPage', {obj});
+  }
+
+
 }
