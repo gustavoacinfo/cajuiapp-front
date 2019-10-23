@@ -1,6 +1,6 @@
+import { ProfessorOfertaDTO } from './../../../models/professoroferta.dto';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 
 /**
  * Generated class for the DisciplinaProfessorPage page.
@@ -31,6 +31,10 @@ export class DisciplinaProfessorPage {
 
   registrosDisciplina(obj : Object){;
     this.navCtrl.push('RegistroProfessorPage', {obj});
+  }
+
+  home(){
+    this.navCtrl.push('HomeProfessorPage');
   }
 
 

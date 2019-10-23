@@ -1,3 +1,5 @@
+import { AdicionarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
+import { MatriculaService } from './../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../services/domain/nota-avaliacao.service';
 import { FaltaService } from './../services/domain/falta.service';
 import { RegistroService } from './../services/domain/registro.service';
@@ -5,17 +7,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule} from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
 import { MyApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProfessorOfertaService } from '../services/domain/professoroferta.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
+import { VisualizarRegistroPage } from '../pages/professor/registro-professor/registro-professor';
 
 @NgModule({
   declarations: [
     MyApp,
+    VisualizarRegistroPage,
+    AdicionarRegistroPage
   ],
   imports: [
     BrowserModule,
@@ -25,6 +29,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    VisualizarRegistroPage,
+    AdicionarRegistroPage
   ],
   providers: [
     StatusBar,
@@ -34,7 +40,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
     ErrorInterceptorProvider,
     RegistroService,
     FaltaService,
-    NotaAvaliacaoService
+    NotaAvaliacaoService,
+    MatriculaService
   ],
 })
 export class AppModule {}

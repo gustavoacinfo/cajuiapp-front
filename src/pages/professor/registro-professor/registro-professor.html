@@ -16,18 +16,18 @@
           <hr>
           <h5> Nome da Disciplina </h5>
           <h6 class="title"><ion-icon name="stats"></ion-icon> Registros</h6>
-          <button full ion-button slot="end" color="secondary">Adicionar</button>
+          <button full ion-button slot="end" color="secondary" (click)="adicionarRegistro()">Adicionar</button>
           <h6 class="title"><ion-icon name="search"></ion-icon> Lista de Registros</h6>
           <hr>
           <ion-list>
           <ion-item-sliding *ngFor="let item of items">
             <ion-item>
-              <h6>Conteúdo:<b>{{item.descricao}}</b> </h6>
+              <h6>Conteúdo: <b>{{item.descricao}}</b> </h6>
               <h6>Data: <b>{{item.data}} </b>  </h6>
               <h6>Hora início: <b>{{item.horaInicio}} </b>Hora fim: <b>{{item.horaFim}} </b></h6>
             </ion-item>
             <ion-item-options side="right">
-                <button ion-button color="lightgreen" title="Visualizar" icon-only>
+                <button ion-button color="lightgreen" title="Visualizar" (click)="visualizarRegistro(item)" icon-only>
                     <ion-icon name="eye"></ion-icon>
                 </button>
                 <button ion-button color="secondary" title="Lançar Frequência" icon-only>

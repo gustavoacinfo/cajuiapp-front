@@ -3,6 +3,7 @@ export interface RegistroDTO {
         professorOfertaId : {
             id : string;
         ofertaId : {
+            id : string;
             periodoLetivoId : {
                 id : string;
                 ano : string;
