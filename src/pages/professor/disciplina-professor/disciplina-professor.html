@@ -21,8 +21,8 @@
             <h6>Professor(a):<b> {{items.professorId.nome}}</b> </h6>
             <h6>Turma: <b>{{items.ofertaId.turmaId.nome}}  </b> <br> Carga Horária: <b> {{items.ofertaId.curriculoId.disciplinaId.horaAula}} hrs/aulas</b></h6>
             <h6>Curso: <b>{{items.ofertaId.periodoLetivoId.ocorrenciaCursoId.cursoId.nome}} <br> </b>Periodo Letivo: <b>{{items.ofertaId.periodoLetivoId.semestre}} - {{items.ofertaId.periodoLetivoId.ano}} </b></h6>
-            <h6>Aulas lançadas: <b>  % </b></h6>
-            <h6>Pontos distribuidos: <b>  % </b></h6>
+            <h6>Aulas lançadas: <b> {{quantRegistros / items.ofertaId.curriculoId.disciplinaId.horaAula}} % </b></h6>
+            <h6>Pontos distribuidos: <b> {{pontosDistribuidos}} % </b></h6>
         </ion-item>
         <div style="text-align: center;">
         <button ion-button color="secondary" large icon-only (click)="registrosDisciplina(items)">

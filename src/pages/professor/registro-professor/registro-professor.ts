@@ -24,6 +24,8 @@ export class RegistroProfessorPage {
 
   items : RegistroDTO[];
 
+  iguais : RegistroDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -35,15 +37,12 @@ export class RegistroProfessorPage {
   }
 
   ionViewDidLoad() {
-
-    this.oferta = this.navParams.data.obj;
     
     this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
     },
     error => {});
-
   }
 
   home(){
@@ -70,24 +69,35 @@ export class VisualizarRegistroPage {
 
   registro : RegistroDTO;
 
+  registros : RegistroDTO[];
+
   items : MatriculaDTO[];
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl : ViewController,
+    public registroService : RegistroService,
     public matriculaService : MatriculaService) {
       this.registro = navParams.data.obj;
   }
 
   ionViewDidLoad() {
-    
+
+    this.registroService.registrosPorOferta(this.registro.professorOfertaId.ofertaId.id)
+    .subscribe(response => {
+      this.registros = response;
+    },
+    error => {});
+
     this.matriculaService.matriculasPorOferta(this.registro.professorOfertaId.ofertaId.id)
     .subscribe(response => {
       this.items = response;
       console.log(this.items);
     },
     error => {});
+
+
 
   }
 

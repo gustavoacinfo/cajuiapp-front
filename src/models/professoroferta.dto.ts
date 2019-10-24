@@ -32,7 +32,7 @@ export interface ProfessorOfertaDTO{
                 id : string;
                 nome : string;
                 sigla : string;
-                horaAula : string;
+                horaAula : number;
                 equivalenciaMinutos : string;
             }
         };

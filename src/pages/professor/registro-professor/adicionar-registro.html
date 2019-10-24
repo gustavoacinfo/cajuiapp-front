@@ -13,13 +13,9 @@
       
       <ion-content padding class="body">
         <ion-navbar color="light" class="body">
-          <h5>Salvar Novo Registro de Aula</h5>
+          <h5>Cadastrar Registro de Aula</h5>
           <hr>
             <form>
-                <ion-item>
-                    <ion-label position="floating">CONTEÚDO:</ion-label>
-                    <ion-textarea rows="3"></ion-textarea>
-                </ion-item>
                 <ion-item>
                     <ion-label>DATA:</ion-label>
                     <ion-datetime displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
@@ -31,6 +27,10 @@
                 <ion-item>
                     <ion-label position="fixed">Nº DE HORÁRIOS:</ion-label>
                     <ion-input type="number"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">CONTEÚDO:</ion-label>
+                    <ion-textarea rows="3"></ion-textarea>
                 </ion-item>
                 <button ion-button full color="secondary" >Cadastrar</button>
                 <button ion-button full color="secondary" >Cadastrar e lançar frequência</button>
