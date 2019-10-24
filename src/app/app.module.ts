@@ -1,3 +1,4 @@
+import { AvaliacaoService } from './../services/domain/avaliacao.service';
 import { AdicionarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
 import { MatriculaService } from './../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../services/domain/nota-avaliacao.service';
@@ -41,7 +42,8 @@ import { VisualizarRegistroPage } from '../pages/professor/registro-professor/re
     RegistroService,
     FaltaService,
     NotaAvaliacaoService,
-    MatriculaService
+    MatriculaService,
+    AvaliacaoService
   ],
 })
 export class AppModule {}

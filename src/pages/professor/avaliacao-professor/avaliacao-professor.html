@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>
+      <img (click)="home()"  src="assets/imgs/logo.png" alt="logo">
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable>
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+        <hr>
+        <h5> {{oferta.ofertaId.curriculoId.disciplinaId.nome}} </h5>
+        <h6 class="title"><ion-icon name="document"></ion-icon> Avaliações </h6>
+        <button full ion-button slot="end" color="secondary" >Adicionar</button>
+        <h6 class="title"><ion-icon name="search"></ion-icon> Lista de Avaliações</h6>
+        <p style="text-align: right;"> Total de Pontos: {{pontosDistribuidos}}</p>
+        <hr>
+        <ion-list>
+        <ion-item-sliding *ngFor="let item of items">
+          <ion-item>
+            <h6>Avaliação: <b>{{item.nome}}</b> </h6>
+            <h6>Data: <b>{{item.dataAvaliacao}} </b>  </h6>
+            <h6>Máximo de Pontos: <b>{{item.maxPontos}}</b></h6>
+          </ion-item>
+          <ion-item-options side="right">
+              <button ion-button color="secondary" title="Lançar Notas" icon-only>
+                  <ion-icon name="open"></ion-icon>
+              </button>
+              <button ion-button title="Editar" icon-only>
+                  <ion-icon name="create"></ion-icon>
+              </button>
+          </ion-item-options>
+          <ion-item-options side="left">
+              <button ion-button color="danger" title="Excluir" icon-only>
+                  <ion-icon name="trash"></ion-icon>
+              </button>
+          </ion-item-options>
+        </ion-item-sliding>
+        </ion-list>
+    </ion-navbar>
+
+  
+</ion-content>

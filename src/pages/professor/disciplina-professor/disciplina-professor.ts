@@ -57,6 +57,10 @@ export class DisciplinaProfessorPage {
     this.navCtrl.push('RegistroProfessorPage', {obj});
   }
 
+  avaliacoesDisciplina(obj : Object){;
+    this.navCtrl.push('AvaliacaoProfessorPage', {obj});
+  }
+
   home(){
     this.navCtrl.push('HomeProfessorPage');
   }
