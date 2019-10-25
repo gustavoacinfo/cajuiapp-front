@@ -15,12 +15,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProfessorOfertaService } from '../services/domain/professoroferta.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { VisualizarRegistroPage } from '../pages/professor/registro-professor/registro-professor';
+import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/avaliacao-professor/avaliacao-professor';
 
 @NgModule({
   declarations: [
     MyApp,
     VisualizarRegistroPage,
-    AdicionarRegistroPage
+    AdicionarRegistroPage,
+    LancarNotasPage,
+    AdicionarAvaliacaoPage
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,9 @@ import { VisualizarRegistroPage } from '../pages/professor/registro-professor/re
   entryComponents: [
     MyApp,
     VisualizarRegistroPage,
-    AdicionarRegistroPage
+    AdicionarRegistroPage,
+    LancarNotasPage,
+    AdicionarAvaliacaoPage
   ],
   providers: [
     StatusBar,
