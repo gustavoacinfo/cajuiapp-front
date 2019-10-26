@@ -20,5 +20,16 @@ export class AvaliacaoService{
         return this.http.get<number>(`${API_CONFIG.baseUrl}/avaliacao/distribuidos/${id}`)
     }
 
+    insert(obj : Object){
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/avaliacao`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        );
+    }
+
 
 }

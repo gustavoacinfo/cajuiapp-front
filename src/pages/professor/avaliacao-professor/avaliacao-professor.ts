@@ -2,7 +2,7 @@ import { MatriculaService } from './../../../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.service';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
@@ -64,8 +64,8 @@ export class AvaliacaoProfessorPage {
     modal.present();
   }
 
-  adicionarAvaliacao(){
-    let modal = this.modalCtrl.create(AdicionarAvaliacaoPage);
+  adicionarAvaliacao(id : Number){
+    let modal = this.modalCtrl.create(AdicionarAvaliacaoPage, {id});
     modal.present();
   }
 
@@ -88,7 +88,8 @@ export class LancarNotasPage {
     public navParams: NavParams,
     public viewCtrl : ViewController,
     public notaavaliacaoService : NotaAvaliacaoService,
-    public matriculaService : MatriculaService) {
+    public matriculaService : MatriculaService,
+    ) {
 
       this.avaliacao = navParams.data.obj;
   }
@@ -125,18 +126,77 @@ export class LancarNotasPage {
 })
 export class AdicionarAvaliacaoPage {
 
+  avaliacao = {
+    ofertaId : {
+      id: ""
+    },
+    nome:"",
+    dataAvaliacao:"",
+    maxPontos:"",
+    createdAt:"",
+    updatedAt:"",
+    createdBy:"",
+    updatedBy:""
+  }
+
+  oferta : string;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public viewCtrl : ViewController) {
+    public viewCtrl : ViewController,
+    public loadingCtrl : LoadingController,
+    public avaliacaoService : AvaliacaoService,
+    public alertCtrl : AlertController) {
 
+      this.oferta = navParams.data.id;
+      
   }
 
   ionViewDidLoad() {
-    
 
   }
+
+  salvarAvaliacao(){
+    this.avaliacao.ofertaId.id = this.oferta;
+    let timestamp = Math.floor(Date.now() / 1000)
+    // let timestamp = new Date().getTime();
+    this.avaliacao.createdAt = JSON.parse(timestamp.toString());
+    this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
+    this.avaliacao.createdBy = JSON.parse('1');
+    this.avaliacao.updatedBy = JSON.parse('1');
+    const loader = this.loadingCtrl.create({
+      content: "Cadastrando avaliacão..."
+    });
+    loader.present();
+     this.avaliacaoService.insert(this.avaliacao)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk();
+       },
+      error => {
+        loader.dismiss();
+      });
+  }
+
+  showInsertOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+            this.navCtrl.push(AvaliacaoProfessorPage);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 
   home(){
     this.navCtrl.push('HomeProfessorPage');

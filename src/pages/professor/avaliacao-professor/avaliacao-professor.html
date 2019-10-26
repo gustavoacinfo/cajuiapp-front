@@ -16,7 +16,7 @@
         <hr>
         <h5> {{oferta.ofertaId.curriculoId.disciplinaId.nome}} </h5>
         <h6 class="title"><ion-icon name="document"></ion-icon> Avaliações </h6>
-        <button full ion-button slot="end" color="secondary" (click)="adicionarAvaliacao()">Adicionar</button>
+        <button full ion-button slot="end" color="secondary" (click)="adicionarAvaliacao(oferta.ofertaId.id)">Adicionar</button>
         <h6 class="title"><ion-icon name="search"></ion-icon> Lista de Avaliações</h6>
         <p style="text-align: right;"> Total de Pontos: {{pontosDistribuidos}}</p>
         <hr>
