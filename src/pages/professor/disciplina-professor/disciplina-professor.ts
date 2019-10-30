@@ -2,8 +2,10 @@ import { RegistroService } from './../../../services/domain/registro.service';
 import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.service';
 import { ProfessorOfertaDTO } from './../../../models/professoroferta.dto';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { RegistroDTO } from '../../../models/registro.dto';
+import { AvaliacaoService } from '../../../services/domain/avaliacao.service';
+import { LogoutPage } from '../../login/login';
 
 /**
  * Generated class for the DisciplinaProfessorPage page.
@@ -32,7 +34,9 @@ export class DisciplinaProfessorPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public notaavaliacaoService : NotaAvaliacaoService,
-    public registroService : RegistroService) {
+    public registroService : RegistroService,
+    public avaliacaoService : AvaliacaoService,
+    public modalCtrl : ModalController) {
 
       this.items = navParams.data.obj;
   }
@@ -46,7 +50,7 @@ export class DisciplinaProfessorPage {
     },
     error => {});
 
-    this.notaavaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },
@@ -63,6 +67,11 @@ export class DisciplinaProfessorPage {
 
   home(){
     this.navCtrl.push('HomeProfessorPage');
+  }
+
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
+    modal.present();
   }
 
 

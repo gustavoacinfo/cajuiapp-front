@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-navbar color="secondary">
+      <ion-title>
+        <img class="logout-img" (click)="home()"  src="assets/imgs/logo.png" alt="logo">
+      </ion-title>
+      <ion-buttons end>
+        <button (click)="dismiss()" ion-button tappable>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+            <img src="assets/imgs/user.png">
+            <button  ion-button full color="secondary" >Alterar senha</button>
+            <button  ion-button full color="secondary" >Sair</button>
+    </ion-navbar>
+  </ion-content>

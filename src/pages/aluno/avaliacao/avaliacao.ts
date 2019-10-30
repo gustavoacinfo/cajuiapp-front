@@ -1,8 +1,9 @@
 import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
+import { LogoutPage } from '../../login/login';
 
 /**
  * Generated class for the AvaliacaoPage page.
@@ -29,7 +30,8 @@ export class AvaliacaoPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public notaavaliacaoService : NotaAvaliacaoService) {
+    public notaavaliacaoService : NotaAvaliacaoService,
+    public modalCtrl : ModalController) {
 
       this.oferta = navParams.data.obj;
   }
@@ -62,6 +64,11 @@ export class AvaliacaoPage {
 
   back(){
     this.navCtrl.push('DisciplinaPage');
+  }
+
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
+    modal.present();
   }
 
 }

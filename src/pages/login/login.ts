@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 
 /**
@@ -38,5 +38,32 @@ export class LoginPage {
       this.navCtrl.setRoot('HomeProfessorPage');
     }
   }
+
+}
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'logout.html',
+})
+export class LogoutPage {
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public viewCtrl : ViewController) {
+  }
+
+  ionViewDidLoad() {
+  }
+
+  home(){
+    this.navCtrl.push('HomeProfessorPage');
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  
 
 }

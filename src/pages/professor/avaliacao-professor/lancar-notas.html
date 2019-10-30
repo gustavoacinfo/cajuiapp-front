@@ -17,18 +17,15 @@
         <h6> {{avaliacao.nome}} - Valor: {{avaliacao.maxPontos}} pontos </h6>
         <hr>
         <ion-list>
-            <ion-row>
-                <ion-col><b>Alunos</b></ion-col>
-                <ion-col style="text-align: right;"><b>Resultado</b></ion-col>
-            </ion-row>
-            <ion-row *ngFor="let item of items2">
-                <ion-col> {{item.contratoId.alunoId.nome}}</ion-col>
-                <div *ngFor="let item1 of items">
-                <ion-col 
-                  *ngIf="item.contratoId.alunoId.id == item1.matriculaId.contratoId.alunoId.id && item1.avaliacaoId.id == avaliacao.id" 
-                  style="text-align: right;">{{item1.nota}}</ion-col>
-                </div>
-            </ion-row>
+          <form #adicionarForm="ngForm">
+          <ion-item *ngFor="let item of items2">
+              <ion-label>{{item.contratoId.alunoId.nome}} - Nota: </ion-label>
+              <ion-input [(ngModel)]="notaavaliacao.nota" name="nota" required #nota="ngModel" type="number"></ion-input>
+              <ion-input hidden [(ngModel)]="notaavaliacao.matriculaId.id" name="matricula" #matricula="ngModel" value="{{item.id}}" ></ion-input>
+              <ion-input hidden [(ngModel)]="notaavaliacao.avaliacaoId.id" name="ava" #ava="ngModel" value="{{avaliacao.id}}" ></ion-input>
+          </ion-item>
+          </form>
         </ion-list>
+        <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" >Salvar</button>
       </ion-navbar>
   </ion-content>

@@ -1,3 +1,4 @@
+import { LogoutPage } from './../../login/login';
 import { MatriculaService } from './../../../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.service';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
@@ -6,7 +7,6 @@ import { IonicPage, NavController, NavParams, ModalController, LoadingController
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
 
 /**
@@ -69,6 +69,11 @@ export class AvaliacaoProfessorPage {
     modal.present();
   }
 
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
+    modal.present();
+  }
+
 }
 
 @Component({
@@ -79,9 +84,22 @@ export class LancarNotasPage {
 
   avaliacao : AvaliacaoDTO;
 
-  items : NotaAvaliacaoDTO[];
+  notaavaliacao = {
+    matriculaId : {
+      id: ""
+    },
+    avaliacaoId : {
+      id: ""
+    },
+    nota:"",
+    createdAt:"",
+    updatedAt:"",
+    createdBy:"",
+    updatedBy:""
+  }
 
   items2 : MatriculaDTO[];
+
 
   constructor(
     public navCtrl: NavController, 
@@ -89,25 +107,63 @@ export class LancarNotasPage {
     public viewCtrl : ViewController,
     public notaavaliacaoService : NotaAvaliacaoService,
     public matriculaService : MatriculaService,
+    public loadingCtrl : LoadingController,
+    public alertCtrl : AlertController,
     ) {
 
       this.avaliacao = navParams.data.obj;
+
   }
 
   ionViewDidLoad() {
-    this.notaavaliacaoService.avaliacoesPorOferta(this.avaliacao.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-    },
-    error => {});
 
     this.matriculaService.matriculasPorOferta(this.avaliacao.ofertaId.id)
     .subscribe(response => {
       this.items2 = response;
       console.log(this.items2);
+      this.items2 = this.items2.sort();
     },
     error => {});
 
+  }
+
+
+  salvarNotas(){
+    let timestamp = Math.floor(Date.now() / 1000)
+    this.notaavaliacao.createdAt = JSON.parse(timestamp.toString());
+    this.notaavaliacao.updatedAt = JSON.parse(timestamp.toString());
+    this.notaavaliacao.createdBy = JSON.parse('1');
+    this.notaavaliacao.updatedBy = JSON.parse('1');
+    const loader = this.loadingCtrl.create({
+      content: "Cadastrando notas da avaliacão..."
+    });
+    loader.present();
+     this.notaavaliacaoService.insert(this.notaavaliacao)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk();
+       },
+      error => {
+        loader.dismiss();
+      });
+  }
+
+  showInsertOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+            //this.navCtrl.push(AvaliacaoProfessorPage);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   home(){

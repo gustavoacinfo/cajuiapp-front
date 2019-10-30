@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
+import { LogoutPage } from '../../login/login';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -56,6 +57,11 @@ export class RegistroProfessorPage {
 
   adicionarRegistro() {
     let modal = this.modalCtrl.create(AdicionarRegistroPage);
+    modal.present();
+  }
+
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
     modal.present();
   }
 

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams } from 'ionic-angular';
+import { NavController, IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
+import { LogoutPage } from '../../login/login';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,8 @@ export class HomePage {
   constructor(
     public navCtrl: NavController, 
     public NavParams: NavParams,
-    public professorofertaService: ProfessorOfertaService ) {
+    public professorofertaService: ProfessorOfertaService,
+    public modalCtrl: ModalController ) {
 
   }
 
@@ -29,6 +31,11 @@ export class HomePage {
 
   informacoesDisciplina(obj : Object){
     this.navCtrl.push('DisciplinaPage', {obj});
+  }
+
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
+    modal.present();
   }
 
 }

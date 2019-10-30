@@ -23,6 +23,17 @@ export class NotaAvaliacaoService{
         return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/obtidos/${id}`)
     }
 
+    insert(obj : Object){
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/notaavaliacao`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        );
+    }
+
 
    
 

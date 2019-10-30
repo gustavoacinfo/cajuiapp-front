@@ -1,3 +1,4 @@
+import { LogoutPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
 import { AdicionarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
 import { MatriculaService } from './../services/domain/matricula.service';
@@ -23,7 +24,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/aval
     VisualizarRegistroPage,
     AdicionarRegistroPage,
     LancarNotasPage,
-    AdicionarAvaliacaoPage
+    AdicionarAvaliacaoPage,
+    LogoutPage
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/aval
     VisualizarRegistroPage,
     AdicionarRegistroPage,
     LancarNotasPage,
-    AdicionarAvaliacaoPage
+    AdicionarAvaliacaoPage,
+    LogoutPage
   ],
   providers: [
     StatusBar,

@@ -1,7 +1,8 @@
 import { ProfessorOfertaDTO } from './../../../models/professoroferta.dto';
 import { ProfessorOfertaService } from './../../../services/domain/professoroferta.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { LogoutPage } from '../../login/login';
 
 /**
  * Generated class for the HomeProfessorPage page.
@@ -23,6 +24,7 @@ export class HomeProfessorPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public professorofertaService : ProfessorOfertaService,
+    public modalCtrl : ModalController
     ) {
 
       
@@ -38,6 +40,11 @@ export class HomeProfessorPage {
 
   acessarDisciplina(obj : Object){
     this.navCtrl.push('DisciplinaProfessorPage', {obj});
+  }
+
+  logout(){
+    let modal = this.modalCtrl.create(LogoutPage);
+    modal.present();
   }
 
 
