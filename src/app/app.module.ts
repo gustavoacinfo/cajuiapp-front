@@ -1,3 +1,4 @@
+import { OfertaService } from './../services/domain/oferta.service';
 import { LogoutPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
 import { AdicionarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
@@ -51,7 +52,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/aval
     FaltaService,
     NotaAvaliacaoService,
     MatriculaService,
-    AvaliacaoService
+    AvaliacaoService,
+    OfertaService
   ],
 })
 export class AppModule {}

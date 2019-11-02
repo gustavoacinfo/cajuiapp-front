@@ -1,3 +1,4 @@
+import { MatriculaDTO } from './../../../models/matricula.dto';
 import { LogoutPage } from './../../login/login';
 import { MatriculaService } from './../../../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.service';
@@ -7,7 +8,7 @@ import { IonicPage, NavController, NavParams, ModalController, LoadingController
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { MatriculaDTO } from '../../../models/matricula.dto';
+import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 /**
  * Generated class for the AvaliacaoProfessorPage page.
@@ -84,6 +85,8 @@ export class LancarNotasPage {
 
   avaliacao : AvaliacaoDTO;
 
+  form: FormGroup;
+  
   notaavaliacao = {
     matriculaId : {
       id: ""
@@ -100,6 +103,8 @@ export class LancarNotasPage {
 
   items2 : MatriculaDTO[];
 
+  quantAlunos : number;
+
 
   constructor(
     public navCtrl: NavController, 
@@ -109,43 +114,62 @@ export class LancarNotasPage {
     public matriculaService : MatriculaService,
     public loadingCtrl : LoadingController,
     public alertCtrl : AlertController,
+    private fb: FormBuilder
     ) {
 
-      this.avaliacao = navParams.data.obj;
+    this.avaliacao = this.navParams.data.obj;
 
+    
+      
   }
 
   ionViewDidLoad() {
 
+  }
+
+  ngOnInit() {
+
+    this.form = new FormGroup({
+      notas: new FormArray([]),
+    });
+
     this.matriculaService.matriculasPorOferta(this.avaliacao.ofertaId.id)
     .subscribe(response => {
       this.items2 = response;
-      console.log(this.items2);
-      this.items2 = this.items2.sort();
+      this.quantAlunos = this.items2.length;
+      for(let i=0; i <  this.items2.length; i++){
+        this.addCreds(this.items2[i].id,this.items2[i].contratoId.alunoId.nome)
+      }
     },
     error => {});
 
   }
 
+  get notas() {
+    return this.form.controls.notas as FormArray;
+  }
+
+  addCreds(nota, aluno) {
+    const arraynotas = this.form.controls.notas as FormArray;
+    arraynotas.push(this.fb.group({
+      matriculaId: new FormGroup({
+        id: new FormControl(nota)
+      }),
+      alunoId: new FormGroup({
+        nome: new FormControl(aluno)
+      }),
+      avaliacaoId : new FormGroup({
+        id: new FormControl(this.avaliacao.id)
+      }),
+      nota: new FormControl(null, Validators.required)
+    }));
+  }
 
   salvarNotas(){
-    let timestamp = Math.floor(Date.now() / 1000)
-    this.notaavaliacao.createdAt = JSON.parse(timestamp.toString());
-    this.notaavaliacao.updatedAt = JSON.parse(timestamp.toString());
-    this.notaavaliacao.createdBy = JSON.parse('1');
-    this.notaavaliacao.updatedBy = JSON.parse('1');
-    const loader = this.loadingCtrl.create({
-      content: "Cadastrando notas da avaliacão..."
-    });
-    loader.present();
-     this.notaavaliacaoService.insert(this.notaavaliacao)
-       .subscribe(response => {
-          loader.dismiss();
-          this.showInsertOk();
-       },
-      error => {
-        loader.dismiss();
-      });
+    if(this.form.valid) {
+      console.log(this.form.value);
+    }
+    
   }
 
   showInsertOk(){
@@ -210,6 +234,8 @@ export class AdicionarAvaliacaoPage {
   }
 
   ionViewDidLoad() {
+
+    
 
   }
 

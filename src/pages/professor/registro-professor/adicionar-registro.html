@@ -15,24 +15,27 @@
         <ion-navbar color="light" class="body">
           <h5>Cadastrar Registro de Aula</h5>
           <hr>
-            <form>
+            <form #adicionarForm="ngForm">
+                <ion-input name="equivale" required></ion-input>
+
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
-                    <ion-datetime displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
+                    <ion-datetime [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label>HORA DE INÍCIO*:</ion-label>
-                    <ion-datetime displayFormat="HH:mm"></ion-datetime>
+                    <ion-datetime [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label position="fixed">Nº DE HORÁRIOS*:</ion-label>
-                    <ion-input type="number"></ion-input>
+                    <ion-input [(ngModel)]="quantHorarios" name="horarios" required #horarios="ngModel" type="number"></ion-input>
+                    <ion-input  name="equivale" required ></ion-input>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">CONTEÚDO*:</ion-label>
-                    <ion-textarea rows="3"></ion-textarea>
+                    <ion-textarea [(ngModel)]="registro.descricao" name="descricao" required #descricao="ngModel" rows="3"></ion-textarea>
                 </ion-item>
-                <button ion-button full color="secondary" >Cadastrar</button>
+                <button ion-button full color="secondary" (click)="salvarRegistro(quantHorarios, horaInicial)" >Cadastrar</button>
                 <button ion-button full color="secondary" >Cadastrar e lançar frequência</button>
             </form>
         </ion-navbar>

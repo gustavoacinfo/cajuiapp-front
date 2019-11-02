@@ -51,7 +51,7 @@ export class DisciplinaPage {
     public notaavaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController) {
 
-      this.items = navParams.data.obj;
+      this.items = this.navParams.get('obj');
       
   }
 

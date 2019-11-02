@@ -63,6 +63,10 @@ export class LogoutPage {
   dismiss() {
     this.viewCtrl.dismiss();
   }
+  
+  sair(){
+    this.navCtrl.setRoot('LoginPage');
+  }
 
   
 

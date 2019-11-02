@@ -34,11 +34,10 @@ export class RegistroPage {
     public faltaService : FaltaService,
     public modalCtrl : ModalController) {
 
-      this.oferta = navParams.data.obj;
-
   }
 
   ionViewDidLoad() {
+
     this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;

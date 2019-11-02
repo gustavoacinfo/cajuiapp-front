@@ -15,6 +15,17 @@ export class RegistroService{
         return this.http.get<RegistroDTO[]>(`${API_CONFIG.baseUrl}/registro/oferta/${id}`)
     }
 
+    insert(obj : Object){
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/registro`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        );
+    }
+
 
 
    

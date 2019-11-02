@@ -1,31 +1,53 @@
 <ion-header>
-    <ion-navbar color="secondary">
-      <ion-title>
-        <img (click)="home()"  src="assets/imgs/logo.png" alt="logo">
-      </ion-title>
-      <ion-buttons end>
-        <button (click)="dismiss()" ion-button tappable>
-          <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-navbar>
-  </ion-header>
-  
-  <ion-content padding class="body">
-      <ion-navbar color="light" class="body">
-        <h5><ion-icon name="book"></ion-icon> Grade de Notas</h5>
-        <h6> {{avaliacao.nome}} - Valor: {{avaliacao.maxPontos}} pontos </h6>
-        <hr>
-        <ion-list>
-          <form #adicionarForm="ngForm">
-          <ion-item *ngFor="let item of items2">
-              <ion-label>{{item.contratoId.alunoId.nome}} - Nota: </ion-label>
-              <ion-input [(ngModel)]="notaavaliacao.nota" name="nota" required #nota="ngModel" type="number"></ion-input>
-              <ion-input hidden [(ngModel)]="notaavaliacao.matriculaId.id" name="matricula" #matricula="ngModel" value="{{item.id}}" ></ion-input>
-              <ion-input hidden [(ngModel)]="notaavaliacao.avaliacaoId.id" name="ava" #ava="ngModel" value="{{avaliacao.id}}" ></ion-input>
-          </ion-item>
-          </form>
-        </ion-list>
-        <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" >Salvar</button>
-      </ion-navbar>
-  </ion-content>
+  <ion-navbar color="secondary">
+    <ion-title>
+      <img (click)="home()" src="assets/imgs/logo.png" alt="logo">
+    </ion-title>
+    <ion-buttons end>
+      <button (click)="dismiss()" ion-button tappable>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="body">
+  <ion-navbar color="light" class="body">
+    <h5>
+      <ion-icon name="book"></ion-icon> Grade de Notas
+    </h5>
+    <h6> {{avaliacao.nome}} - Valor: {{avaliacao.maxPontos}} pts </h6>
+    <p style="text-align: right;">Total {{quantAlunos}} itens</p>
+    <hr>
+    <form (ngSubmit)="salvarNotas()" [formGroup]="form" #formRef="ngForm">
+    <ion-list>
+      <ng-container *ngIf="form && notas.controls">
+          <div formArrayName="notas">
+            <ion-grid>
+              <ion-row>
+                <ion-col col-1><b>#</b></ion-col>
+                <ion-col col-9><b>Aluno</b></ion-col>
+                <ion-col col-2><b>Nota</b></ion-col>
+              </ion-row>
+              <div *ngFor="let group of notas.controls; let i = index" [formGroupName]="i">
+              <ion-row>
+                <ion-col col-1>
+                  {{i+1}}
+                </ion-col>
+                <ion-col col-9> 
+                  {{ items2[i].contratoId.alunoId.nome }}
+                </ion-col>
+                <ion-col col-2>
+                    <ion-input style="height:40px; border:1px solid #333;" formControlName="nota" type="number"></ion-input>
+                </ion-col>
+              </ion-row>
+              <hr>
+            </div>
+            </ion-grid>
+          </div>
+      </ng-container>
+    </ion-list>
+    <button ion-button full color="secondary">Salvar</button>
+  </form>
+  </ion-navbar>
+</ion-content>
