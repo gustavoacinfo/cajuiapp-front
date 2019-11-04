@@ -51,8 +51,7 @@ export class DisciplinaPage {
     public notaavaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController) {
 
-      this.items = this.navParams.get('obj');
-      
+    this.items = navParams.data.obj;
   }
 
   ionViewDidLoad(){

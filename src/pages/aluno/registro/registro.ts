@@ -34,6 +34,8 @@ export class RegistroPage {
     public faltaService : FaltaService,
     public modalCtrl : ModalController) {
 
+      this.oferta = navParams.data.obj;
+
   }
 
   ionViewDidLoad() {

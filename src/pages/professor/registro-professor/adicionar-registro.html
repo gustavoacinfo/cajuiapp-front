@@ -16,20 +16,17 @@
           <h5>Cadastrar Registro de Aula</h5>
           <hr>
             <form #adicionarForm="ngForm">
-                <ion-input name="equivale" required></ion-input>
-
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
-                    <ion-datetime [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
+                    <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label>HORA DE INÍCIO*:</ion-label>
-                    <ion-datetime [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm"></ion-datetime>
+                    <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm" ></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label position="fixed">Nº DE HORÁRIOS*:</ion-label>
-                    <ion-input [(ngModel)]="quantHorarios" name="horarios" required #horarios="ngModel" type="number"></ion-input>
-                    <ion-input  name="equivale" required ></ion-input>
+                    <ion-input [(ngModel)]="quantHorarios" name="horarios" required #horarios="ngModel"></ion-input>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">CONTEÚDO*:</ion-label>

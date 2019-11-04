@@ -3,10 +3,11 @@ import { MatriculaService } from './../../../services/domain/matricula.service';
 import { RegistroDTO } from './../../../models/registro.dto';
 import { RegistroService } from './../../../services/domain/registro.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, AlertController} from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
 import { LogoutPage } from '../../login/login';
+import * as moment from 'moment';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -34,7 +35,7 @@ export class RegistroProfessorPage {
     public registroService : RegistroService,
     public modalCtrl : ModalController) {
 
-      this.oferta = this.navParams.data.obj;
+    this.oferta = this.navParams.data.obj;
 
   }
 
@@ -127,7 +128,7 @@ export class VisualizarRegistroPage {
 export class AdicionarRegistroPage {
 
   registro = {
-    ofertaId : {
+    professorOfertaId : {
       id: ""
     },
     descricao: "",
@@ -148,7 +149,7 @@ export class AdicionarRegistroPage {
 
   professorOfertaId : string;
 
-  profOferta : ProfessorOfertaDTO[];
+  profOferta : ProfessorOfertaDTO;
 
   constructor(
     public navCtrl: NavController, 
@@ -170,6 +171,8 @@ export class AdicionarRegistroPage {
     this.professorofertaService.findById(parseInt(this.professorOfertaId))
     .subscribe(response => {
       this.profOferta = response;
+      this.equivaleHorario = this.profOferta.ofertaId.curriculoId.disciplinaId.equivalenciaMinutos;
+      
     },
     error => {});
 
@@ -178,31 +181,43 @@ export class AdicionarRegistroPage {
   }
 
   salvarRegistro(quantHorarios : number, horaInicial : string){
-    
-    const loader = this.loadingCtrl.create({
-      content: "Cadastrando"+ {quantHorarios} +"registros de aula..."
-    });
 
     for(let i=0; i<quantHorarios; i++){
+      console.log(horaInicial);
+      this.registro.professorOfertaId.id = this.profOferta.id;
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.createdAt = JSON.parse(timestamp.toString());
       this.registro.updatedAt = JSON.parse(timestamp.toString());
       this.registro.createdBy = JSON.parse('1');
       this.registro.updatedBy = JSON.parse('1');
       this.registro.horaInicio = horaInicial;
-      this.registro.horaFim = horaInicial + this.equivaleHorario;
-      horaInicial = this.registro.horaFim;
+      var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
+      this.registro.horaFim = horaFim;
 
+      console.log(this.registro);
+
+      const loader = this.loadingCtrl.create({
+        content: "Cadastrando "+ quantHorarios +" registros de aula..."
+      });
+  
       loader.present();
-      this.registroService.insert(this.registro)
-        .subscribe(response => {
+        this.registroService.insert(this.registro)
+          .subscribe(response => {
+             loader.dismiss();
+          },
+         error => {
            loader.dismiss();
-           this.showInsertOk();
-        },
-       error => {
-         loader.dismiss();
-       });
+         });
+  
+
+      horaInicial = horaFim;
+
     }
+    
+    this.showInsertOk();
+
+    
+
   }
 
   showInsertOk(){
@@ -215,7 +230,7 @@ export class AdicionarRegistroPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.navCtrl.push(RegistroProfessorPage);
+            this.registrosDisciplina(this.profOferta.ofertaId);
           }
         }
       ]
@@ -227,10 +242,17 @@ export class AdicionarRegistroPage {
     this.navCtrl.push('HomeProfessorPage');
   }
 
+  registrosDisciplina(obj : Object){;
+    this.navCtrl.push(RegistroProfessorPage, {obj});
+  }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-
+  adicionaMinutos(hora : string, minutos : string){
+    const horario = moment(hora, "HH:mm").add(minutos,"minutes").toLocaleString().substring(16,24);
+    return horario;
+  }
  
 }

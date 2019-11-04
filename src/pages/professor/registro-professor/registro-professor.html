@@ -23,7 +23,7 @@
           <ion-item-sliding *ngFor="let item of items">
             <ion-item>
               <h6>Conteúdo: <b>{{item.descricao}}</b> </h6>
-              <h6>Data: <b>{{item.data}} </b>  </h6>
+              <h6>Data: <b>{{item.data.substring(8,10)}}/{{item.data.substring(5,7)}}/{{item.data.substring(0,4)}} </b>  </h6>
               <h6>Hora início: <b>{{item.horaInicio}} </b>Hora fim: <b>{{item.horaFim}} </b></h6>
             </ion-item>
             <ion-item-options side="right">

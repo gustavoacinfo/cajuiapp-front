@@ -15,8 +15,8 @@ export class ProfessorOfertaService{
         return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/aluno`)
     }
 
-    findById(id : number) : Observable <ProfessorOfertaDTO[]> {
-        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/${id}`)
+    findById(id : number) : Observable <ProfessorOfertaDTO> {
+        return this.http.get<ProfessorOfertaDTO>(`${API_CONFIG.baseUrl}/professoroferta/${id}`)
     }
 
     ofertasProfessor() : Observable <ProfessorOfertaDTO[]>{

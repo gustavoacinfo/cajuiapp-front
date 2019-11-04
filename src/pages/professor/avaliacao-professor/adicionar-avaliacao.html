@@ -23,7 +23,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
-                    <ion-datetime [(ngModel)]="avaliacao.dataAvaliacao" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
+                    <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="avaliacao.dataAvaliacao" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label position="fixed">MÁX. PONTOS*:</ion-label>

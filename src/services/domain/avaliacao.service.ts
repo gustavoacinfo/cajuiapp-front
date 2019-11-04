@@ -1,4 +1,3 @@
-import { NotaAvaliacaoDTO } from './../../models/nota-avaliacao.dto';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/Rx';
