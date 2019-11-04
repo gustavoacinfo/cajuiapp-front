@@ -23,7 +23,7 @@ export class NotaAvaliacaoService{
         return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/obtidos/${id}`)
     }
 
-    insert(obj : Object){
+    insert(obj : any){
         return this.http.post(
             `${API_CONFIG.baseUrl}/notaavaliacao`,
             obj,

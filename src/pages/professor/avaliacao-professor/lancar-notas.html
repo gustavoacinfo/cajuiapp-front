@@ -38,7 +38,7 @@
                   {{ items2[i].contratoId.alunoId.nome }}
                 </ion-col>
                 <ion-col col-2>
-                    <ion-input style="height:40px; border:1px solid #333;" formControlName="nota" type="number"></ion-input>
+                    <ion-input required style="height:40px; border:1px solid #333;" formControlName="nota" type="number"></ion-input>
                 </ion-col>
               </ion-row>
               <hr>
@@ -47,7 +47,7 @@
           </div>
       </ng-container>
     </ion-list>
-    <button ion-button full color="secondary">Salvar</button>
+    <button [disabled]="!formRef.valid" ion-button full color="secondary">Salvar</button>
   </form>
   </ion-navbar>
 </ion-content>

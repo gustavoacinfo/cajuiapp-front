@@ -8,6 +8,8 @@ import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
 import { LogoutPage } from '../../login/login';
 import * as moment from 'moment';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
+import { FaltaService } from '../../../services/domain/falta.service';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -54,6 +56,11 @@ export class RegistroProfessorPage {
 
   visualizarRegistro(obj : Object){
     let modal = this.modalCtrl.create(VisualizarRegistroPage, {obj});
+    modal.present();
+  }
+
+  lancarFrequencia(obj : Object){
+    let modal = this.modalCtrl.create(LancarFrequenciaPage, {obj});
     modal.present();
   }
 
@@ -255,4 +262,131 @@ export class AdicionarRegistroPage {
     return horario;
   }
  
+}
+
+@Component({
+  selector: 'page-avaliacao-professor',
+  templateUrl: 'lancar-frequencia.html',
+})
+export class LancarFrequenciaPage {
+
+  registro : RegistroDTO;
+
+  registros : RegistroDTO[];
+
+  form: FormGroup;
+  
+  falta = {
+    matriculaId : {
+      id: ""
+    },
+    registroId : {
+      id: ""
+    },
+    createdAt:"",
+    updatedAt:"",
+    createdBy:"",
+    updatedBy:""
+  }
+
+  items : MatriculaDTO[];
+
+  quantAlunos : number;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public viewCtrl : ViewController,
+    public faltaService : FaltaService,
+    public registroService : RegistroService,
+    public matriculaService : MatriculaService,
+    public loadingCtrl : LoadingController,
+    public alertCtrl : AlertController,
+    private fb: FormBuilder
+    ) {
+
+      this.registro = navParams.data.obj;
+
+      
+  }
+
+  ngOnInit() {
+
+    this.form = new FormGroup({
+      frequencias: new FormArray([]),
+    });
+
+
+    this.matriculaService.matriculasPorOferta(this.registro.professorOfertaId.ofertaId.id)
+    .subscribe(response => {
+      this.items = response;
+      this.quantAlunos = this.items.length;
+      for(let i=0; i <  this.items.length; i++){
+        this.addFreq(this.items[i].id,this.items[i].contratoId.alunoId.nome)
+      }
+    },
+    error => {});
+
+    this.registroService.registrosMesmaData(this.registro.professorOfertaId.id, this.registro.data.substring(0,10), this.registro.descricao)
+      .subscribe(response => {
+        this.registros = response;
+      },
+      error => {});
+
+       console.log(this.registros);
+
+  }
+
+  get frequencias() {
+    return this.form.controls.frequencias as FormArray;
+  }
+
+  addFreq(id, aluno) {
+    const arrayfrequencias = this.form.controls.frequencias as FormArray;
+    arrayfrequencias.push(this.fb.group({
+      matriculaId: new FormGroup({
+        id: new FormControl(id)
+      }),
+      alunoId: new FormGroup({
+        nome: new FormControl(aluno)
+      }),
+      registroId : new FormGroup({
+        id: new FormControl(this.registro.id)
+      })
+    }));
+  }
+
+  salvarFrequencias(){
+    if(this.form.valid) {
+      console.log(this.form.value);
+    }
+    
+  }
+
+  showInsertOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+            //this.navCtrl.push(AvaliacaoProfessorPage);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  home(){
+    this.navCtrl.push('HomeProfessorPage');
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
 }

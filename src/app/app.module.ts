@@ -1,7 +1,7 @@
 import { OfertaService } from './../services/domain/oferta.service';
 import { LogoutPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
-import { AdicionarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
+import { AdicionarRegistroPage, LancarFrequenciaPage } from './../pages/professor/registro-professor/registro-professor';
 import { MatriculaService } from './../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../services/domain/nota-avaliacao.service';
 import { FaltaService } from './../services/domain/falta.service';
@@ -26,7 +26,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/aval
     AdicionarRegistroPage,
     LancarNotasPage,
     AdicionarAvaliacaoPage,
-    LogoutPage
+    LogoutPage,
+    LancarFrequenciaPage
   ],
   imports: [
     BrowserModule,
@@ -40,7 +41,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage } from '../pages/professor/aval
     AdicionarRegistroPage,
     LancarNotasPage,
     AdicionarAvaliacaoPage,
-    LogoutPage
+    LogoutPage,
+    LancarFrequenciaPage
   ],
   providers: [
     StatusBar,

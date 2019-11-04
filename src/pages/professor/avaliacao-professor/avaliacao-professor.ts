@@ -9,6 +9,7 @@ import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { HomeProfessorPage } from '../home-professor/home-professor';
 
 /**
  * Generated class for the AvaliacaoProfessorPage page.
@@ -117,9 +118,6 @@ export class LancarNotasPage {
     private fb: FormBuilder
     ) {
 
-    this.avaliacao = this.navParams.data.obj;
-
-    
       
   }
 
@@ -128,6 +126,8 @@ export class LancarNotasPage {
   }
 
   ngOnInit() {
+
+    this.avaliacao = this.navParams.data.obj;
 
     this.form = new FormGroup({
       notas: new FormArray([]),
@@ -138,7 +138,7 @@ export class LancarNotasPage {
       this.items2 = response;
       this.quantAlunos = this.items2.length;
       for(let i=0; i <  this.items2.length; i++){
-        this.addCreds(this.items2[i].id,this.items2[i].contratoId.alunoId.nome)
+        this.addCreds(this.items2[i].id)
       }
     },
     error => {});
@@ -149,40 +149,56 @@ export class LancarNotasPage {
     return this.form.controls.notas as FormArray;
   }
 
-  addCreds(nota, aluno) {
+  addCreds(nota) {
+    let timestamp = Math.floor(Date.now() / 1000)
     const arraynotas = this.form.controls.notas as FormArray;
     arraynotas.push(this.fb.group({
       matriculaId: new FormGroup({
         id: new FormControl(nota)
       }),
-      alunoId: new FormGroup({
-        nome: new FormControl(aluno)
-      }),
       avaliacaoId : new FormGroup({
         id: new FormControl(this.avaliacao.id)
       }),
-      nota: new FormControl(null, Validators.required)
+      nota: new FormControl(null, { validators: [Validators.required, Validators.min(0), Validators.max(this.avaliacao.maxPontos)]}),
+      createdAt: new FormControl(JSON.parse(timestamp.toString())),
+      updatedAt: new FormControl(JSON.parse(timestamp.toString())),
+      createdBy: new FormControl(1),
+      updatedBy: new FormControl(1)
+      
     }));
   }
 
   salvarNotas(){
+    
     if(this.form.valid) {
       console.log(this.form.value);
+    const loader = this.loadingCtrl.create({
+      content: "Cadastrando avaliacão..."
+    });
+    loader.present();
+     this.notaavaliacaoService.insert(this.form.value)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk();
+       },
+      error => {
+        loader.dismiss();
+      });
     }
-    
+
   }
 
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
-      message: 'Cadastro efetuado com sucesso.',
+      message: 'Cadastro de notas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            //this.navCtrl.push(AvaliacaoProfessorPage);
+            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]

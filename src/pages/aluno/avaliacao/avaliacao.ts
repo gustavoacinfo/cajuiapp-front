@@ -1,3 +1,4 @@
+import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
@@ -31,6 +32,7 @@ export class AvaliacaoPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public notaavaliacaoService : NotaAvaliacaoService,
+    public avaliacaoService : AvaliacaoService,
     public modalCtrl : ModalController) {
 
       this.oferta = navParams.data.obj;
@@ -44,7 +46,7 @@ export class AvaliacaoPage {
     },
     error => {});
 
-    this.notaavaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },

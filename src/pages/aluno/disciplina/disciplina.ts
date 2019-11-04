@@ -1,3 +1,4 @@
+import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { FaltaService } from '../../../services/domain/falta.service';
 import { RegistroService } from '../../../services/domain/registro.service';
@@ -9,6 +10,7 @@ import { RegistroDTO } from '../../../models/registro.dto';
 import { FaltaDTO } from '../../../models/falta.dto';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 import { LogoutPage } from '../../login/login';
+import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 
 /**
  * Generated class for the DisciplinaPage page.
@@ -30,7 +32,7 @@ export class DisciplinaPage {
 
   faltas : FaltaDTO[];
 
-  avaliacoes : NotaAvaliacaoDTO[];
+  avaliacoes : AvaliacaoDTO[];
 
   quantRegistros : number;
 
@@ -47,6 +49,7 @@ export class DisciplinaPage {
     public navParams: NavParams,
     public professorofertaService: ProfessorOfertaService,
     public registroService : RegistroService,
+    public avaliacaoService : AvaliacaoService,
     public faltaService : FaltaService,
     public notaavaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController) {
@@ -70,14 +73,14 @@ export class DisciplinaPage {
     },
     error => {});
 
-    this.notaavaliacaoService.avaliacoesPorOferta(this.items.ofertaId.id)
+    this.avaliacaoService.avaliacoesPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.avaliacoes = response;
       this.quantAvaliacoes = this.avaliacoes.length;
     },
     error => {});
 
-    this.notaavaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },
@@ -85,7 +88,12 @@ export class DisciplinaPage {
 
     this.notaavaliacaoService.pontosObtidos(this.items.ofertaId.id)
     .subscribe(response => {
-      this.pontosObtidos = response;
+      if(response == null){
+        this.pontosObtidos = 0;
+      }else{
+        this.pontosObtidos = response;
+      }
+      
     },
     error => {});
 

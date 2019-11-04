@@ -15,6 +15,10 @@ export class RegistroService{
         return this.http.get<RegistroDTO[]>(`${API_CONFIG.baseUrl}/registro/oferta/${id}`)
     }
 
+    registrosMesmaData(id : String, data : String, desc : String) : Observable <RegistroDTO[]> {
+        return this.http.get<RegistroDTO[]>(`${API_CONFIG.baseUrl}/registro/oferta/${id}/data/${data}/desc/${desc}`)
+    }
+
     insert(obj : Object){
         return this.http.post(
             `${API_CONFIG.baseUrl}/registro`,

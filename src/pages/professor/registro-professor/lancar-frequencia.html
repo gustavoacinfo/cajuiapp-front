@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-navbar color="secondary">
+      <ion-title>
+        <img (click)="home()" src="assets/imgs/logo.png" alt="logo">
+      </ion-title>
+      <ion-buttons end>
+        <button (click)="dismiss()" ion-button tappable>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+      <h5>
+        <ion-icon name="book"></ion-icon> Frequência dos Alunos
+      </h5>
+      <h6>{{registro.descricao}} </h6>
+      <p style="text-align: right;">Total  itens</p>
+      <hr>
+      <form (ngSubmit)="salvarFrequencias()" [formGroup]="form" #formRef="ngForm">
+      <ion-list>
+        <ng-container *ngIf="form && frequencias.controls">
+            <div formArrayName="frequencias">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-1><b>#</b></ion-col>
+                  <ion-col col-9><b>Aluno</b></ion-col>
+                  <div>
+                    <ion-col col-2><b>Nota</b></ion-col>
+                  </div>
+                </ion-row>
+                <div >
+                <ion-row>
+                  <ion-col col-1>
+                    
+                  </ion-col>
+                  <ion-col col-9> 
+                    
+                  </ion-col>
+                  <ion-col col-2>
+                      <ion-input style="height:40px; border:1px solid #333;"  type="number"></ion-input>
+                  </ion-col>
+                </ion-row>
+                <hr>
+              </div>
+              </ion-grid>
+            </div>
+        </ng-container>
+      </ion-list>
+      <button ion-button full color="secondary">Salvar</button>
+    </form>
+    </ion-navbar>
+  </ion-content>
