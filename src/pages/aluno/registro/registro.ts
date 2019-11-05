@@ -27,6 +27,8 @@ export class RegistroPage {
 
   faltas : FaltaDTO[];
 
+  quantFrequencia : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -49,10 +51,9 @@ export class RegistroPage {
     this.faltaService.faltasPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.faltas = response;
+      this.quantFrequencia = this.faltas.length;
     },
     error => {});
-
-
 
   }
 

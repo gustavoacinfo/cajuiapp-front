@@ -14,9 +14,9 @@
       <ion-content padding class="body">
         <ion-navbar color="light" class="body">
           <h5>Cadastrar Avaliações</h5>
+          <h6 style="text-align: right; color: gray;">Pontos restantes: {{100 - pontosDistribuidos}}</h6>
           <hr>
             <form #adicionarForm="ngForm">
-                <!-- <ion-input value="{{}}" [(ngModel)]="avaliacao.ofertaId.id" name="oferta" #oferta="ngModel"> </ion-input> -->
                 <ion-item>
                     <ion-label position="fixed">AVALIAÇÃO*:</ion-label>
                     <ion-textarea [(ngModel)]="avaliacao.nome" name="nome" required #nome="ngModel" rows="2"></ion-textarea>
@@ -27,7 +27,7 @@
                 </ion-item>
                 <ion-item>
                     <ion-label position="fixed">MÁX. PONTOS*:</ion-label>
-                    <ion-input [(ngModel)]="avaliacao.maxPontos" name="maxpontos" required #maxpontos="ngModel" type="number"></ion-input>
+                    <ion-input [(ngModel)]="avaliacao.maxPontos" name="maxpontos" required #maxpontos="ngModel" type="number" [max]="100 - pontosDistribuidos"></ion-input>
                 </ion-item>
                 <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" (click)="salvarAvaliacao()" >Cadastrar</button>
                 <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" >Cadastrar e lançar nota</button>

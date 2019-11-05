@@ -8,8 +8,9 @@ import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
 import { LogoutPage } from '../../login/login';
 import * as moment from 'moment';
-import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { FaltaService } from '../../../services/domain/falta.service';
+import { HomeProfessorPage } from '../home-professor/home-professor';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -190,7 +191,6 @@ export class AdicionarRegistroPage {
   salvarRegistro(quantHorarios : number, horaInicial : string){
 
     for(let i=0; i<quantHorarios; i++){
-      console.log(horaInicial);
       this.registro.professorOfertaId.id = this.profOferta.id;
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.createdAt = JSON.parse(timestamp.toString());
@@ -200,8 +200,6 @@ export class AdicionarRegistroPage {
       this.registro.horaInicio = horaInicial;
       var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
       this.registro.horaFim = horaFim;
-
-      console.log(this.registro);
 
       const loader = this.loadingCtrl.create({
         content: "Cadastrando "+ quantHorarios +" registros de aula..."
@@ -237,7 +235,7 @@ export class AdicionarRegistroPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.registrosDisciplina(this.profOferta.ofertaId);
+            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]
@@ -247,10 +245,6 @@ export class AdicionarRegistroPage {
 
   home(){
     this.navCtrl.push('HomeProfessorPage');
-  }
-
-  registrosDisciplina(obj : Object){;
-    this.navCtrl.push(RegistroProfessorPage, {obj});
   }
 
   dismiss() {
@@ -312,6 +306,8 @@ export class LancarFrequenciaPage {
 
   ngOnInit() {
 
+    
+
     this.form = new FormGroup({
       frequencias: new FormArray([]),
     });
@@ -322,18 +318,12 @@ export class LancarFrequenciaPage {
       this.items = response;
       this.quantAlunos = this.items.length;
       for(let i=0; i <  this.items.length; i++){
-        this.addFreq(this.items[i].id,this.items[i].contratoId.alunoId.nome)
+        this.addFreq(this.items[i].id)
       }
     },
     error => {});
 
-    this.registroService.registrosMesmaData(this.registro.professorOfertaId.id, this.registro.data.substring(0,10), this.registro.descricao)
-      .subscribe(response => {
-        this.registros = response;
-      },
-      error => {});
-
-       console.log(this.registros);
+    console.log(this.form);
 
   }
 
@@ -341,45 +331,68 @@ export class LancarFrequenciaPage {
     return this.form.controls.frequencias as FormArray;
   }
 
-  addFreq(id, aluno) {
+  addFreq(id) {
+    let timestamp = Math.floor(Date.now() / 1000);
     const arrayfrequencias = this.form.controls.frequencias as FormArray;
     arrayfrequencias.push(this.fb.group({
       matriculaId: new FormGroup({
         id: new FormControl(id)
       }),
-      alunoId: new FormGroup({
-        nome: new FormControl(aluno)
-      }),
       registroId : new FormGroup({
         id: new FormControl(this.registro.id)
-      })
+      }),
+      presenca: new FormControl(true),
+      createdAt: new FormControl(JSON.parse(timestamp.toString())),
+      updatedAt: new FormControl(JSON.parse(timestamp.toString())),
+      createdBy: new FormControl(1),
+      updatedBy: new FormControl(1)
     }));
   }
 
   salvarFrequencias(){
-    if(this.form.valid) {
-      console.log(this.form.value);
-    }
     
+    if(this.form.valid) {
+    const loader = this.loadingCtrl.create({
+      content: "Cadastrando frequencias do registro..."
+    });
+    loader.present();
+
+    for(let i=0; i<this.form.value.frequencias.length; i++){
+      if(this.form.value.frequencias[i].presenca == false){
+        this.faltaService.insert(this.form.value.frequencias[i])
+       .subscribe(response => {
+        
+       },
+      error => {
+        loader.dismiss();
+      });
+
+      }
+    }
+      loader.dismiss();
+      this.showInsertOk();
+    }
+
   }
 
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
-      message: 'Cadastro efetuado com sucesso.',
+      message: 'Frequencias cadastradas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            //this.navCtrl.push(AvaliacaoProfessorPage);
+            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]
     });
     alert.present();
   }
+
 
   home(){
     this.navCtrl.push('HomeProfessorPage');

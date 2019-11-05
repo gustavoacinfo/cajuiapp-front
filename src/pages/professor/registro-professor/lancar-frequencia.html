@@ -14,33 +14,31 @@
   <ion-content padding class="body">
     <ion-navbar color="light" class="body">
       <h5>
-        <ion-icon name="book"></ion-icon> Frequência dos Alunos
+        <ion-icon name="stats"></ion-icon> Frequência dos Alunos
       </h5>
-      <h6>{{registro.descricao}} </h6>
-      <p style="text-align: right;">Total  itens</p>
+      <h6>{{registro.descricao.substring(0,20)}} - Data: {{registro.data.substring(8,10)}}/{{registro.data.substring(5,7)}}/{{registro.data.substring(0,4)}}</h6>
+      <p style="text-align: right;">Total {{quantAlunos}} itens</p>
       <hr>
       <form (ngSubmit)="salvarFrequencias()" [formGroup]="form" #formRef="ngForm">
       <ion-list>
-        <ng-container *ngIf="form && frequencias.controls">
+        <ng-container *ngIf="form && frequencias.controls" >
             <div formArrayName="frequencias">
               <ion-grid>
                 <ion-row>
                   <ion-col col-1><b>#</b></ion-col>
                   <ion-col col-9><b>Aluno</b></ion-col>
-                  <div>
-                    <ion-col col-2><b>Nota</b></ion-col>
-                  </div>
+                  <ion-col col-2><b>{{registro.horaInicio.substring(0,5)}} ás {{registro.horaFim.substring(0,5)}}</b></ion-col>
                 </ion-row>
-                <div >
+                <div *ngFor="let group of frequencias.controls; let i = index" [formGroupName]="i">
                 <ion-row>
                   <ion-col col-1>
-                    
+                    {{i+1}}
                   </ion-col>
                   <ion-col col-9> 
-                    
+                    {{ items[i].contratoId.alunoId.nome }}
                   </ion-col>
                   <ion-col col-2>
-                      <ion-input style="height:40px; border:1px solid #333;"  type="number"></ion-input>
+                      <ion-checkbox color="secondary" formControlName="presenca"></ion-checkbox>
                   </ion-col>
                 </ion-row>
                 <hr>

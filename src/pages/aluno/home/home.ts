@@ -13,6 +13,8 @@ export class HomePage {
 
   items : ProfessorOfertaDTO[];
 
+  quantDisciplinas : number;
+
   constructor(
     public navCtrl: NavController, 
     public NavParams: NavParams,
@@ -25,6 +27,7 @@ export class HomePage {
     this.professorofertaService.ofertasAluno()
       .subscribe(response => {
         this.items = response;
+        this.quantDisciplinas = this.items.length;
       },
       error => {});
   }

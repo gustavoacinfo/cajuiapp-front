@@ -15,12 +15,16 @@ export class FaltaService{
         return this.http.get<FaltaDTO[]>(`${API_CONFIG.baseUrl}/falta/oferta/${id}`)
     }
 
-    
-
-
-
-   
-
+    insert(obj : Object){
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/falta`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        );
+    }
 
 
 }

@@ -28,6 +28,8 @@ export class AvaliacaoPage {
 
   pontosObtidos : number;
 
+  quantAvaliacoes : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -43,6 +45,7 @@ export class AvaliacaoPage {
     this.notaavaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
+      this.quantAvaliacoes = this.items.length;
     },
     error => {});
 

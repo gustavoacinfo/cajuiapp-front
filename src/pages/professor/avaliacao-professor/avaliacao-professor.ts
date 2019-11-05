@@ -87,20 +87,6 @@ export class LancarNotasPage {
   avaliacao : AvaliacaoDTO;
 
   form: FormGroup;
-  
-  notaavaliacao = {
-    matriculaId : {
-      id: ""
-    },
-    avaliacaoId : {
-      id: ""
-    },
-    nota:"",
-    createdAt:"",
-    updatedAt:"",
-    createdBy:"",
-    updatedBy:""
-  }
 
   items2 : MatriculaDTO[];
 
@@ -150,7 +136,7 @@ export class LancarNotasPage {
   }
 
   addCreds(nota) {
-    let timestamp = Math.floor(Date.now() / 1000)
+    let timestamp = Math.floor(Date.now() / 1000);
     const arraynotas = this.form.controls.notas as FormArray;
     arraynotas.push(this.fb.group({
       matriculaId: new FormGroup({
@@ -171,12 +157,11 @@ export class LancarNotasPage {
   salvarNotas(){
     
     if(this.form.valid) {
-      console.log(this.form.value);
     const loader = this.loadingCtrl.create({
-      content: "Cadastrando avaliacão..."
+      content: "Cadastrando notas da avaliação..."
     });
     loader.present();
-     this.notaavaliacaoService.insert(this.form.value)
+     this.notaavaliacaoService.insert(this.form.value.notas)
        .subscribe(response => {
           loader.dismiss();
           this.showInsertOk();
@@ -191,7 +176,7 @@ export class LancarNotasPage {
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
-      message: 'Cadastro de notas com sucesso.',
+      message: 'Notas cadastradas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
@@ -237,6 +222,8 @@ export class AdicionarAvaliacaoPage {
 
   oferta : string;
 
+  pontosDistribuidos : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -251,6 +238,11 @@ export class AdicionarAvaliacaoPage {
 
   ionViewDidLoad() {
 
+    this.avaliacaoService.pontosDistribuidos(this.oferta)
+    .subscribe(response => {
+      this.pontosDistribuidos = response;
+    },
+    error => {});
     
 
   }
@@ -287,7 +279,7 @@ export class AdicionarAvaliacaoPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.navCtrl.push(AvaliacaoProfessorPage);
+            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]
