@@ -15,6 +15,10 @@ export class NotaAvaliacaoService{
         return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/oferta/${id}`)
     }
 
+    notasPorAvaliacao(id : String) : Observable <NotaAvaliacaoDTO[]> {
+        return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/avaliacao/${id}`)
+    }
+
     pontosDistribuidos(id : String) : Observable <number> {
         return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/distribuidos/${id}`)
     }
@@ -32,6 +36,16 @@ export class NotaAvaliacaoService{
                 responseType: 'text'
             }
         );
+    }
+
+    changeDados(nota: Array<Object>) {
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/notaavaliacao`,
+            nota,
+            {
+                observe: 'response',
+                responseType: 'text'
+            });
     }
 
 

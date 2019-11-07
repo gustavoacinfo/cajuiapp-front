@@ -19,6 +19,7 @@
     <h6> {{avaliacao.nome}} - Valor: {{avaliacao.maxPontos}} pts </h6>
     <p style="text-align: right;">Total {{quantAlunos}} itens</p>
     <hr>
+    <ng-container *ngIf="quantNotas == 0">
     <form (ngSubmit)="salvarNotas()" [formGroup]="form" #formRef="ngForm">
     <ion-list>
       <ng-container *ngIf="form && notas.controls">
@@ -49,5 +50,38 @@
     </ion-list>
     <button [disabled]="!formRef.valid" ion-button full color="secondary">Salvar</button>
   </form>
+  </ng-container>
+  <ng-container *ngIf="quantNotas > 0">
+      <form (ngSubmit)="editarNotas()" [formGroup]="formEdit" #formRefEdit="ngForm">
+          <ion-list>
+            <ng-container *ngIf="formEdit && notasEdit.controls">
+                <div formArrayName="notasEdit">
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col col-1><b>#</b></ion-col>
+                      <ion-col col-9><b>Aluno</b></ion-col>
+                      <ion-col col-2><b>Nota</b></ion-col>
+                    </ion-row>
+                    <div *ngFor="let group of notasEdit.controls; let i = index" [formGroupName]="i">
+                    <ion-row>
+                      <ion-col col-1>
+                        {{i+1}}
+                      </ion-col>
+                      <ion-col col-9> 
+                        {{ items2[i].contratoId.alunoId.nome }}
+                      </ion-col>
+                      <ion-col col-2>
+                          <ion-input required style="height:40px; border:1px solid #333;" formControlName="nota" type="number"></ion-input>
+                      </ion-col>
+                    </ion-row>
+                    <hr>
+                  </div>
+                  </ion-grid>
+                </div>
+            </ng-container>
+          </ion-list>
+          <button [disabled]="!formRefEdit.valid" ion-button full color="secondary">Atualizar</button>
+        </form>
+  </ng-container>
   </ion-navbar>
 </ion-content>

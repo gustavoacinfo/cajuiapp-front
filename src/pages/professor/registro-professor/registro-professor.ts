@@ -32,6 +32,8 @@ export class RegistroProfessorPage {
 
   iguais : RegistroDTO[];
 
+  quantRegistros : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -47,6 +49,7 @@ export class RegistroProfessorPage {
     this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
+      this.quantRegistros = this.items.length;
     },
     error => {});
   }

@@ -10,6 +10,7 @@ import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { HomeProfessorPage } from '../home-professor/home-professor';
+import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
 /**
  * Generated class for the AvaliacaoProfessorPage page.
@@ -29,12 +30,15 @@ export class AvaliacaoProfessorPage {
 
   items : AvaliacaoDTO[];
 
+  quantAvaliacoes : number;
+
   pontosDistribuidos : number;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public avaliacaoService : AvaliacaoService,
+    public notaAvaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController) {
 
       this.oferta = navParams.data.obj;
@@ -46,6 +50,7 @@ export class AvaliacaoProfessorPage {
     this.avaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
+      this.quantAvaliacoes = this.items.length;
     },
     error => {});
 
@@ -88,9 +93,15 @@ export class LancarNotasPage {
 
   form: FormGroup;
 
+  formEdit : FormGroup;
+
   items2 : MatriculaDTO[];
 
   quantAlunos : number;
+
+  notasLancadas : NotaAvaliacaoDTO[];
+
+  quantNotas : number;
 
 
   constructor(
@@ -101,7 +112,8 @@ export class LancarNotasPage {
     public matriculaService : MatriculaService,
     public loadingCtrl : LoadingController,
     public alertCtrl : AlertController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fbedit : FormBuilder
     ) {
 
       
@@ -119,6 +131,11 @@ export class LancarNotasPage {
       notas: new FormArray([]),
     });
 
+    this.formEdit = new FormGroup({
+      notasEdit : new FormArray([]),
+    });
+
+   
     this.matriculaService.matriculasPorOferta(this.avaliacao.ofertaId.id)
     .subscribe(response => {
       this.items2 = response;
@@ -129,10 +146,50 @@ export class LancarNotasPage {
     },
     error => {});
 
+    this.notaavaliacaoService.notasPorAvaliacao(this.avaliacao.id)
+      .subscribe(response => {
+        this.notasLancadas = response;
+        this.quantNotas = this.notasLancadas.length;
+        for(let i=0; i < this.notasLancadas.length; i++){
+          this.addCredsEdit(
+            this.notasLancadas[i].id,
+            this.notasLancadas[i].matriculaId.id,
+            this.notasLancadas[i].avaliacaoId.id,
+            this.notasLancadas[i].nota)
+        }
+      },
+      error => {});
+
+      console.log(this.formEdit)
+
   }
 
   get notas() {
     return this.form.controls.notas as FormArray;
+  }
+
+  get notasEdit() {
+    return this.formEdit.controls.notasEdit as FormArray;
+  }
+
+  addCredsEdit(id, matricula, avaliacao, nota) {
+    let timestamp = Math.floor(Date.now() / 1000);
+    const arraynotasEdit = this.formEdit.controls.notasEdit as FormArray;
+    arraynotasEdit.push(this.fbedit.group({
+      id: new FormControl(id),
+      matriculaId: new FormGroup({
+        id: new FormControl(matricula)
+      }),
+      avaliacaoId : new FormGroup({
+        id: new FormControl(avaliacao)
+      }),
+      nota: new FormControl(nota, { validators: [Validators.required, Validators.min(0), Validators.max(this.avaliacao.maxPontos)]}),
+      createdAt: new FormControl(JSON.parse(timestamp.toString())),
+      updatedAt: new FormControl(JSON.parse(timestamp.toString())),
+      createdBy: new FormControl(1),
+      updatedBy: new FormControl(1)
+      
+    }));
   }
 
   addCreds(nota) {
@@ -154,6 +211,8 @@ export class LancarNotasPage {
     }));
   }
 
+
+
   salvarNotas(){
     
     if(this.form.valid) {
@@ -173,10 +232,29 @@ export class LancarNotasPage {
 
   }
 
+  editarNotas(){
+    
+    if(this.formEdit.valid) {
+    const loader = this.loadingCtrl.create({
+      content: "Atualizando notas da avaliação..."
+    });
+    loader.present();
+     this.notaavaliacaoService.changeDados(this.formEdit.value.notasEdit)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk();
+       },
+      error => {
+        loader.dismiss();
+      });
+    }
+
+  }
+
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
-      message: 'Notas cadastradas com sucesso.',
+      message: 'Notas atualizadas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
@@ -224,13 +302,16 @@ export class AdicionarAvaliacaoPage {
 
   pontosDistribuidos : number;
 
+  alunos : MatriculaDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl : ViewController,
     public loadingCtrl : LoadingController,
     public avaliacaoService : AvaliacaoService,
-    public alertCtrl : AlertController) {
+    public alertCtrl : AlertController,
+    public modalCtrl : ModalController) {
 
       this.oferta = navParams.data.id;
       
@@ -243,8 +324,6 @@ export class AdicionarAvaliacaoPage {
       this.pontosDistribuidos = response;
     },
     error => {});
-    
-
   }
 
   salvarAvaliacao(){
@@ -267,6 +346,8 @@ export class AdicionarAvaliacaoPage {
       error => {
         loader.dismiss();
       });
+
+
   }
 
   showInsertOk(){
@@ -278,15 +359,13 @@ export class AdicionarAvaliacaoPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
-            this.navCtrl.push(HomeProfessorPage);
+            this.home();
           }
         }
       ]
     });
     alert.present();
   }
-
 
   home(){
     this.navCtrl.push('HomeProfessorPage');

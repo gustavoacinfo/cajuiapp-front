@@ -20,6 +20,7 @@
         <h6 class="title"><ion-icon name="search"></ion-icon> Lista de Avaliações</h6>
         <p style="text-align: right;"> Total de Pontos: {{pontosDistribuidos}}</p>
         <hr>
+        <h6 *ngIf="quantAvaliacoes == 0" ><ion-icon name="alert"></ion-icon>Ainda não foram lançados avaliações!</h6>
         <ion-list>
         <ion-item-sliding *ngFor="let item of items">
           <ion-item>
