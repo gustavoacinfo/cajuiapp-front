@@ -9,7 +9,6 @@ import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { HomeProfessorPage } from '../home-professor/home-professor';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
 /**
@@ -64,6 +63,11 @@ export class AvaliacaoProfessorPage {
 
   home(){
     this.navCtrl.push('HomeProfessorPage');
+  }
+
+  editarAvaliacao(obj : Object) {
+    let modal = this.modalCtrl.create(EditarAvaliacaoPage, {obj});
+    modal.present();
   }
 
   lancarNotas(obj : Object){
@@ -155,12 +159,12 @@ export class LancarNotasPage {
             this.notasLancadas[i].id,
             this.notasLancadas[i].matriculaId.id,
             this.notasLancadas[i].avaliacaoId.id,
-            this.notasLancadas[i].nota)
+            this.notasLancadas[i].nota,
+            this.notasLancadas[i].createdAt,
+            this.notasLancadas[i].createdBy,)
         }
       },
       error => {});
-
-      console.log(this.formEdit)
 
   }
 
@@ -172,7 +176,7 @@ export class LancarNotasPage {
     return this.formEdit.controls.notasEdit as FormArray;
   }
 
-  addCredsEdit(id, matricula, avaliacao, nota) {
+  addCredsEdit(id, matricula, avaliacao, nota, createdat, createdby) {
     let timestamp = Math.floor(Date.now() / 1000);
     const arraynotasEdit = this.formEdit.controls.notasEdit as FormArray;
     arraynotasEdit.push(this.fbedit.group({
@@ -184,10 +188,10 @@ export class LancarNotasPage {
         id: new FormControl(avaliacao)
       }),
       nota: new FormControl(nota, { validators: [Validators.required, Validators.min(0), Validators.max(this.avaliacao.maxPontos)]}),
-      createdAt: new FormControl(JSON.parse(timestamp.toString())),
+      createdAt: new FormControl(createdat),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
-      createdBy: new FormControl(1),
-      updatedBy: new FormControl(1)
+      createdBy: new FormControl(createdby),
+      updatedBy: new FormControl(1) //usuario logado
       
     }));
   }
@@ -205,8 +209,8 @@ export class LancarNotasPage {
       nota: new FormControl(null, { validators: [Validators.required, Validators.min(0), Validators.max(this.avaliacao.maxPontos)]}),
       createdAt: new FormControl(JSON.parse(timestamp.toString())),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
-      createdBy: new FormControl(1),
-      updatedBy: new FormControl(1)
+      createdBy: new FormControl(1), //usuario logado
+      updatedBy: new FormControl(1) // usuario logado
       
     }));
   }
@@ -242,7 +246,7 @@ export class LancarNotasPage {
      this.notaavaliacaoService.changeDados(this.formEdit.value.notasEdit)
        .subscribe(response => {
           loader.dismiss();
-          this.showInsertOk();
+          this.showInsertOkEdit();
        },
       error => {
         loader.dismiss();
@@ -254,6 +258,23 @@ export class LancarNotasPage {
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
+      message: 'Notas salvas com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertOkEdit(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
       message: 'Notas atualizadas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
@@ -261,7 +282,6 @@ export class LancarNotasPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]
@@ -329,11 +349,10 @@ export class AdicionarAvaliacaoPage {
   salvarAvaliacao(){
     this.avaliacao.ofertaId.id = this.oferta;
     let timestamp = Math.floor(Date.now() / 1000)
-    // let timestamp = new Date().getTime();
     this.avaliacao.createdAt = JSON.parse(timestamp.toString());
     this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
-    this.avaliacao.createdBy = JSON.parse('1');
-    this.avaliacao.updatedBy = JSON.parse('1');
+    this.avaliacao.createdBy = JSON.parse('1'); //usuario logado
+    this.avaliacao.updatedBy = JSON.parse('1'); //usuario logado
     const loader = this.loadingCtrl.create({
       content: "Cadastrando avaliacão..."
     });
@@ -373,6 +392,89 @@ export class AdicionarAvaliacaoPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+}
+
+@Component({
+  selector: 'page-avaliacao-professor',
+  templateUrl: 'editar-avaliacao.html',
+})
+export class EditarAvaliacaoPage {
+
+  avaliacao : AvaliacaoDTO;
+
+  pontosDistribuidos : number;
+
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public viewCtrl : ViewController,
+    public loadingCtrl : LoadingController,
+    public avaliacaoService : AvaliacaoService,
+    public alertCtrl : AlertController,
+    public modalCtrl : ModalController) {
+
+      this.avaliacao = navParams.data.obj;
+
+  }
+
+  ionViewDidLoad() {
+
+    this.avaliacaoService.pontosDistribuidos(this.avaliacao.ofertaId.id)
+    .subscribe(response => {
+      this.pontosDistribuidos = response;
+    },
+    error => {});
+    
+  }
+
+  editarAvaliacao() {
+    const loader = this.loadingCtrl.create({
+      content: "Alterando avaliacão..."
+    });
+    loader.present();
+    let timestamp = Math.floor(Date.now() / 1000)
+    this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
+    this.avaliacao.updatedBy = JSON.parse('1'); //usuario logado
+    this.avaliacaoService.changeDados(this.avaliacao)
+      .subscribe(response => {
+        loader.dismiss();
+        switch(response.status) {
+          case 200:
+              this.handle200();
+            break;
+        }
+      }, 
+      error => {
+        loader.dismiss();
+      });
+  }
+
+  handle200() {
+    let alert = this.alertCtrl.create({
+        title: 'Dados alterados',
+        message: 'Dados da avaliação foram alterados com sucesso!',
+        enableBackdropDismiss: false,
+        buttons: [
+            {
+                text: 'Ok',
+                handler: () => {
+                  this.dismiss();
+                }
+            }
+        ]
+    });
+    alert.present();
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+  
+  home(){
+    this.navCtrl.push('HomeProfessorPage');
   }
 
 }

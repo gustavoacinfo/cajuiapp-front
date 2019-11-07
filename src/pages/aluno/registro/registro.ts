@@ -29,6 +29,8 @@ export class RegistroPage {
 
   quantFrequencia : number;
 
+  quantRegistro : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -40,21 +42,35 @@ export class RegistroPage {
 
   }
 
-  ionViewDidLoad() {
-
+  ionViewDidLoad(){
+   
     this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.items = response;
+      this.quantRegistro = this.items.length;
+      console.log(this.items)
     },
     error => {});
 
     this.faltaService.faltasPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.faltas = response;
+      console.log(this.faltas)
       this.quantFrequencia = this.faltas.length;
     },
     error => {});
 
+  }
+
+  presenca(obj : RegistroDTO){
+
+    for(let i=0; i<this.quantRegistro; i++){
+      if(this.faltas[i].registroId.id == obj.id){
+        return 'FALTA';
+      }else{
+        return 'PRESENÇA';
+      }
+    }
   }
 
   home(){

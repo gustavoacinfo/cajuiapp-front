@@ -19,13 +19,14 @@
           <hr>
           <h6 *ngIf="quantFrequencia == 0" > <ion-icon name="alert"></ion-icon> Ainda não foram lançadas frequências!</h6>
           <ion-list>
-          <ion-item *ngFor="let falta of faltas" >
-              <h6> <b>Descrição:</b> {{falta.registroId.descricao}}</h6>
-              <h6>Data: <b> {{falta.registroId.data.substring(8,10)}}/{{falta.registroId.data.substring(5,7)}}/{{falta.registroId.data.substring(0,4)}}</b>  Hora início: <b>{{falta.registroId.horaInicio}}</b></h6>
-              <ion-item *ngFor="let item of items" >
-                <h6 *ngIf="item.id == falta.registroId.id"  class="red"><b>FALTA</b></h6>
-                <h6 *ngIf="item.id != falta.registroId.id"  class="green"><b>PRESENTE</b></h6>
-              </ion-item>
+          <ion-item *ngFor="let item of items" >
+              <h6> <b>Descrição:</b> {{item.descricao}}</h6>
+              <h6>Data: <b> {{item.data.substring(8,10)}}/{{item.data.substring(5,7)}}/{{item.data.substring(0,4)}}</b>  Hora início: <b>{{item.horaInicio}}</b></h6>
+              <h6></h6>
+              <!-- <ion-item *ngFor="let falta of faltas" >
+                <h6 *ngIf="falta.registroId.id == item.id"  class="red"><b>FALTA</b></h6>
+                <h6 *ngIf="falta.registroId.id != item.id"  class="green"><b>PRESENTE</b></h6>
+              </ion-item> -->
           </ion-item>
           </ion-list>
       </ion-navbar>

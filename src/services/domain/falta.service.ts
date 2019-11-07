@@ -26,5 +26,15 @@ export class FaltaService{
         );
     }
 
+    changeDados(falta: Object) {
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/falta`,
+            falta,
+            {
+                observe: 'response',
+                responseType: 'text'
+            });
+    }
+
 
 }

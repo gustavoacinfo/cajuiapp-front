@@ -309,12 +309,9 @@ export class LancarFrequenciaPage {
 
   ngOnInit() {
 
-    
-
     this.form = new FormGroup({
       frequencias: new FormArray([]),
     });
-
 
     this.matriculaService.matriculasPorOferta(this.registro.professorOfertaId.ofertaId.id)
     .subscribe(response => {
@@ -364,7 +361,8 @@ export class LancarFrequenciaPage {
       if(this.form.value.frequencias[i].presenca == false){
         this.faltaService.insert(this.form.value.frequencias[i])
        .subscribe(response => {
-        
+          loader.dismiss();
+          this.showInsertOk();
        },
       error => {
         loader.dismiss();
@@ -372,8 +370,7 @@ export class LancarFrequenciaPage {
 
       }
     }
-      loader.dismiss();
-      this.showInsertOk();
+      
     }
 
   }
@@ -388,7 +385,6 @@ export class LancarFrequenciaPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]

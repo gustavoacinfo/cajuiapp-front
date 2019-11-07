@@ -30,5 +30,15 @@ export class AvaliacaoService{
         );
     }
 
+    changeDados(avaliacao: Object) {
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/avaliacao`,
+            avaliacao,
+            {
+                observe: 'response',
+                responseType: 'text'
+            });
+    }
+
 
 }
