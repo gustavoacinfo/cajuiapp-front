@@ -28,13 +28,10 @@
               <h6>Hora início: <b>{{item.horaInicio}} </b>Hora fim: <b>{{item.horaFim}} </b></h6>
             </ion-item>
             <ion-item-options side="right">
-                <button ion-button color="lightgreen" title="Visualizar" (click)="visualizarRegistro(item)" icon-only>
-                    <ion-icon name="eye"></ion-icon>
-                </button>
                 <button ion-button color="secondary" title="Lançar Frequência" (click)="lancarFrequencia(item)" icon-only>
                     <ion-icon name="stats"></ion-icon>
                 </button>
-                <button ion-button title="Editar" icon-only>
+                <button ion-button title="Editar" icon-only (click)="editarRegistro(item)">
                     <ion-icon name="create"></ion-icon>
                 </button>
             </ion-item-options>

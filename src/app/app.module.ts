@@ -1,7 +1,7 @@
 import { OfertaService } from './../services/domain/oferta.service';
 import { LogoutPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
-import { AdicionarRegistroPage, LancarFrequenciaPage } from './../pages/professor/registro-professor/registro-professor';
+import { AdicionarRegistroPage, LancarFrequenciaPage, EditarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
 import { MatriculaService } from './../services/domain/matricula.service';
 import { NotaAvaliacaoService } from './../services/domain/nota-avaliacao.service';
 import { FaltaService } from './../services/domain/falta.service';
@@ -16,13 +16,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProfessorOfertaService } from '../services/domain/professoroferta.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
-import { VisualizarRegistroPage } from '../pages/professor/registro-professor/registro-professor';
 import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '../pages/professor/avaliacao-professor/avaliacao-professor';
 
 @NgModule({
   declarations: [
     MyApp,
-    VisualizarRegistroPage,
+    EditarRegistroPage,
     AdicionarRegistroPage,
     LancarNotasPage,
     AdicionarAvaliacaoPage,
@@ -38,7 +37,7 @@ import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '..
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    VisualizarRegistroPage,
+    EditarRegistroPage,
     AdicionarRegistroPage,
     LancarNotasPage,
     AdicionarAvaliacaoPage,

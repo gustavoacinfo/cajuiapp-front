@@ -30,6 +30,16 @@ export class RegistroService{
         );
     }
 
+    changeDados(registro: Object) {
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/registro`,
+            registro,
+            {
+                observe: 'response',
+                responseType: 'text'
+            });
+    }
+
 
 
    

@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-navbar color="secondary">
+      <ion-title>
+        <img (click)="home()"  src="assets/imgs/logo.png" alt="logo">
+      </ion-title>
+      <ion-buttons end>
+        <button (click)="dismiss()" ion-button tappable>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+      <h5>Editar Registro de Aula</h5>
+      <hr>
+        <form #editarForm="ngForm">
+            <ion-item>
+                <ion-label>DATA*:</ion-label>
+                <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>HORA DE INÍCIO*:</ion-label>
+                <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm" ></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label position="fixed">Nº DE HORÁRIOS*:</ion-label>
+                <ion-input [(ngModel)]="quantHorarios" name="horarios" required #horarios="ngModel"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">CONTEÚDO*:</ion-label>
+                <ion-textarea [(ngModel)]="registro.descricao" name="descricao" required #descricao="ngModel" rows="3"></ion-textarea>
+            </ion-item>
+            <button ion-button full color="secondary" (click)="editarRegistro(quantHorarios, horaInicial)" >Cadastrar</button>
+        </form>
+    </ion-navbar>
+  </ion-content>

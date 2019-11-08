@@ -4,13 +4,12 @@ import { RegistroDTO } from './../../../models/registro.dto';
 import { RegistroService } from './../../../services/domain/registro.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, AlertController} from 'ionic-angular';
-import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { MatriculaDTO } from '../../../models/matricula.dto';
 import { LogoutPage } from '../../login/login';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { FaltaService } from '../../../services/domain/falta.service';
-import { HomeProfessorPage } from '../home-professor/home-professor';
+import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -58,8 +57,8 @@ export class RegistroProfessorPage {
     this.navCtrl.push('HomeProfessorPage');
   }
 
-  visualizarRegistro(obj : Object){
-    let modal = this.modalCtrl.create(VisualizarRegistroPage, {obj});
+  editarRegistro(obj : Object){
+    let modal = this.modalCtrl.create(EditarRegistroPage, {obj});
     modal.present();
   }
 
@@ -82,42 +81,107 @@ export class RegistroProfessorPage {
 
 @Component({
   selector: 'page-registro-professor',
-  templateUrl: 'visualizar-registro.html',
+  templateUrl: 'editar-registro.html',
 })
-export class VisualizarRegistroPage {
+export class EditarRegistroPage {
 
   registro : RegistroDTO;
 
   registros : RegistroDTO[];
 
-  items : MatriculaDTO[];
+  profOferta : ProfessorOfertaDTO;
+
+  equivaleHorario : string;
+
+  quantHorarios : number;
+
+  horaInicial : string;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl : ViewController,
     public registroService : RegistroService,
-    public matriculaService : MatriculaService) {
+    public professorofertaService : ProfessorOfertaService,
+    public matriculaService : MatriculaService,
+    public alertCtrl : AlertController,
+    public loadingCtrl : LoadingController) {
+      
       this.registro = navParams.data.obj;
+
   }
 
   ionViewDidLoad() {
 
-    this.registroService.registrosPorOferta(this.registro.professorOfertaId.ofertaId.id)
+    this.professorofertaService.findById(parseInt(this.registro.professorOfertaId.id))
+    .subscribe(response => {
+      this.profOferta = response;
+      this.equivaleHorario = this.profOferta.ofertaId.curriculoId.disciplinaId.equivalenciaMinutos;
+      
+    },
+    error => {});
+
+    this.registroService.registrosMesmaData(this.registro.professorOfertaId.id, this.registro.data, this.registro.descricao )
     .subscribe(response => {
       this.registros = response;
+      this.quantHorarios = this.registros.length;
+      this.horaInicial = this.registros[0].horaInicio;
     },
     error => {});
 
-    this.matriculaService.matriculasPorOferta(this.registro.professorOfertaId.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      console.log(this.items);
-    },
-    error => {});
+    this.registro.data = (new Date(this.registro.data)).toISOString();
 
+    console.log(this.registros);
+  }
 
+  editarRegistro(quantHorarios : number, horaInicial : string){
+    
+    for(let i=0; i<quantHorarios; i++){
+      this.registro.id = this.registros[i].id;
+      this.registro.professorOfertaId.id = this.profOferta.id;
+      let timestamp = Math.floor(Date.now() / 1000)
+      this.registro.updatedAt = JSON.parse(timestamp.toString());
+      this.registro.updatedBy = JSON.parse('1');
+      this.registro.horaInicio = horaInicial;
+      var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
+      this.registro.horaFim = horaFim;
 
+      const loader = this.loadingCtrl.create({
+        content: "Cadastrando "+ quantHorarios +" registros de aula..."
+      });
+  
+      loader.present();
+        this.registroService.changeDados(this.registro)
+          .subscribe(response => {
+             loader.dismiss();
+          },
+         error => {
+           loader.dismiss();
+         });
+  
+
+      horaInicial = horaFim;
+
+    }
+    
+    this.showInsertOk();
+  }
+
+  showInsertOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   home(){
@@ -128,6 +192,10 @@ export class VisualizarRegistroPage {
     this.viewCtrl.dismiss();
   }
 
+  adicionaMinutos(hora : string, minutos : string){
+    const horario = moment(hora, "HH:mm").add(minutos,"minutes").toLocaleString().substring(16,24);
+    return horario;
+  }
 
  
 }
@@ -238,7 +306,6 @@ export class AdicionarRegistroPage {
           text: 'Ok',
           handler: () => {
             this.navCtrl.pop();
-            this.navCtrl.push(HomeProfessorPage);
           }
         }
       ]

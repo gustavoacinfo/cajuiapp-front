@@ -43,14 +43,6 @@ export class RegistroPage {
   }
 
   ionViewDidLoad(){
-   
-    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      this.quantRegistro = this.items.length;
-      console.log(this.items)
-    },
-    error => {});
 
     this.faltaService.faltasPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
@@ -59,6 +51,19 @@ export class RegistroPage {
       this.quantFrequencia = this.faltas.length;
     },
     error => {});
+   
+    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
+    .subscribe(response => {
+      this.items = response;
+      this.items.map(item => 
+        this.faltas.map(falta =>
+          item.id === falta.registroId.id ? item.falta = true : item.falta = false))
+      this.quantRegistro = this.items.length;
+      console.log(this.items)
+    },
+    error => {});
+
+    
 
   }
 
