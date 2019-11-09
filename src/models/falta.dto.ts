@@ -66,6 +66,7 @@ export interface FaltaDTO{
     descricao : string;
     }
     id : string;
+    presenca : boolean;
     createdAt : string;
     updatedAt : string;
     createdBy : string;

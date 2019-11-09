@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { FaltaService } from '../../../services/domain/falta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
+import { FaltaDTO } from '../../../models/falta.dto';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -135,7 +136,7 @@ export class EditarRegistroPage {
   }
 
   editarRegistro(quantHorarios : number, horaInicial : string){
-    
+
     for(let i=0; i<quantHorarios; i++){
       this.registro.id = this.registros[i].id;
       this.registro.professorOfertaId.id = this.profOferta.id;
@@ -336,26 +337,14 @@ export class LancarFrequenciaPage {
 
   registro : RegistroDTO;
 
-  registros : RegistroDTO[];
-
   form: FormGroup;
-  
-  falta = {
-    matriculaId : {
-      id: ""
-    },
-    registroId : {
-      id: ""
-    },
-    createdAt:"",
-    updatedAt:"",
-    createdBy:"",
-    updatedBy:""
-  }
 
   items : MatriculaDTO[];
 
   quantAlunos : number;
+
+  frequenciasLancadas : FaltaDTO[];
+
 
   constructor(
     public navCtrl: NavController, 
@@ -371,7 +360,6 @@ export class LancarFrequenciaPage {
 
       this.registro = navParams.data.obj;
 
-      
   }
 
   ngOnInit() {
@@ -390,7 +378,11 @@ export class LancarFrequenciaPage {
     },
     error => {});
 
-    console.log(this.form);
+    this.faltaService.faltasPorRegistro(this.registro.id)
+    .subscribe(response => {
+      this.frequenciasLancadas = response;
+    },
+    error => {});
 
   }
 
@@ -398,12 +390,12 @@ export class LancarFrequenciaPage {
     return this.form.controls.frequencias as FormArray;
   }
 
-  addFreq(id) {
+  addFreq(matricula) {
     let timestamp = Math.floor(Date.now() / 1000);
     const arrayfrequencias = this.form.controls.frequencias as FormArray;
     arrayfrequencias.push(this.fb.group({
       matriculaId: new FormGroup({
-        id: new FormControl(id)
+        id: new FormControl(matricula)
       }),
       registroId : new FormGroup({
         id: new FormControl(this.registro.id)
@@ -423,10 +415,7 @@ export class LancarFrequenciaPage {
       content: "Cadastrando frequencias do registro..."
     });
     loader.present();
-
-    for(let i=0; i<this.form.value.frequencias.length; i++){
-      if(this.form.value.frequencias[i].presenca == false){
-        this.faltaService.insert(this.form.value.frequencias[i])
+    this.faltaService.insert(this.form.value.frequencias)
        .subscribe(response => {
           loader.dismiss();
           this.showInsertOk();
@@ -435,11 +424,7 @@ export class LancarFrequenciaPage {
         loader.dismiss();
       });
 
-      }
     }
-      
-    }
-
   }
 
   showInsertOk(){

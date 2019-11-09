@@ -27,6 +27,8 @@ export class RegistroPage {
 
   faltas : FaltaDTO[];
 
+  quantFalta : number;
+
   quantFrequencia : number;
 
   quantRegistro : number;
@@ -47,36 +49,12 @@ export class RegistroPage {
     this.faltaService.faltasPorOferta(this.oferta.ofertaId.id)
     .subscribe(response => {
       this.faltas = response;
-      console.log(this.faltas)
       this.quantFrequencia = this.faltas.length;
     },
     error => {});
-   
-    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      this.items.map(item => 
-        this.faltas.map(falta =>
-          item.id === falta.registroId.id ? item.falta = true : item.falta = false))
-      this.quantRegistro = this.items.length;
-      console.log(this.items)
-    },
-    error => {});
-
-    
 
   }
 
-  presenca(obj : RegistroDTO){
-
-    for(let i=0; i<this.quantRegistro; i++){
-      if(this.faltas[i].registroId.id == obj.id){
-        return 'FALTA';
-      }else{
-        return 'PRESENÇA';
-      }
-    }
-  }
 
   home(){
     this.navCtrl.push('HomePage');

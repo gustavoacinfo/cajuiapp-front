@@ -8,7 +8,6 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { RegistroDTO } from '../../../models/registro.dto';
 import { FaltaDTO } from '../../../models/falta.dto';
-import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 import { LogoutPage } from '../../login/login';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 
@@ -36,7 +35,9 @@ export class DisciplinaPage {
 
   quantRegistros : number;
 
-  quantFaltas : number;
+  quantFrequencia : number;
+
+  numFaltas : number;
 
   quantAvaliacoes : number;
 
@@ -69,7 +70,16 @@ export class DisciplinaPage {
     this.faltaService.faltasPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.faltas = response;
-      this.quantFaltas = this.faltas.length;
+      this.quantFrequencia = this.faltas.length;
+      let faltas = 0;
+      for(let i=0; i<this.quantFrequencia; i++){
+        console.log('entrou no For');
+        if(this.faltas[i].presenca === false){
+          console.log('entrou no If');
+          faltas = faltas + 1;
+        }
+      }
+      this.numFaltas = faltas;
     },
     error => {});
 

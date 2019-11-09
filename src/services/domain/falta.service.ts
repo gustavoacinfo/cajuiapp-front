@@ -15,7 +15,11 @@ export class FaltaService{
         return this.http.get<FaltaDTO[]>(`${API_CONFIG.baseUrl}/falta/oferta/${id}`)
     }
 
-    insert(obj : Object){
+    faltasPorRegistro(id : String) : Observable <FaltaDTO[]> {
+        return this.http.get<FaltaDTO[]>(`${API_CONFIG.baseUrl}/falta/registro/${id}`)
+    }
+
+    insert(obj : Array<Object>){
         return this.http.post(
             `${API_CONFIG.baseUrl}/falta`,
             obj,
@@ -26,7 +30,7 @@ export class FaltaService{
         );
     }
 
-    changeDados(falta: Object) {
+    changeDados(falta: Array<Object>) {
         return this.http.put(
             `${API_CONFIG.baseUrl}/falta`,
             falta,

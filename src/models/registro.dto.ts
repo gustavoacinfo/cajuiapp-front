@@ -65,6 +65,4 @@ export interface RegistroDTO {
     updatedAt : string;
     createdBy : string;
     updatedBy : string;
-    falta : boolean;
-
 }
