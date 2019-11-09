@@ -339,11 +339,15 @@ export class LancarFrequenciaPage {
 
   form: FormGroup;
 
+  formEdit : FormGroup;
+
   items : MatriculaDTO[];
 
   quantAlunos : number;
 
   frequenciasLancadas : FaltaDTO[];
+
+  quantFrequencias : number;
 
 
   constructor(
@@ -368,6 +372,10 @@ export class LancarFrequenciaPage {
       frequencias: new FormArray([]),
     });
 
+    this.formEdit = new FormGroup({
+      frequenciasEdit: new FormArray([]),
+    });
+
     this.matriculaService.matriculasPorOferta(this.registro.professorOfertaId.ofertaId.id)
     .subscribe(response => {
       this.items = response;
@@ -381,6 +389,16 @@ export class LancarFrequenciaPage {
     this.faltaService.faltasPorRegistro(this.registro.id)
     .subscribe(response => {
       this.frequenciasLancadas = response;
+      this.quantFrequencias = this.frequenciasLancadas.length;
+      for(let i=0; i < this.frequenciasLancadas.length; i++){
+        this.addFreqEdit(
+          this.frequenciasLancadas[i].id,
+          this.frequenciasLancadas[i].matriculaId.id,
+          this.frequenciasLancadas[i].presenca,
+          this.frequenciasLancadas[i].createdBy,
+          this.frequenciasLancadas[i].createdAt
+        )
+      }
     },
     error => {});
 
@@ -388,6 +406,10 @@ export class LancarFrequenciaPage {
 
   get frequencias() {
     return this.form.controls.frequencias as FormArray;
+  }
+
+  get frequenciasEdit() {
+    return this.formEdit.controls.frequenciasEdit as FormArray;
   }
 
   addFreq(matricula) {
@@ -405,6 +427,25 @@ export class LancarFrequenciaPage {
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
       createdBy: new FormControl(1),
       updatedBy: new FormControl(1)
+    }));
+  }
+
+  addFreqEdit(id, matricula, presenca, createdby, createdat) {
+    let timestamp = Math.floor(Date.now() / 1000);
+    const arrayfrequencias = this.formEdit.controls.frequenciasEdit as FormArray;
+    arrayfrequencias.push(this.fb.group({
+      id : new FormControl(id),
+      matriculaId: new FormGroup({
+        id: new FormControl(matricula)
+      }),
+      registroId : new FormGroup({
+        id: new FormControl(this.registro.id)
+      }),
+      presenca: new FormControl(presenca),
+      createdAt: new FormControl(createdat),
+      updatedAt: new FormControl(JSON.parse(timestamp.toString())),
+      createdBy: new FormControl(createdby),
+      updatedBy: new FormControl(1) //usuario logado
     }));
   }
 
@@ -427,10 +468,46 @@ export class LancarFrequenciaPage {
     }
   }
 
+  editarFrequencias(){
+    
+    if(this.form.valid) {
+    const loader = this.loadingCtrl.create({
+      content: "Atualizando frequencias do registro..."
+    });
+    loader.present();
+    this.faltaService.changeDados(this.formEdit.value.frequenciasEdit)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOkEdit();
+       },
+      error => {
+        loader.dismiss();
+      });
+
+    }
+  }
+
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
       message: 'Frequencias cadastradas com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertOkEdit(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Frequencias atualizadas com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {

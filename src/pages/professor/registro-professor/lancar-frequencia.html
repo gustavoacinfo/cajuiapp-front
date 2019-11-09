@@ -19,6 +19,7 @@
       <h6>{{registro.descricao.substring(0,30)}} <br> Data: {{registro.data.substring(8,10)}}/{{registro.data.substring(5,7)}}/{{registro.data.substring(0,4)}}</h6>
       <p style="text-align: right;">Total {{quantAlunos}} itens</p>
       <hr>
+      <ng-container *ngIf="quantFrequencias == 0" >
       <form (ngSubmit)="salvarFrequencias()" [formGroup]="form" #formRef="ngForm">
       <ion-list>
         <ng-container *ngIf="form && frequencias.controls" >
@@ -49,5 +50,38 @@
       </ion-list>
       <button ion-button full color="secondary">Salvar</button>
     </form>
+    </ng-container>
+    <ng-container *ngIf="quantFrequencias > 0" > 
+      <form (ngSubmit)="editarFrequencias()" [formGroup]="formEdit" #formRefEdit="ngForm">
+        <ion-list>
+          <ng-container *ngIf="formEdit && frequenciasEdit.controls" >
+              <div formArrayName="frequenciasEdit">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col col-1><b>#</b></ion-col>
+                    <ion-col col-9><b>Aluno</b></ion-col>
+                    <ion-col col-2><b>{{registro.horaInicio.substring(0,5)}} ás {{registro.horaFim.substring(0,5)}}</b></ion-col>
+                  </ion-row>
+                  <div *ngFor="let group of frequenciasEdit.controls; let i = index" [formGroupName]="i">
+                  <ion-row>
+                    <ion-col col-1>
+                      {{i+1}}
+                    </ion-col>
+                    <ion-col col-9> 
+                      {{ items[i].contratoId.alunoId.nome }}
+                    </ion-col>
+                    <ion-col col-2>
+                        <ion-checkbox color="secondary" formControlName="presenca"></ion-checkbox>
+                    </ion-col>
+                  </ion-row>
+                  <hr>
+                </div>
+                </ion-grid>
+              </div>
+          </ng-container>
+        </ion-list>
+        <button ion-button full color="secondary">Atualizar</button>
+      </form>
+    </ng-container>
     </ion-navbar>
   </ion-content>
