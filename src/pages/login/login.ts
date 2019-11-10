@@ -31,7 +31,14 @@ export class LoginPage {
     public auth : AuthService) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter(){
+    this.auth.refreshToken()
+      .subscribe(response => {
+        this.auth.successfulllogin(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('HomePage');
+      }, 
+      error => {});
+   
   }
 
   login(){
