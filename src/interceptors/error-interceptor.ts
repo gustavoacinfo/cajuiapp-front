@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs/Rx";
 import { StorageService } from '../services/storage.service';
-import { AlertController } from 'ionic-angular';
+import { AlertController} from 'ionic-angular';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -47,12 +47,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     handle401() {
         let alert = this.alertCtrl.create({
-            title: 'Falha de autenticação',
-            message: 'E-mail ou senha incorretos ou sem permissão para acessar o app!',
+            title: "Erro: Falha de Autenticação",
+            message: "Email ou senha incorretos",
             enableBackdropDismiss: false,
             buttons: [
                 {
-                    text: 'Ok'
+                    text: 'ok'
                 }
             ]
         });
@@ -61,17 +61,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     handleDefaultError(errorObj) {
         let alert = this.alertCtrl.create({
-            title: 'Erro!',
+            title: "Erro!",
             message: errorObj.message,
             enableBackdropDismiss: false,
             buttons: [
                 {
-                    text: 'Ok'
+                    text: 'ok'
                 }
             ]
         });
         alert.present();
     }
+
 
 }
 
