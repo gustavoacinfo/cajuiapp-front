@@ -2,9 +2,9 @@ import { UsuarioService } from './../../services/domain/usuario.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
-import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Generated class for the LoginPage page.
@@ -74,7 +74,8 @@ export class LogoutPage {
     public navParams: NavParams,
     public viewCtrl : ViewController,
     public storage : StorageService,
-    public usuarioService : UsuarioService) {
+    public usuarioService : UsuarioService,
+    public auth : AuthService) {
   }
 
   ionViewDidLoad() {
@@ -103,6 +104,7 @@ export class LogoutPage {
   }
   
   sair(){
+    this.auth.logout();
     this.navCtrl.setRoot('LoginPage');
   }
 
