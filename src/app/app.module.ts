@@ -18,6 +18,7 @@ import { ProfessorOfertaService } from '../services/domain/professoroferta.servi
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '../pages/professor/avaliacao-professor/avaliacao-professor';
 import { AuthService } from '../services/auth.service';
+import { StorageService } from '../services/storage.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { AuthService } from '../services/auth.service';
     MatriculaService,
     AvaliacaoService,
     OfertaService,
-    AuthService
+    AuthService,
+    StorageService
   ],
 })
 export class AppModule {}
