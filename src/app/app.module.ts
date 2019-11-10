@@ -1,3 +1,4 @@
+import { UsuarioService } from './../services/domain/usuario.service';
 import { OfertaService } from './../services/domain/oferta.service';
 import { LogoutPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
@@ -60,7 +61,8 @@ import { StorageService } from '../services/storage.service';
     AvaliacaoService,
     OfertaService,
     AuthService,
-    StorageService
+    StorageService,
+    UsuarioService
   ],
 })
 export class AppModule {}

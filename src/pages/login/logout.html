@@ -13,7 +13,12 @@
   
   <ion-content padding class="body">
     <ion-navbar color="light" class="body">
-            <img src="assets/imgs/user.png">
+      <ion-avatar>
+          <img class="circle" src="assets/imgs/user.png">
+      </ion-avatar>
+            <h2 text-center>{{usuario?.nome}}</h2>
+            <p text-center>Username: {{usuario?.username}}</p>
+            <p text-center>E-mail: {{usuario?.email}}</p>
             <button  ion-button full color="secondary" >Alterar senha</button>
             <button  ion-button full color="secondary" (click)="sair()" >Sair</button>
     </ion-navbar>

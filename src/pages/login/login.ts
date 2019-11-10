@@ -1,7 +1,10 @@
+import { UsuarioService } from './../../services/domain/usuario.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
+import { UsuarioDTO } from '../../models/usuario.dto';
 
 /**
  * Generated class for the LoginPage page.
@@ -57,13 +60,25 @@ export class LoginPage {
 })
 export class LogoutPage {
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public viewCtrl : ViewController) {
+    public viewCtrl : ViewController,
+    public storage : StorageService,
+    public usuarioService : UsuarioService) {
   }
 
   ionViewDidLoad() {
+    let localUser = this.storage.getLocalUser();
+    if(localUser && localUser.username ){
+      this.usuarioService.findByUsername(localUser.username)
+      .subscribe(response => {
+        this.usuario = response;
+      },
+      error => {});
+    }
   }
 
   home(){
