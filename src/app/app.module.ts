@@ -1,3 +1,4 @@
+import { AuthInterceptorProvider } from './../interceptors/auth-interceptor';
 import { UsuarioService } from './../services/domain/usuario.service';
 import { OfertaService } from './../services/domain/oferta.service';
 import { LogoutPage } from './../pages/login/login';
@@ -53,6 +54,7 @@ import { StorageService } from '../services/storage.service';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ProfessorOfertaService,
+    AuthInterceptorProvider,
     ErrorInterceptorProvider,
     RegistroService,
     FaltaService,
