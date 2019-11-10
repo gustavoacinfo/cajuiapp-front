@@ -17,6 +17,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ProfessorOfertaService } from '../services/domain/professoroferta.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '../pages/professor/avaliacao-professor/avaliacao-professor';
+import { AuthService } from '../services/auth.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '..
     NotaAvaliacaoService,
     MatriculaService,
     AvaliacaoService,
-    OfertaService
+    OfertaService,
+    AuthService
   ],
 })
 export class AppModule {}

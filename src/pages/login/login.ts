@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Generated class for the LoginPage page.
@@ -17,26 +18,35 @@ import { CredenciaisDTO } from '../../models/credenciais.dto';
 export class LoginPage {
 
   creds : CredenciaisDTO = {
-    usuario: "",
+    username: "",
     senha: ""
   };
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public auth : AuthService) {
   }
 
   ionViewDidLoad() {
   }
 
   login(){
-    if(this.creds.usuario == 'aluno'){
-      console.log(this.creds);
-      this.navCtrl.setRoot('HomePage');
-    }else{
-      console.log(this.creds);
-      this.navCtrl.setRoot('HomeProfessorPage');
-    }
+    this.auth.authentication(this.creds)
+      .subscribe(response => {
+        console.log(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('HomePage');
+      }, 
+      error => {});
+
+
+    // if(this.creds.username == 'aluno'){
+    //   console.log(this.creds);
+    //   this.navCtrl.setRoot('HomePage');
+    // }else{
+    //   console.log(this.creds);
+    //   this.navCtrl.setRoot('HomeProfessorPage');
+    // }
   }
 
 }

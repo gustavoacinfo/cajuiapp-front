@@ -7,7 +7,7 @@ import { HttpInterceptor, HttpRequest, HttpEvent, HttpHandler, HTTP_INTERCEPTORS
 export class ErrorInterceptor implements HttpInterceptor {
     
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('Passou');
+        console.log('Passou no interceptor');
         return next.handle(req)
         .catch((error, caught) => {
 

@@ -29,6 +29,8 @@ export class AvaliacaoProfessorPage {
 
   items : AvaliacaoDTO[];
 
+  notas : NotaAvaliacaoDTO[];
+
   quantAvaliacoes : number;
 
   pontosDistribuidos : number;
@@ -38,7 +40,9 @@ export class AvaliacaoProfessorPage {
     public navParams: NavParams,
     public avaliacaoService : AvaliacaoService,
     public notaAvaliacaoService : NotaAvaliacaoService,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public alertCtrl : AlertController,
+    public loadingCtrl : LoadingController) {
 
       this.oferta = navParams.data.obj;
       
@@ -68,6 +72,70 @@ export class AvaliacaoProfessorPage {
   editarAvaliacao(obj : Object) {
     let modal = this.modalCtrl.create(EditarAvaliacaoPage, {obj});
     modal.present();
+  }
+
+  excluirAvaliacao(avaliacao : AvaliacaoDTO){
+    
+    let alert = this.alertCtrl.create({
+      title: 'Atenção!',
+      message: 'Tem certeza que deseja excluir esta avaliação? A exclusão dessa avaliação também irá excluir todos seus registros de notas!',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            const loader = this.loadingCtrl.create({
+              content: "Excluindo avaliação e seus registros de notas..."
+            });
+            loader.present();
+            this.notaAvaliacaoService.notasPorAvaliacao(avaliacao.id)
+            .subscribe(response => {
+              this.notas = response;
+              for(let i=0; i<this.notas.length; i++){
+                this.notaAvaliacaoService.delete(this.notas[i])
+                .subscribe(response => {
+
+                },
+                error => {});
+              }
+            },
+            error => {});
+            console.log(avaliacao);
+            this.avaliacaoService.delete(avaliacao.id)
+            .subscribe(response => {
+              loader.dismiss();
+              this.showDeleteOk();
+            },
+            error => {
+              loader.dismiss();
+            });
+          }
+        },
+        {
+          text: 'Não',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showDeleteOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Avaliação excluida com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   lancarNotas(obj : Object){

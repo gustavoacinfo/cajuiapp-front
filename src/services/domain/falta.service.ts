@@ -40,5 +40,11 @@ export class FaltaService{
             });
     }
 
+    delete(falta: Object) {
+        return this.http.delete(
+            `${API_CONFIG.baseUrl}/falta`,
+            falta);
+    }
+
 
 }

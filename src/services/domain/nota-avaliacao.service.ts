@@ -48,6 +48,12 @@ export class NotaAvaliacaoService{
             });
     }
 
+    delete(nota: Object) {
+        return this.http.delete(
+            `${API_CONFIG.baseUrl}/notaavaliacao`,
+            nota);
+    }
+
 
    
 
