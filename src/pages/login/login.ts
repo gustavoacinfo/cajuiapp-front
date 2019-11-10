@@ -77,7 +77,13 @@ export class LogoutPage {
       .subscribe(response => {
         this.usuario = response;
       },
-      error => {});
+      error => {
+        if(error.status == 403){
+          this.navCtrl.setRoot('LoginPage');
+        }
+      });
+    }else{
+      this.navCtrl.setRoot('LoginPage');
     }
   }
 

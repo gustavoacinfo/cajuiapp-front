@@ -1,12 +1,17 @@
-import { Observable } from 'rxjs/Rx';
-import { HttpInterceptor, HttpRequest, HttpEvent, HttpHandler, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
+import { Observable } from "rxjs/Rx";
+import { StorageService } from '../services/storage.service';
+import { AlertController } from 'ionic-angular';
 
-
-
-
+@Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    constructor(public storage: StorageService, public alertCtrl: AlertController) {
+    }
+
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        // console.log("Passou");
         return next.handle(req)
         .catch((error, caught) => {
 
@@ -18,11 +23,54 @@ export class ErrorInterceptor implements HttpInterceptor {
                 errorObj = JSON.parse(errorObj);
             }
 
-            console.log("Erro detectado pelo interceptor");
+            console.log("Erro detectado pelo interceptor:");
             console.log(errorObj);
+
+            switch(errorObj.status) {
+                case 401:
+                    this.handle401();
+                    break;
+                case 403: 
+                    this.handle403();
+                    break;
+                default:
+                    this.handleDefaultError(errorObj);
+            }
 
             return Observable.throw(errorObj);
         }) as any;
+    }
+
+    handle403() {
+        this.storage.setLocalUser(null);
+    }
+
+    handle401() {
+        let alert = this.alertCtrl.create({
+            title: 'Falha de autenticação',
+            message: 'E-mail ou senha incorretos ou sem permissão para acessar o app!',
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text: 'Ok'
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    handleDefaultError(errorObj) {
+        let alert = this.alertCtrl.create({
+            title: 'Erro!',
+            message: errorObj.message,
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text: 'Ok'
+                }
+            ]
+        });
+        alert.present();
     }
 
 }

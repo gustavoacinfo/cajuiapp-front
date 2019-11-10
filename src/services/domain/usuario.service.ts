@@ -1,7 +1,7 @@
 import { UsuarioDTO } from './../../models/usuario.dto';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient} from "@angular/common/http";
 import { API_CONFIG } from '../../config/api.config';
 import { StorageService } from '../storage.service';
 
