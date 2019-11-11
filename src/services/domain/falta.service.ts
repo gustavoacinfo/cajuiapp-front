@@ -11,8 +11,8 @@ export class FaltaService{
 
     }
 
-    faltasPorOferta(id : String) : Observable <FaltaDTO[]> {
-        return this.http.get<FaltaDTO[]>(`${API_CONFIG.baseUrl}/falta/oferta/${id}`)
+    faltasPorOferta(id : String, aid : String) : Observable <FaltaDTO[]> {
+        return this.http.get<FaltaDTO[]>(`${API_CONFIG.baseUrl}/falta/oferta/${id}/aluno/${aid}`)
     }
 
     faltasPorRegistro(id : String) : Observable <FaltaDTO[]> {

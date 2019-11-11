@@ -79,7 +79,7 @@ export class DisciplinaPage {
     },
     error => {});
 
-    this.faltaService.faltasPorOferta(this.items.ofertaId.id)
+    this.faltaService.faltasPorOferta(this.items.ofertaId.id, this.usuario.id)
     .subscribe(response => {
       this.faltas = response;
       this.quantFrequencia = this.faltas.length;
