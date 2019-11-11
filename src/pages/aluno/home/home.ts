@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { NavController, IonicPage, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { LogoutPage } from '../../login/login';
+import { StorageService } from '../../../services/storage.service';
 
 @IonicPage()
 @Component({
@@ -19,17 +20,36 @@ export class HomePage {
     public navCtrl: NavController, 
     public NavParams: NavParams,
     public professorofertaService: ProfessorOfertaService,
-    public modalCtrl: ModalController ) {
+    public modalCtrl: ModalController,
+    public storage : StorageService,
+    public alertCtrl : AlertController ) {
 
   }
 
   ionViewDidLoad(){
-    this.professorofertaService.ofertasAluno()
+    if(this.storage.getRole().perfil == 'ALUNO'){
+      this.professorofertaService.ofertasAluno()
       .subscribe(response => {
         this.items = response;
         this.quantDisciplinas = this.items.length;
       },
       error => {});
+    }else{
+      let alert = this.alertCtrl.create({
+        title: 'Erro!',
+        message: 'Usuário não possui permissão para acessar essa página!',
+        enableBackdropDismiss: false,
+        buttons: [
+          {
+            text: 'Ok',
+            handler: () => {
+              this.navCtrl.setRoot('HomeProfessorPage');
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
   }
 
   informacoesDisciplina(obj : Object){

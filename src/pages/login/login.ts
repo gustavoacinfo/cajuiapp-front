@@ -5,6 +5,7 @@ import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
 import { AuthService } from '../../services/auth.service';
+import { Role } from '../../models/role';
 
 /**
  * Generated class for the LoginPage page.
@@ -28,16 +29,35 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public auth : AuthService) {
+    public auth : AuthService,
+    public storage : StorageService,
+    public usuarioService : UsuarioService) {
   }
 
   ionViewDidEnter(){
     this.auth.refreshToken()
-      .subscribe(response => {
-        this.auth.successfulllogin(response.headers.get('Authorization'));
-        this.navCtrl.setRoot('HomePage');
-      }, 
+    .subscribe(response => {
+      this.auth.successfulllogin(response.headers.get('Authorization'));
+    }, 
+    error => {});
+
+    if(localStorage.getItem('localUser') != null){
+
+      this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+    .subscribe(response => {
+      let role : Role = {
+          perfil : response.perfis[0]
+      };
+      this.storage.setRole(role);
+      if(role.perfil == 'ALUNO'){
+        this.navCtrl.push('HomePage');
+      }else if(role.perfil == 'PROFESSOR'){
+        this.navCtrl.push('HomeProfessorPage');
+      }
+      },
       error => {});
+
+    }
    
   }
 
@@ -45,18 +65,22 @@ export class LoginPage {
     this.auth.authentication(this.creds)
       .subscribe(response => {
         this.auth.successfulllogin(response.headers.get('Authorization'));
-        this.navCtrl.setRoot('HomePage');
       }, 
       error => {});
 
-
-    // if(this.creds.username == 'aluno'){
-    //   console.log(this.creds);
-    //   this.navCtrl.setRoot('HomePage');
-    // }else{
-    //   console.log(this.creds);
-    //   this.navCtrl.setRoot('HomeProfessorPage');
-    // }
+    this.usuarioService.findByUsername(this.creds.username)
+    .subscribe(response => {
+      let role : Role = {
+          perfil : response.perfis[0]
+      };
+      this.storage.setRole(role);
+      if(role.perfil == 'ALUNO'){
+        this.navCtrl.push('HomePage');
+      }else if(role.perfil == 'PROFESSOR'){
+        this.navCtrl.push('HomeProfessorPage');
+      }
+      },
+      error => {});
   }
 
 }

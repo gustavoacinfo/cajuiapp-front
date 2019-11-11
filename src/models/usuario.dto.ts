@@ -3,4 +3,5 @@ export interface UsuarioDTO{
     nome : string;
     username : string;
     email : string;
+    perfis: Array<any>;
 }

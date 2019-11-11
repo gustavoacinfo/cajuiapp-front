@@ -6,6 +6,8 @@ import { API_CONFIG } from '../config/api.config';
 import { StorageService } from './storage.service';
 import { LocalUser } from '../models/local_user';
 import { JwtHelper } from 'angular2-jwt';
+import { UsuarioService } from './domain/usuario.service';
+import { Role } from '../models/role';
 
 
 @Injectable()
@@ -15,7 +17,8 @@ export class AuthService {
 
     constructor(
         public http: HttpClient, 
-        public storage : StorageService){
+        public storage : StorageService,
+        public usuarioService: UsuarioService){
 
     }
 
@@ -46,15 +49,25 @@ export class AuthService {
             username: this.jwtHelper.decodeToken(tok).sub
         };
         this.storage.setLocalUser(user);
-        // let localUser = this.storage.getLocalUser();
-        // if(localUser && localUser.email) {
-        //     this.pegarRole(user.email);
-        // }
+        let localUser = this.storage.getLocalUser();
+        if(localUser && localUser.username) {
+            this.pegarRole(localUser.username);
+        }
+    }
+
+    pegarRole(username: string) {
+        this.usuarioService.findByUsername(username)
+            .subscribe(response => {
+                let role : Role = {
+                    perfil : response.perfis[0]
+                };
+                this.storage.setRole(role);
+        });
     }
 
     logout(){
         this.storage.setLocalUser(null);
-        //this.storage.setRole(null);
+        this.storage.setRole(null);
     }
 
 
