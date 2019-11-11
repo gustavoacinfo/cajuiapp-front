@@ -1,3 +1,6 @@
+import { StorageService } from './../../../services/storage.service';
+import { UsuarioService } from './../../../services/domain/usuario.service';
+import { UsuarioDTO } from './../../../models/usuario.dto';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { Component } from '@angular/core';
@@ -30,36 +33,50 @@ export class AvaliacaoPage {
 
   quantAvaliacoes : number;
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public notaavaliacaoService : NotaAvaliacaoService,
     public avaliacaoService : AvaliacaoService,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public usuarioService : UsuarioService,
+    public storage : StorageService) {
 
       this.oferta = navParams.data.obj;
   }
 
   ionViewDidLoad() {
 
-    this.notaavaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      this.quantAvaliacoes = this.items.length;
-    },
-    error => {});
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
 
-    this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.oferta.professorId.id)
-    .subscribe(response => {
-      this.pontosDistribuidos = response;
-    },
-    error => {});
+        this.notaavaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id, this.usuario.id)
+        .subscribe(response => {
+          this.items = response;
+          this.quantAvaliacoes = this.items.length;
+        },
+        error => {});
 
-    this.notaavaliacaoService.pontosObtidos(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.pontosObtidos = response;
-    },
-    error => {});
+        this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.oferta.professorId.id)
+        .subscribe(response => {
+          this.pontosDistribuidos = response;
+        },
+        error => {});
+
+        this.notaavaliacaoService.pontosObtidos(this.oferta.ofertaId.id, this.usuario.id)
+        .subscribe(response => {
+          this.pontosObtidos = response;
+        },
+        error => {});
+
+      },
+      error => {});
+
+
+    
 
   }
 

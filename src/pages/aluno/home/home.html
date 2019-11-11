@@ -15,7 +15,7 @@
     <ion-navbar color="light" class="body">
         <h5><ion-icon name="paper"></ion-icon> Disciplinas em curso </h5>
         <hr>
-        <h6 *ngIf="quantDisciplinas == 0" > <ion-icon name="alert"></ion-icon> Ainda não foram lançadas frequências!</h6>
+        <h6 *ngIf="quantDisciplinas == 0" > <ion-icon name="alert"></ion-icon> Não está cadastrado em nenhuma disciplina!</h6>
         <ion-list>
             <button ion-item *ngFor="let item of items" detail="true" (click)="informacoesDisciplina(item)">
               <h4  style="font-size: 17px;"> <b> {{item.ofertaId.curriculoId.disciplinaId.nome}} </b> </h4>

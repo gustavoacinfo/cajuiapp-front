@@ -11,20 +11,16 @@ export class NotaAvaliacaoService{
 
     }
 
-    avaliacoesPorOferta(id : String) : Observable <NotaAvaliacaoDTO[]> {
-        return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/oferta/${id}`)
+    avaliacoesPorOferta(id : String, aid : String) : Observable <NotaAvaliacaoDTO[]> {
+        return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/oferta/${id}/aluno/${aid}`)
     }
 
     notasPorAvaliacao(id : String) : Observable <NotaAvaliacaoDTO[]> {
         return this.http.get<NotaAvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/notaavaliacao/avaliacao/${id}`)
     }
 
-    pontosDistribuidos(id : String) : Observable <number> {
-        return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/distribuidos/${id}`)
-    }
-
-    pontosObtidos(id : String) : Observable <number> {
-        return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/obtidos/${id}`)
+    pontosObtidos(id : String, aid : String) : Observable <number> {
+        return this.http.get<number>(`${API_CONFIG.baseUrl}/notaavaliacao/obtidos/${id}/aluno/${aid}`)
     }
 
     insert(obj : Array<Object>){

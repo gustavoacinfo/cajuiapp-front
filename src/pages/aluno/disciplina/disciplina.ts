@@ -106,7 +106,7 @@ export class DisciplinaPage {
     },
     error => {});
 
-    this.notaavaliacaoService.pontosObtidos(this.items.ofertaId.id)
+    this.notaavaliacaoService.pontosObtidos(this.items.ofertaId.id, this.usuario.id)
     .subscribe(response => {
       if(response == null){
         this.pontosObtidos = 0;

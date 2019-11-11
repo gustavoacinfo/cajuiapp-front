@@ -38,10 +38,6 @@ export class LoginPage {
     this.auth.refreshToken()
     .subscribe(response => {
       this.auth.successfulllogin(response.headers.get('Authorization'));
-    }, 
-    error => {});
-
-    if(localStorage.getItem('localUser') != null){
 
       this.usuarioService.findByUsername(this.storage.getLocalUser().username)
     .subscribe(response => {
@@ -57,7 +53,8 @@ export class LoginPage {
       },
       error => {});
 
-    }
+    }, 
+    error => {});
    
   }
 
@@ -65,22 +62,25 @@ export class LoginPage {
     this.auth.authentication(this.creds)
       .subscribe(response => {
         this.auth.successfulllogin(response.headers.get('Authorization'));
+
+        this.usuarioService.findByUsername(this.creds.username)
+        .subscribe(response => {
+          let role : Role = {
+              perfil : response.perfis[0]
+          };
+          this.storage.setRole(role);
+          if(role.perfil == 'ALUNO'){
+            this.navCtrl.setRoot('HomePage');
+          }else if(role.perfil == 'PROFESSOR'){
+            this.navCtrl.setRoot('HomeProfessorPage');
+          }
+          },
+          error => {});
       }, 
       error => {});
 
-    this.usuarioService.findByUsername(this.creds.username)
-    .subscribe(response => {
-      let role : Role = {
-          perfil : response.perfis[0]
-      };
-      this.storage.setRole(role);
-      if(role.perfil == 'ALUNO'){
-        this.navCtrl.setRoot('HomePage');
-      }else if(role.perfil == 'PROFESSOR'){
-        this.navCtrl.setRoot('HomeProfessorPage');
-      }
-      },
-      error => {});
+
+    
   }
 
 }
