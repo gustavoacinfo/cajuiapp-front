@@ -49,7 +49,7 @@ export class AvaliacaoPage {
     },
     error => {});
 
-    this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.oferta.professorId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },

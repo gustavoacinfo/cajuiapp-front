@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../../services/domain/usuario.service';
 import { MatriculaDTO } from './../../../models/matricula.dto';
 import { LogoutPage } from './../../login/login';
 import { MatriculaService } from './../../../services/domain/matricula.service';
@@ -10,6 +11,8 @@ import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
+import { StorageService } from '../../../services/storage.service';
+import { UsuarioDTO } from '../../../models/usuario.dto';
 
 /**
  * Generated class for the AvaliacaoProfessorPage page.
@@ -35,6 +38,8 @@ export class AvaliacaoProfessorPage {
 
   pontosDistribuidos : number;
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -42,7 +47,9 @@ export class AvaliacaoProfessorPage {
     public notaAvaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController,
     public alertCtrl : AlertController,
-    public loadingCtrl : LoadingController) {
+    public loadingCtrl : LoadingController,
+    public storage : StorageService,
+    public usuarioService : UsuarioService) {
 
       this.oferta = navParams.data.obj;
       
@@ -50,18 +57,27 @@ export class AvaliacaoProfessorPage {
 
   ionViewDidLoad() {
 
-    this.avaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      this.quantAvaliacoes = this.items.length;
-    },
-    error => {});
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
 
-    this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.pontosDistribuidos = response;
-    },
-    error => {});
+        this.avaliacaoService.avaliacoesPorOferta(this.oferta.ofertaId.id, this.usuario.id)
+        .subscribe(response => {
+          this.items = response;
+          this.quantAvaliacoes = this.items.length;
+        },
+        error => {});
+
+        this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.usuario.id)
+        .subscribe(response => {
+          this.pontosDistribuidos = response;
+        },
+        error => {});
+
+      },
+      error => {});
+
+    
 
   }
 
@@ -392,6 +408,8 @@ export class AdicionarAvaliacaoPage {
 
   alunos : MatriculaDTO[];
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -399,7 +417,9 @@ export class AdicionarAvaliacaoPage {
     public loadingCtrl : LoadingController,
     public avaliacaoService : AvaliacaoService,
     public alertCtrl : AlertController,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public storage : StorageService,
+    public usuarioService : UsuarioService) {
 
       this.oferta = navParams.data.id;
       
@@ -407,11 +427,21 @@ export class AdicionarAvaliacaoPage {
 
   ionViewDidLoad() {
 
-    this.avaliacaoService.pontosDistribuidos(this.oferta)
-    .subscribe(response => {
-      this.pontosDistribuidos = response;
-    },
-    error => {});
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+
+        this.avaliacaoService.pontosDistribuidos(this.oferta, this.usuario.id)
+        .subscribe(response => {
+          this.pontosDistribuidos = response;
+        },
+        error => {});
+
+      },
+      error => {});
+    
+
+    
   }
 
   salvarAvaliacao(){
@@ -474,6 +504,7 @@ export class EditarAvaliacaoPage {
 
   pontosDistribuidos : number;
 
+  usuario : UsuarioDTO;
 
   constructor(
     public navCtrl: NavController, 
@@ -482,7 +513,9 @@ export class EditarAvaliacaoPage {
     public loadingCtrl : LoadingController,
     public avaliacaoService : AvaliacaoService,
     public alertCtrl : AlertController,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public usuarioService : UsuarioService,
+    public storage : StorageService) {
 
       this.avaliacao = navParams.data.obj;
 
@@ -490,11 +523,19 @@ export class EditarAvaliacaoPage {
 
   ionViewDidLoad() {
 
-    this.avaliacaoService.pontosDistribuidos(this.avaliacao.ofertaId.id)
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
     .subscribe(response => {
-      this.pontosDistribuidos = response;
+      this.usuario = response;
+
+      this.avaliacaoService.pontosDistribuidos(this.avaliacao.ofertaId.id, this.usuario.id)
+      .subscribe(response => {
+        this.pontosDistribuidos = response;
+      },
+      error => {});
+
     },
     error => {});
+
     
   }
 

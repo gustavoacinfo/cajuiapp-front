@@ -1,3 +1,5 @@
+import { UsuarioDTO } from './../../../models/usuario.dto';
+import { UsuarioService } from './../../../services/domain/usuario.service';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { NotaAvaliacaoService } from '../../../services/domain/nota-avaliacao.service';
 import { FaltaService } from '../../../services/domain/falta.service';
@@ -46,6 +48,8 @@ export class DisciplinaPage {
 
   pontosObtidos : number;
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -56,14 +60,19 @@ export class DisciplinaPage {
     public notaavaliacaoService : NotaAvaliacaoService,
     public modalCtrl : ModalController,
     public storage : StorageService,
-    public alertCtrl : AlertController) {
+    public alertCtrl : AlertController,
+    public usuarioService : UsuarioService) {
 
     this.items = navParams.data.obj;
   }
 
   ionViewDidLoad(){
 
-    this.registroService.registrosPorOferta(this.items.ofertaId.id)
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+
+        this.registroService.registrosPorOferta(this.items.ofertaId.id)
     .subscribe(response => {
       this.registros = response;
       this.quantRegistros = this.registros.length;
@@ -76,9 +85,7 @@ export class DisciplinaPage {
       this.quantFrequencia = this.faltas.length;
       let faltas = 0;
       for(let i=0; i<this.quantFrequencia; i++){
-        console.log('entrou no For');
         if(this.faltas[i].presenca === false){
-          console.log('entrou no If');
           faltas = faltas + 1;
         }
       }
@@ -86,14 +93,14 @@ export class DisciplinaPage {
     },
     error => {});
 
-    this.avaliacaoService.avaliacoesPorOferta(this.items.ofertaId.id)
+    this.avaliacaoService.avaliacoesPorOferta(this.items.ofertaId.id, this.items.professorId.id)
     .subscribe(response => {
       this.avaliacoes = response;
       this.quantAvaliacoes = this.avaliacoes.length;
     },
     error => {});
 
-    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id, this.items.professorId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },
@@ -109,6 +116,11 @@ export class DisciplinaPage {
       
     },
     error => {});
+
+      },
+      error => {});
+
+    
   }
 
   home(){

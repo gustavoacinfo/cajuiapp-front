@@ -50,7 +50,7 @@ export class DisciplinaProfessorPage {
     },
     error => {});
 
-    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id)
+    this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id, this.items.professorId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
     },

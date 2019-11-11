@@ -11,12 +11,12 @@ export class AvaliacaoService{
 
     }
 
-    avaliacoesPorOferta(id : String) : Observable <AvaliacaoDTO[]> {
-        return this.http.get<AvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/avaliacao/oferta/${id}`)
+    avaliacoesPorOferta(id : String, pId : String) : Observable <AvaliacaoDTO[]> {
+        return this.http.get<AvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/avaliacao/oferta/${id}/prof/${pId}`)
     }
 
-    pontosDistribuidos(id : String) : Observable <number> {
-        return this.http.get<number>(`${API_CONFIG.baseUrl}/avaliacao/distribuidos/${id}`)
+    pontosDistribuidos(id : String, pId : String) : Observable <number> {
+        return this.http.get<number>(`${API_CONFIG.baseUrl}/avaliacao/distribuidos/${id}/prof/${pId}`)
     }
 
     insert(obj : Object){
