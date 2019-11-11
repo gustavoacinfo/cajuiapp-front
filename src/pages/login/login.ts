@@ -50,9 +50,9 @@ export class LoginPage {
       };
       this.storage.setRole(role);
       if(role.perfil == 'ALUNO'){
-        this.navCtrl.push('HomePage');
+        this.navCtrl.setRoot('HomePage');
       }else if(role.perfil == 'PROFESSOR'){
-        this.navCtrl.push('HomeProfessorPage');
+        this.navCtrl.setRoot('HomeProfessorPage');
       }
       },
       error => {});
@@ -75,9 +75,9 @@ export class LoginPage {
       };
       this.storage.setRole(role);
       if(role.perfil == 'ALUNO'){
-        this.navCtrl.push('HomePage');
+        this.navCtrl.setRoot('HomePage');
       }else if(role.perfil == 'PROFESSOR'){
-        this.navCtrl.push('HomeProfessorPage');
+        this.navCtrl.setRoot('HomeProfessorPage');
       }
       },
       error => {});

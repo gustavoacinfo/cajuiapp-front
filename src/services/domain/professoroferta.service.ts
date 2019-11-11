@@ -11,16 +11,16 @@ export class ProfessorOfertaService{
 
     }
 
-    ofertasAluno() : Observable <ProfessorOfertaDTO[]>{
-        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/aluno`)
+    ofertasAluno(id : string) : Observable <ProfessorOfertaDTO[]>{
+        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/aluno/${id}`)
     }
 
     findById(id : number) : Observable <ProfessorOfertaDTO> {
         return this.http.get<ProfessorOfertaDTO>(`${API_CONFIG.baseUrl}/professoroferta/${id}`)
     }
 
-    ofertasProfessor() : Observable <ProfessorOfertaDTO[]>{
-        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/professor`)
+    ofertasProfessor(id : string) : Observable <ProfessorOfertaDTO[]>{
+        return this.http.get<ProfessorOfertaDTO[]>(`${API_CONFIG.baseUrl}/professoroferta/professor/${id}`)
     }
 
 

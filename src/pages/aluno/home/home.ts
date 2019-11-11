@@ -1,9 +1,11 @@
+import { UsuarioService } from './../../../services/domain/usuario.service';
 import { Component } from '@angular/core';
 import { NavController, IonicPage, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { LogoutPage } from '../../login/login';
 import { StorageService } from '../../../services/storage.service';
+import { UsuarioDTO } from '../../../models/usuario.dto';
 
 @IonicPage()
 @Component({
@@ -16,24 +18,37 @@ export class HomePage {
 
   quantDisciplinas : number;
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public NavParams: NavParams,
     public professorofertaService: ProfessorOfertaService,
     public modalCtrl: ModalController,
     public storage : StorageService,
-    public alertCtrl : AlertController ) {
+    public alertCtrl : AlertController,
+    public usuarioService : UsuarioService ) {
+
 
   }
 
   ionViewDidLoad(){
     if(this.storage.getRole().perfil == 'ALUNO'){
-      this.professorofertaService.ofertasAluno()
+
+      this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
-        this.items = response;
-        this.quantDisciplinas = this.items.length;
+        this.usuario = response;
+
+        this.professorofertaService.ofertasAluno(this.usuario.id)
+        .subscribe(response => {
+          this.items = response;
+          this.quantDisciplinas = this.items.length;
+        },
+        error => {});
       },
       error => {});
+
+      
     }else{
       let alert = this.alertCtrl.create({
         title: 'Erro!',

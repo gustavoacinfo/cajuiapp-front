@@ -4,12 +4,13 @@ import { FaltaService } from '../../../services/domain/falta.service';
 import { RegistroService } from '../../../services/domain/registro.service';
 import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { RegistroDTO } from '../../../models/registro.dto';
 import { FaltaDTO } from '../../../models/falta.dto';
 import { LogoutPage } from '../../login/login';
 import { AvaliacaoDTO } from '../../../models/avaliacao.dto';
+import { StorageService } from '../../../services/storage.service';
 
 /**
  * Generated class for the DisciplinaPage page.
@@ -53,7 +54,9 @@ export class DisciplinaPage {
     public avaliacaoService : AvaliacaoService,
     public faltaService : FaltaService,
     public notaavaliacaoService : NotaAvaliacaoService,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public storage : StorageService,
+    public alertCtrl : AlertController) {
 
     this.items = navParams.data.obj;
   }
@@ -106,7 +109,6 @@ export class DisciplinaPage {
       
     },
     error => {});
-
   }
 
   home(){
