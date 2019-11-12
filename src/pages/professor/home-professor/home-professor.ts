@@ -39,6 +39,12 @@ export class HomeProfessorPage {
   }
 
   ionViewDidLoad() {
+
+    if(localStorage.getItem('localUser') == null){
+      this.navCtrl.setRoot('LoginPage');
+
+    }else
+
     if(this.storage.getRole().perfil == 'PROFESSOR'){
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)

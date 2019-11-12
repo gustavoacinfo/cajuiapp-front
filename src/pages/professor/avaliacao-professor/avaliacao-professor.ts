@@ -191,6 +191,8 @@ export class LancarNotasPage {
 
   quantNotas : number;
 
+  usuario : UsuarioDTO;
+
 
   constructor(
     public navCtrl: NavController, 
@@ -201,7 +203,9 @@ export class LancarNotasPage {
     public loadingCtrl : LoadingController,
     public alertCtrl : AlertController,
     private fb: FormBuilder,
-    private fbedit : FormBuilder
+    private fbedit : FormBuilder,
+    public usuarioService : UsuarioService,
+    public storage : StorageService
     ) {
 
       
@@ -212,6 +216,13 @@ export class LancarNotasPage {
   }
 
   ngOnInit() {
+
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+    
+      },
+      error => {});
 
     this.avaliacao = this.navParams.data.obj;
 
@@ -275,7 +286,7 @@ export class LancarNotasPage {
       createdAt: new FormControl(createdat),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
       createdBy: new FormControl(createdby),
-      updatedBy: new FormControl(1) //usuario logado
+      updatedBy: new FormControl(this.usuario.id) 
       
     }));
   }
@@ -293,8 +304,8 @@ export class LancarNotasPage {
       nota: new FormControl(null, { validators: [Validators.required, Validators.min(0), Validators.max(this.avaliacao.maxPontos)]}),
       createdAt: new FormControl(JSON.parse(timestamp.toString())),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
-      createdBy: new FormControl(1), //usuario logado
-      updatedBy: new FormControl(1) // usuario logado
+      createdBy: new FormControl(this.usuario.id),
+      updatedBy: new FormControl(this.usuario.id) 
       
     }));
   }
@@ -449,8 +460,8 @@ export class AdicionarAvaliacaoPage {
     let timestamp = Math.floor(Date.now() / 1000)
     this.avaliacao.createdAt = JSON.parse(timestamp.toString());
     this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
-    this.avaliacao.createdBy = JSON.parse('1'); //usuario logado
-    this.avaliacao.updatedBy = JSON.parse('1'); //usuario logado
+    this.avaliacao.createdBy = JSON.parse(this.usuario.id); 
+    this.avaliacao.updatedBy = JSON.parse(this.usuario.id); 
     const loader = this.loadingCtrl.create({
       content: "Cadastrando avaliacão..."
     });
@@ -476,7 +487,7 @@ export class AdicionarAvaliacaoPage {
         {
           text: 'Ok',
           handler: () => {
-            this.home();
+            this.navCtrl.pop();
           }
         }
       ]
@@ -546,7 +557,7 @@ export class EditarAvaliacaoPage {
     loader.present();
     let timestamp = Math.floor(Date.now() / 1000)
     this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
-    this.avaliacao.updatedBy = JSON.parse('1'); //usuario logado
+    this.avaliacao.updatedBy = JSON.parse(this.usuario.id); 
     this.avaliacaoService.changeDados(this.avaliacao)
       .subscribe(response => {
         loader.dismiss();

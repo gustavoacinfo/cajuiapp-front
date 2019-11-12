@@ -33,6 +33,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                 case 403: 
                     this.handle403();
                     break;
+                case 500:
+                    this.handle500();
+                    break;
                 default:
                     this.handleDefaultError(errorObj);
             }
@@ -49,6 +52,20 @@ export class ErrorInterceptor implements HttpInterceptor {
         let alert = this.alertCtrl.create({
             title: "Erro: Falha de Autenticação",
             message: "Email ou senha incorretos",
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text: 'ok'
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    handle500() {
+        let alert = this.alertCtrl.create({
+            title: "Erro!",
+            message: "Já existem registros com esses mesmos dados!",
             enableBackdropDismiss: false,
             buttons: [
                 {

@@ -1,3 +1,5 @@
+import { StorageService } from './../../../services/storage.service';
+import { UsuarioDTO } from './../../../models/usuario.dto';
 import { ProfessorOfertaService } from './../../../services/domain/professoroferta.service';
 import { MatriculaService } from './../../../services/domain/matricula.service';
 import { RegistroDTO } from './../../../models/registro.dto';
@@ -11,6 +13,7 @@ import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { FaltaService } from '../../../services/domain/falta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { FaltaDTO } from '../../../models/falta.dto';
+import { UsuarioService } from '../../../services/domain/usuario.service';
 
 /**
  * Generated class for the RegistroProfessorPage page.
@@ -42,6 +45,15 @@ export class RegistroProfessorPage {
 
     this.oferta = this.navParams.data.obj;
 
+  }
+
+  ionViewWillEnter(){
+    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
+    .subscribe(response => {
+      this.items = response;
+      this.quantRegistros = this.items.length;
+    },
+    error => {});
   }
 
   ionViewDidLoad() {
@@ -98,6 +110,8 @@ export class EditarRegistroPage {
 
   horaInicial : string;
 
+  usuario : UsuarioDTO;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -106,13 +120,21 @@ export class EditarRegistroPage {
     public professorofertaService : ProfessorOfertaService,
     public matriculaService : MatriculaService,
     public alertCtrl : AlertController,
-    public loadingCtrl : LoadingController) {
+    public loadingCtrl : LoadingController,
+    public usuarioService : UsuarioService,
+    public storage : StorageService) {
       
       this.registro = navParams.data.obj;
 
   }
 
   ionViewDidLoad() {
+
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+      },
+      error => {});
 
     this.professorofertaService.findById(parseInt(this.registro.professorOfertaId.id))
     .subscribe(response => {
@@ -131,8 +153,6 @@ export class EditarRegistroPage {
     error => {});
 
     this.registro.data = (new Date(this.registro.data)).toISOString();
-
-    console.log(this.registros);
   }
 
   editarRegistro(quantHorarios : number, horaInicial : string){
@@ -142,7 +162,7 @@ export class EditarRegistroPage {
       this.registro.professorOfertaId.id = this.profOferta.id;
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.updatedAt = JSON.parse(timestamp.toString());
-      this.registro.updatedBy = JSON.parse('1');
+      this.registro.updatedBy = JSON.parse(this.usuario.id);
       this.registro.horaInicio = horaInicial;
       var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
       this.registro.horaFim = horaFim;
@@ -231,6 +251,10 @@ export class AdicionarRegistroPage {
 
   profOferta : ProfessorOfertaDTO;
 
+  usuario : UsuarioDTO;
+
+  registrosExistentes : RegistroDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -238,7 +262,9 @@ export class AdicionarRegistroPage {
     public registroService : RegistroService,
     public loadingCtrl : LoadingController,
     public alertCtrl : AlertController,
-    public professorofertaService : ProfessorOfertaService
+    public professorofertaService : ProfessorOfertaService,
+    public usuarioService : UsuarioService,
+    public storage : StorageService
     ) {
 
     this.professorOfertaId = this.navParams.data.id;
@@ -247,6 +273,17 @@ export class AdicionarRegistroPage {
   }
 
   ionViewDidLoad() {
+
+    this.horaInicial = moment().format('HH:mm');
+
+    this.registro.data = new Date().toISOString();
+
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+
+      },
+      error => {});
 
     this.professorofertaService.findById(parseInt(this.professorOfertaId))
     .subscribe(response => {
@@ -267,8 +304,8 @@ export class AdicionarRegistroPage {
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.createdAt = JSON.parse(timestamp.toString());
       this.registro.updatedAt = JSON.parse(timestamp.toString());
-      this.registro.createdBy = JSON.parse('1');
-      this.registro.updatedBy = JSON.parse('1');
+      this.registro.createdBy = JSON.parse(this.usuario.id);
+      this.registro.updatedBy = JSON.parse(this.usuario.id);
       this.registro.horaInicio = horaInicial;
       var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
       this.registro.horaFim = horaFim;
@@ -280,7 +317,10 @@ export class AdicionarRegistroPage {
       loader.present();
         this.registroService.insert(this.registro)
           .subscribe(response => {
-             loader.dismiss();
+            loader.dismiss();
+             if(i == quantHorarios-1){
+                this.showInsertOk();
+             }
           },
          error => {
            loader.dismiss();
@@ -290,10 +330,6 @@ export class AdicionarRegistroPage {
       horaInicial = horaFim;
 
     }
-    
-    this.showInsertOk();
-
-    
 
   }
 
@@ -308,6 +344,20 @@ export class AdicionarRegistroPage {
           handler: () => {
             this.navCtrl.pop();
           }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertErro(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro!',
+      message: 'Já existe registro de aula nessa data e horário.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
         }
       ]
     });
@@ -349,6 +399,7 @@ export class LancarFrequenciaPage {
 
   quantFrequencias : number;
 
+  usuario : UsuarioDTO;
 
   constructor(
     public navCtrl: NavController, 
@@ -359,7 +410,9 @@ export class LancarFrequenciaPage {
     public matriculaService : MatriculaService,
     public loadingCtrl : LoadingController,
     public alertCtrl : AlertController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public usuarioService : UsuarioService,
+    public storage : StorageService
     ) {
 
       this.registro = navParams.data.obj;
@@ -367,6 +420,14 @@ export class LancarFrequenciaPage {
   }
 
   ngOnInit() {
+
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+      },
+      error => {});
+
+
 
     this.form = new FormGroup({
       frequencias: new FormArray([]),
@@ -425,8 +486,8 @@ export class LancarFrequenciaPage {
       presenca: new FormControl(true),
       createdAt: new FormControl(JSON.parse(timestamp.toString())),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
-      createdBy: new FormControl(1),
-      updatedBy: new FormControl(1)
+      createdBy: new FormControl(this.usuario.id),
+      updatedBy: new FormControl(this.usuario.id)
     }));
   }
 
@@ -445,7 +506,7 @@ export class LancarFrequenciaPage {
       createdAt: new FormControl(createdat),
       updatedAt: new FormControl(JSON.parse(timestamp.toString())),
       createdBy: new FormControl(createdby),
-      updatedBy: new FormControl(1) //usuario logado
+      updatedBy: new FormControl(this.usuario.id) 
     }));
   }
 
