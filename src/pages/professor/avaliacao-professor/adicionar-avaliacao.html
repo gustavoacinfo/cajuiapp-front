@@ -30,7 +30,6 @@
                     <ion-input [(ngModel)]="avaliacao.maxPontos" name="maxpontos" required #maxpontos="ngModel" type="number" [max]="100 - pontosDistribuidos"></ion-input>
                 </ion-item>
                 <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" (click)="salvarAvaliacao()" >Cadastrar</button>
-                <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" >Cadastrar e lançar nota</button>
             </form>
         </ion-navbar>
       </ion-content>

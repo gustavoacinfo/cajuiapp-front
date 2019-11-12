@@ -102,17 +102,23 @@ export class DisciplinaPage {
 
     this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id, this.items.professorId.id)
     .subscribe(response => {
-      this.pontosDistribuidos = response;
+      if(response[0] === null){
+        this.pontosDistribuidos = 0;
+      }else{
+        this.pontosDistribuidos = response;
+      }
+      console.log(this.pontosDistribuidos);
     },
     error => {});
 
     this.notaavaliacaoService.pontosObtidos(this.items.ofertaId.id, this.usuario.id)
     .subscribe(response => {
-      if(response == null){
+      if(response[0] === null){
         this.pontosObtidos = 0;
       }else{
         this.pontosObtidos = response;
       }
+      console.log(this.pontosObtidos);
       
     },
     error => {});

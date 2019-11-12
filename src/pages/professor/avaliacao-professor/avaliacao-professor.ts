@@ -13,6 +13,7 @@ import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@ang
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 import { StorageService } from '../../../services/storage.service';
 import { UsuarioDTO } from '../../../models/usuario.dto';
+import moment from 'moment';
 
 /**
  * Generated class for the AvaliacaoProfessorPage page.
@@ -71,13 +72,16 @@ export class AvaliacaoProfessorPage {
         this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.usuario.id)
         .subscribe(response => {
           this.pontosDistribuidos = response;
+          if(response[0] === null){
+            this.pontosDistribuidos = 0;
+          }else{
+            this.pontosDistribuidos = response;
+          }
         },
         error => {});
 
       },
       error => {});
-
-    
 
   }
 
@@ -438,6 +442,8 @@ export class AdicionarAvaliacaoPage {
 
   ionViewDidLoad() {
 
+    this.avaliacao.dataAvaliacao = moment().format("YYYY-MM-DD");
+
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
         this.usuario = response;
@@ -450,12 +456,14 @@ export class AdicionarAvaliacaoPage {
 
       },
       error => {});
-    
 
-    
   }
 
   salvarAvaliacao(){
+    if(parseInt(this.avaliacao.maxPontos) > (100 - this.pontosDistribuidos)){
+      this.showInsertNotaMaior();
+    }else{
+
     this.avaliacao.ofertaId.id = this.oferta;
     let timestamp = Math.floor(Date.now() / 1000)
     this.avaliacao.createdAt = JSON.parse(timestamp.toString());
@@ -474,6 +482,7 @@ export class AdicionarAvaliacaoPage {
       error => {
         loader.dismiss();
       });
+    }
 
 
   }
@@ -489,6 +498,20 @@ export class AdicionarAvaliacaoPage {
           handler: () => {
             this.navCtrl.pop();
           }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertNotaMaior(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro! Valor de avaliação inválido!',
+      message: 'Não é possível salvar a avaliação com nota máxima acima da quantidade de pontos restantes.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
         }
       ]
     });

@@ -9,6 +9,7 @@ import { IonicPage, NavController, NavParams, ModalController, ViewController, L
 import { MatriculaDTO } from '../../../models/matricula.dto';
 import { LogoutPage } from '../../login/login';
 import * as moment from 'moment';
+import 'moment/locale/pt-br';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { FaltaService } from '../../../services/domain/falta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
@@ -276,7 +277,11 @@ export class AdicionarRegistroPage {
 
     this.horaInicial = moment().format('HH:mm');
 
-    this.registro.data = new Date().toISOString();
+    this.registro.data = moment().format("YYYY-MM-DD");
+
+    this.quantHorarios = 1;
+
+    console.log(this.registro.data);
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {

@@ -53,6 +53,11 @@ export class DisciplinaProfessorPage {
     this.avaliacaoService.pontosDistribuidos(this.items.ofertaId.id, this.items.professorId.id)
     .subscribe(response => {
       this.pontosDistribuidos = response;
+      if(response[0] === null){
+        this.pontosDistribuidos = 0;
+      }else{
+        this.pontosDistribuidos = response;
+      }
     },
     error => {});
   }
@@ -63,6 +68,10 @@ export class DisciplinaProfessorPage {
 
   avaliacoesDisciplina(obj : Object){;
     this.navCtrl.push('AvaliacaoProfessorPage', {obj});
+  }
+
+  notasDisciplina(obj : Object){
+    this.navCtrl.push('NotasPage', {obj});
   }
 
   home(){

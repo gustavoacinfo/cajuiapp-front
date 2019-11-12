@@ -62,13 +62,22 @@ export class AvaliacaoPage {
 
         this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.oferta.professorId.id)
         .subscribe(response => {
-          this.pontosDistribuidos = response;
+          if(response[0] === null){
+            this.pontosDistribuidos = 0;
+          }else{
+            this.pontosDistribuidos = response;
+          }
+          
         },
         error => {});
 
         this.notaavaliacaoService.pontosObtidos(this.oferta.ofertaId.id, this.usuario.id)
         .subscribe(response => {
-          this.pontosObtidos = response;
+          if(response[0] === null){
+            this.pontosObtidos = 0;
+          }else{
+            this.pontosObtidos = response;
+          }
         },
         error => {});
 
