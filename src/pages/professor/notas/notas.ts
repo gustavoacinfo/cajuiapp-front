@@ -1,3 +1,4 @@
+import { RecuperacaoService } from './../../../services/domain/recuperacao.service';
 import { FaltaDTO } from './../../../models/falta.dto';
 import { FaltaService } from './../../../services/domain/falta.service';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
@@ -9,7 +10,7 @@ import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.
 import { MatriculaService } from './../../../services/domain/matricula.service';
 import { ProfessorOfertaDTO } from './../../../models/professoroferta.dto';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, IonicPage, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, IonicPage, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { LogoutPage } from '../../login/login';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
@@ -128,6 +129,17 @@ export class NotaAlunoPage {
 
   freqMinima : number;
 
+  recuperacao = {
+    matriculaId : {
+      id: ""
+    },
+    nota:"",
+    createdAt:"",
+    updatedAt:"",
+    createdBy:"",
+    updatedBy:""
+  }
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -136,7 +148,10 @@ export class NotaAlunoPage {
     public avaliacaoService : AvaliacaoService,
     public usuarioService : UsuarioService,
     public storage : StorageService,
-    public faltaService : FaltaService) {
+    public faltaService : FaltaService,
+    public loadingCtrl : LoadingController,
+    public alertCtrl : AlertController,
+    public recuperacaoService : RecuperacaoService ) {
     
       this.aluno = navParams.data.obj;
 
@@ -207,12 +222,70 @@ export class NotaAlunoPage {
           }
 
         },
-        error => {});
-
-
-        
+        error => {});  
 
   }
+
+  salvarRecuperacao(){
+    if(parseInt(this.recuperacao.nota) < 0 || parseInt(this.recuperacao.nota) > 100 ){
+      this.showInsertNotaInvalida();
+    }else{
+
+    this.recuperacao.matriculaId.id = this.aluno.id;
+    let timestamp = Math.floor(Date.now() / 1000)
+    this.recuperacao.createdAt = JSON.parse(timestamp.toString());
+    this.recuperacao.updatedAt = JSON.parse(timestamp.toString());
+    this.recuperacao.createdBy = JSON.parse(this.usuario.id); 
+    this.recuperacao.updatedBy = JSON.parse(this.usuario.id); 
+    const loader = this.loadingCtrl.create({
+      content: "Cadastrando nota da recuperacao..."
+    });
+    loader.present();
+     this.recuperacaoService.insert(this.recuperacao)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk();
+       },
+      error => {
+        loader.dismiss();
+      });
+    }
+
+
+  }
+
+  showInsertOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertNotaInvalida(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro! Nota de recuperação inválida!',
+      message: 'Nota da recuperação deve ser entre 0 e 100.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+
 
   home(){
     this.navCtrl.push('HomeProfessorPage');

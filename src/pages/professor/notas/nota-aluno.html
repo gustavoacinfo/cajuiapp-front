@@ -74,7 +74,7 @@
                 </ion-col>
               </ion-row>
               <ng-container *ngIf="pontosDistribuidos == 100 && situacao == 2">
-                <form>
+                <form #recForm="ngForm">
                 <ion-row>
                     <ion-col col-2>
                   
@@ -83,7 +83,7 @@
                       <p><b>Nota Recuperação:</b></p>
                     </ion-col>
                     <ion-col col-3>
-                        <ion-input required style="height:40px; border:1px solid #333;" type="number"></ion-input>
+                        <ion-input [(ngModel)]="recuperacao.nota" name="nota" required #nota="ngModel" required style="height:40px; border:1px solid #333;" type="number"></ion-input>
                     </ion-col>
                   </ion-row>
                   <ion-row>
@@ -93,7 +93,7 @@
                     <ion-col col-7> 
                     </ion-col>
                     <ion-col col-3>
-                        <button ion-button small>SALVAR</button>
+                        <button [disabled]="!recForm.valid" ion-button small (click)="salvarRecuperacao()" color="secondary">SALVAR</button>
                     </ion-col>
                   </ion-row>
                   </form>
