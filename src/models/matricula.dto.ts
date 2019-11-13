@@ -8,10 +8,20 @@ export interface MatriculaDTO{
             semestre : string;
             dataInicio : string;
             dataFim : string;
-            frequenciaMinima : string;
-            notaMinima : string;
-            notaLiberaRecuperacao : string;
+            frequenciaMinima : number;
+            notaMinima : number;
+            notaLiberaRecuperacao : number;
             fechado : string;
+        }
+    };
+    curriculoId : {
+        id : string;
+        disciplinaId : {
+            id : string;
+            nome : string;
+            sigla : string;
+            horaAula : number;
+            equivalenciaMinutos : string;
         }
     };
     contratoId : {

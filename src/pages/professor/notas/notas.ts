@@ -1,3 +1,5 @@
+import { FaltaDTO } from './../../../models/falta.dto';
+import { FaltaService } from './../../../services/domain/falta.service';
 import { AvaliacaoService } from './../../../services/domain/avaliacao.service';
 import { UsuarioDTO } from './../../../models/usuario.dto';
 import { StorageService } from './../../../services/storage.service';
@@ -7,9 +9,9 @@ import { NotaAvaliacaoService } from './../../../services/domain/nota-avaliacao.
 import { MatriculaService } from './../../../services/domain/matricula.service';
 import { ProfessorOfertaDTO } from './../../../models/professoroferta.dto';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, ModalController, IonicPage, ViewController } from 'ionic-angular';
 import { LogoutPage } from '../../login/login';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
 
 /**
  * Generated class for the NotasPage page.
@@ -31,11 +33,7 @@ export class NotasPage {
 
   quantAlunos : number;
 
-  form: FormGroup;
-
   usuario : UsuarioDTO;
-
-  pontosObtidos : number;
 
   pontosDistribuidos : number;
 
@@ -44,7 +42,6 @@ export class NotasPage {
     public navParams: NavParams,
     public modalCtrl : ModalController,
     public matriculaService : MatriculaService,
-    private fb: FormBuilder,
     public notaAvaliacaoService : NotaAvaliacaoService,
     public avaliacaoService : AvaliacaoService,
     public usuarioService : UsuarioService,
@@ -75,61 +72,21 @@ export class NotasPage {
       },
       error => {});
 
-    this.form = new FormGroup({
-      notas: new FormArray([]),
-    });
 
     this.matriculaService.matriculasPorOferta(this.profOferta.ofertaId.id)
     .subscribe(response => {
       this.matriculas = response;
       this.quantAlunos = this.matriculas.length;
-      for(let i=0; i <  this.matriculas.length; i++){
-        this.notaAvaliacaoService.pontosObtidos(this.profOferta.ofertaId.id, this.matriculas[i].contratoId.alunoId.id)
-        .subscribe(response => {
-          
-          if(response[0] === null){
-            this.pontosObtidos = 0;
-          }else{
-            this.pontosObtidos = response;
-          }
-
-          this.addCreds(this.matriculas[i].id, this.pontosObtidos)
-        },
-        error => {});
-
-        
-      }
     },
     error => {});
   }
 
-  get notas() {
-    return this.form.controls.notas as FormArray;
-  }
-
-  addCreds(matricula, pontosobtidos) {
-    let timestamp = Math.floor(Date.now() / 1000);
-    const arraynotas = this.form.controls.notas as FormArray;
-    arraynotas.push(this.fb.group({
-      matriculaId: new FormGroup({
-        id: new FormControl(matricula)
-      }),
-      pontosParcial: new FormControl(pontosobtidos),
-      nota: new FormControl({value: null, disabled: true}, { validators: [Validators.required, Validators.min(0), Validators.max(100)]}),
-      createdAt: new FormControl(JSON.parse(timestamp.toString())),
-      updatedAt: new FormControl(JSON.parse(timestamp.toString())),
-      createdBy: new FormControl(this.usuario.id),
-      updatedBy: new FormControl(this.usuario.id) 
-      
-    }));
-  }
-
-  salvarRecuperacao(){
-    console.log(this.form.value.notas);
+  verAluno(obj : Object){
+    let modal = this.modalCtrl.create(NotaAlunoPage, {obj});
+    modal.present();
   }
 
   
-
   home(){
     this.navCtrl.push('HomeProfessorPage');
   }
@@ -139,4 +96,131 @@ export class NotasPage {
     modal.present();
   }
 
+}
+
+@Component({
+  selector: 'page-notas',
+  templateUrl: 'nota-aluno.html',
+})
+export class NotaAlunoPage {
+
+  aluno : MatriculaDTO;
+
+  items : NotaAvaliacaoDTO[];
+
+  quantAvaliacoes : number;
+
+  usuario : UsuarioDTO;
+
+  pontosDistribuidos : number;
+
+  pontosObtidos : number;
+
+  situacao : number;
+
+  faltas : FaltaDTO[];
+
+  numFaltas : number;
+
+  quantFrequencia : number;
+
+  freqAluno : number;
+
+  freqMinima : number;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public viewCtrl : ViewController,
+    public notaavaliacaoService : NotaAvaliacaoService,
+    public avaliacaoService : AvaliacaoService,
+    public usuarioService : UsuarioService,
+    public storage : StorageService,
+    public faltaService : FaltaService) {
+    
+      this.aluno = navParams.data.obj;
+
+  }
+
+  ionViewDidLoad() {
+
+    this.usuarioService.findByUsername(this.storage.getLocalUser().username)
+      .subscribe(response => {
+        this.usuario = response;
+
+        this.avaliacaoService.pontosDistribuidos(this.aluno.ofertaId.id, this.usuario.id)
+        .subscribe(response => {
+          this.pontosDistribuidos = response;
+          if(response[0] === null){
+            this.pontosDistribuidos = 0;
+          }else{
+            this.pontosDistribuidos = response;
+          }
+        },
+        error => {});
+
+      },
+      error => {});
+
+
+    this.notaavaliacaoService.avaliacoesPorOferta(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+        .subscribe(response => {
+          this.items = response;
+          this.quantAvaliacoes = this.items.length;
+        },
+        error => {});
+
+        this.notaavaliacaoService.pontosObtidos(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+        .subscribe(response => {
+          if(response[0] === null){
+            this.pontosObtidos = 0;
+          }else{
+            this.pontosObtidos = response;
+          }
+        },
+        error => {});
+
+        this.faltaService.faltasPorOferta(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+        .subscribe(response => {
+          this.faltas = response;
+          this.quantFrequencia = this.faltas.length;
+          let faltas = 0;
+          for(let i=0; i<this.quantFrequencia; i++){
+            if(this.faltas[i].presenca === false){
+              faltas = faltas + 1;
+            }
+          }
+          this.numFaltas = faltas;
+
+          this.freqAluno = (this.numFaltas * 100 )/ this.aluno.curriculoId.disciplinaId.horaAula;
+          this.freqMinima = this.aluno.curriculoId.disciplinaId.horaAula - ((this.aluno.curriculoId.disciplinaId.horaAula * this.aluno.ofertaId.periodoLetivoId.frequenciaMinima) / 100);
+
+
+          if(this.freqAluno > this.freqMinima){
+            this.situacao = 0;
+          }else if(this.freqAluno <= this.freqMinima && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao){
+            this.situacao = 1;
+          }else if(this.pontosObtidos >= this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaMinima){
+            this.situacao = 2;
+          }else{
+            this.situacao = 3;
+          }
+
+        },
+        error => {});
+
+
+        
+
+  }
+
+  home(){
+    this.navCtrl.push('HomeProfessorPage');
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+ 
 }

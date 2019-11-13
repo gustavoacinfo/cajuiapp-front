@@ -21,6 +21,7 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { LancarNotasPage, AdicionarAvaliacaoPage, EditarAvaliacaoPage } from '../pages/professor/avaliacao-professor/avaliacao-professor';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
+import { NotaAlunoPage } from '../pages/professor/notas/notas';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { StorageService } from '../services/storage.service';
     AdicionarAvaliacaoPage,
     LogoutPage,
     LancarFrequenciaPage,
-    EditarAvaliacaoPage
+    EditarAvaliacaoPage,
+    NotaAlunoPage
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import { StorageService } from '../services/storage.service';
     AdicionarAvaliacaoPage,
     LogoutPage,
     LancarFrequenciaPage,
-    EditarAvaliacaoPage
+    EditarAvaliacaoPage,
+    NotaAlunoPage
   ],
   providers: [
     StatusBar,

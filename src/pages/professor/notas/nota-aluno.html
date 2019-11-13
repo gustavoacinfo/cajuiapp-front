@@ -1,0 +1,105 @@
+<ion-header>
+    <ion-navbar color="secondary">
+      <ion-title>
+        <img (click)="home()" src="assets/imgs/logo.png" alt="logo">
+      </ion-title>
+      <ion-buttons end>
+        <button (click)="dismiss()" ion-button tappable>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+      <h5>
+        <ion-icon name="person"></ion-icon> Aluno : {{aluno.contratoId.alunoId.nome}}
+      </h5>
+      <p style="text-align: right;">Total {{quantAvaliacoes}} itens</p>
+      <hr>
+      <ion-list>
+            <div>
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-1><b>#</b></ion-col>
+                  <ion-col col-7><b>Avaliação</b></ion-col>
+                  <ion-col col-2><b>Valor</b></ion-col>
+                  <ion-col col-2><b>Nota</b></ion-col>
+                </ion-row>
+                <hr>
+                <div *ngFor="let item of items; let i = index">
+                <ion-row>
+                  <ion-col col-1>
+                    {{i+1}}
+                  </ion-col>
+                  <ion-col col-7> 
+                    {{item.avaliacaoId.nome}}
+                  </ion-col>
+                  <ion-col col-2>
+                    {{item.avaliacaoId.maxPontos}}
+                  </ion-col>
+                  <ion-col col-2>
+                    {{item.nota}}
+                    </ion-col>
+                </ion-row>
+                <hr>
+              </div>
+              <ion-row>
+                <ion-col col-1>
+                  
+                </ion-col>
+                <ion-col col-7> 
+                  <b>Total:</b>
+                </ion-col>
+                <ion-col col-2>
+                  <b>{{pontosDistribuidos}}</b>
+                </ion-col>
+                <ion-col col-2>
+                  <b>{{pontosObtidos}}</b>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-3>
+                  
+                </ion-col>
+                <ion-col col-4> 
+                  <p><b>Situação:</b></p>
+                </ion-col>
+                <ion-col col-5>
+                  <p *ngIf="situacao == 0" style="color: red"> <b> REPROVADO POR FALTA</b> </p>
+                  <p *ngIf="situacao == 1" style="color: red"> <b> REPROVADO </b> </p>
+                  <p *ngIf="situacao == 2" style="color: orange"> <b> RECUPERAÇÃO </b> </p>
+                  <p *ngIf="situacao == 3" style="color: green"> <b> APROVADO </b> </p>
+                </ion-col>
+              </ion-row>
+              <ng-container *ngIf="pontosDistribuidos == 100 && situacao == 2">
+                <form>
+                <ion-row>
+                    <ion-col col-2>
+                  
+                    </ion-col>
+                    <ion-col col-7> 
+                      <p><b>Nota Recuperação:</b></p>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-input required style="height:40px; border:1px solid #333;" type="number"></ion-input>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col col-2>
+                  
+                    </ion-col>
+                    <ion-col col-7> 
+                    </ion-col>
+                    <ion-col col-3>
+                        <button ion-button small>SALVAR</button>
+                    </ion-col>
+                  </ion-row>
+                  </form>
+              </ng-container>
+              </ion-grid>
+            </div>
+      </ion-list>
+    </ion-navbar>
+  </ion-content>

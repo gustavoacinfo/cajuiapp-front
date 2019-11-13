@@ -20,39 +20,30 @@
     <p> Pontos distribuidos: {{pontosDistribuidos}}</p>
     <p style="text-align: right;">Total {{quantAlunos}} itens</p>
     <hr>
-    <form (ngSubmit)="salvarRecuperacao()" [formGroup]="form" #formRef="ngForm">
     <ion-list>
-      <ng-container *ngIf="form && notas.controls">
-          <div formArrayName="notas">
+          <div>
             <ion-grid>
               <ion-row>
                 <ion-col col-1><b>#</b></ion-col>
-                <ion-col col-5><b>Aluno</b></ion-col>
-                <ion-col col-3><b>Nota Parcial</b></ion-col>
-                <ion-col col-3><b>Recuperacão</b></ion-col>
+                <ion-col col-8><b>Aluno</b></ion-col>
+                <ion-col col-3><b>Ação</b></ion-col>
               </ion-row>
-              <div *ngFor="let group of notas.controls; let i = index" [formGroupName]="i">
+              <div *ngFor="let item of matriculas; let i = index">
               <ion-row>
                 <ion-col col-1>
                   {{i+1}}
                 </ion-col>
-                <ion-col col-5> 
-                  {{ matriculas[i].contratoId.alunoId.nome }}
+                <ion-col col-8> 
+                  {{ item.contratoId.alunoId.nome}}
                 </ion-col>
                 <ion-col col-3>
-                  <ion-input disabled style="height:40px; border:1px solid #333;" formControlName="pontosParcial" type="number"></ion-input>
-                </ion-col>
-                <ion-col col-3>
-                    <ion-input style="height:40px; border:1px solid #333;" formControlName="nota" type="number"></ion-input>
+                    <button (click)="verAluno(item)" ion-button small>NOTAS</button>
                 </ion-col>
               </ion-row>
               <hr>
             </div>
             </ion-grid>
           </div>
-      </ng-container>
     </ion-list>
-    <button [disabled]="!formRef.valid" ion-button full color="secondary">Salvar Recupeações</button>
-  </form>
   </ion-navbar>
 </ion-content>

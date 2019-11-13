@@ -107,7 +107,6 @@ export class DisciplinaPage {
       }else{
         this.pontosDistribuidos = response;
       }
-      console.log(this.pontosDistribuidos);
     },
     error => {});
 
@@ -118,7 +117,6 @@ export class DisciplinaPage {
       }else{
         this.pontosObtidos = response;
       }
-      console.log(this.pontosObtidos);
       
     },
     error => {});
