@@ -25,7 +25,7 @@
         <ion-item-sliding *ngFor="let item of items">
           <ion-item>
             <h6>Avaliação: <b>{{item.nome}}</b> </h6>
-            <h6>Data: <b>{{item.dataAvaliacao}} </b>  </h6>
+            <h6>Data: <b>{{item.dataAvaliacao.substring(8,10)}}/{{item.dataAvaliacao.substring(5,7)}}/{{item.dataAvaliacao.substring(0,4)}} </b>  </h6>
             <h6>Máximo de Pontos: <b>{{item.maxPontos}}</b></h6>
           </ion-item>
           <ion-item-options side="right">

@@ -256,6 +256,10 @@ export class AdicionarRegistroPage {
 
   registrosExistentes : RegistroDTO[];
 
+  items : RegistroDTO[];
+
+  quantRegistros : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -281,8 +285,6 @@ export class AdicionarRegistroPage {
 
     this.quantHorarios = 1;
 
-    console.log(this.registro.data);
-
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
         this.usuario = response;
@@ -294,15 +296,29 @@ export class AdicionarRegistroPage {
     .subscribe(response => {
       this.profOferta = response;
       this.equivaleHorario = this.profOferta.ofertaId.curriculoId.disciplinaId.equivalenciaMinutos;
-      
+     
+      this.registroService.registrosPorOferta(this.profOferta.ofertaId.id)
+    .subscribe(response => {
+      this.items = response;
+      this.quantRegistros = this.items.length;
     },
     error => {});
+
+    },
+    error => {});
+
+    
+
 
     
      
   }
 
   salvarRegistro(quantHorarios : number, horaInicial : string){
+
+    if(quantHorarios > (this.profOferta.ofertaId.curriculoId.disciplinaId.horaAula - this.quantRegistros)){
+      this.showInsertQuantRegistros();
+    }else{
 
     for(let i=0; i<quantHorarios; i++){
       this.registro.professorOfertaId.id = this.profOferta.id;
@@ -335,6 +351,7 @@ export class AdicionarRegistroPage {
       horaInicial = horaFim;
 
     }
+  }
 
   }
 
@@ -359,6 +376,20 @@ export class AdicionarRegistroPage {
     let alert = this.alertCtrl.create({
       title: 'Erro!',
       message: 'Já existe registro de aula nessa data e horário.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertQuantRegistros(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro!',
+      message: 'Não é possível salvar essa quantidade de registros.',
       enableBackdropDismiss: false,
       buttons: [
         {

@@ -22,7 +22,7 @@
             <ion-item *ngFor="let item of items">
               <h6 style="text-align: float left;"> Avaliação: <b>{{item.avaliacaoId.nome}}</b> </h6>
               <h6 style="text-align: float right;"> Max. Pontos: <b>{{item.avaliacaoId.maxPontos}}</b></h6>
-              <h6 style="text-align: float left;">Data: <b> {{item.avaliacaoId.dataAvaliacao}}</b>  </h6>
+              <h6 style="text-align: float left;">Data: <b> {{item.avaliacaoId.dataAvaliacao.substring(8,10)}}/{{item.avaliacaoId.dataAvaliacao.substring(5,7)}}/{{item.avaliacaoId.dataAvaliacao.substring(0,4)}}</b>  </h6>
               <h6 style="text-align: float right;">Nota: <b>{{item.nota}}</b></h6>
             </ion-item>
           </ion-list>
