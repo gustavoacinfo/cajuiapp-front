@@ -120,7 +120,7 @@
                             </ion-col>
                             <ion-col col-4>
                                 <button [disabled]="!editForm.valid" ion-button small (click)="editarRecuperacao()" color="secondary">ATUALIZAR</button>
-                                <button ion-button small color="danger">EXCLUIR</button>
+                                <button ion-button small color="danger" (click)="excluirRecuperacao()">EXCLUIR</button>
                             </ion-col>
                           </ion-row>
                           </form>

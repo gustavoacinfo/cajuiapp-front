@@ -186,12 +186,9 @@ export class NotaAlunoPage {
             this.recuperacaoService.recuperacoesPorMatricula(this.aluno.id)
           .subscribe(response => {
             this.editrecuperacao = response;
-            console.log(this.editrecuperacao);
             if(this.editrecuperacao == null){
               this.existeRecuperacao = false;
-              console.log('false');
             }else if(this.editrecuperacao.nota >= 0){
-              console.log('true');
               this.existeRecuperacao = true;
               this.recuperacao.nota = this.editrecuperacao.nota.toString();
               this.recuperacao.id = this.editrecuperacao.id;
@@ -313,6 +310,63 @@ export class NotaAlunoPage {
     }
 
 
+  }
+
+  excluirRecuperacao(){
+    
+    let alert = this.alertCtrl.create({
+      title: 'Atenção!',
+      message: 'Tem certeza que deseja excluir a nota da recuperação?',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            const loader = this.loadingCtrl.create({
+              content: "Excluindo nota da recuperação..."
+            });
+            loader.present();
+
+            if(this.existeRecuperacao == true){
+              this.recuperacaoService.delete(parseInt(this.recuperacao.id))
+              .subscribe(response => {
+                loader.dismiss();
+                this.showDeleteOk();
+              },
+              error => {
+                loader.dismiss();
+              });
+            }
+            
+            
+          }
+        },
+        {
+          text: 'Não',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showDeleteOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Recuperação excluida com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   showInsertOk(){

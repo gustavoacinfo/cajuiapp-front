@@ -36,14 +36,10 @@ export class RecuperacaoService{
             });
     }
 
-    delete(recuperacao: Object) {
-        return this.http.delete(
-            `${API_CONFIG.baseUrl}/recuperacao`,
-            recuperacao,
-            );
-    }
 
-    
+    delete(id : Number) : Observable <RecuperacaoDTO> {
+        return this.http.delete<RecuperacaoDTO>(`${API_CONFIG.baseUrl}/recuperacao/${id}`)
+    }
 
 
 }
