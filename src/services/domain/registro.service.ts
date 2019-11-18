@@ -40,11 +40,8 @@ export class RegistroService{
             });
     }
 
-    delete(registro: Object) : Observable <Object>  {
-        return this.http.delete(
-            `${API_CONFIG.baseUrl}/registro`,
-            registro,
-            );
+    delete(id : Number) : Observable <RegistroDTO> {
+        return this.http.delete<RegistroDTO>(`${API_CONFIG.baseUrl}/registro/${id}`)
     }
 
 

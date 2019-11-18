@@ -40,10 +40,8 @@ export class FaltaService{
             });
     }
 
-    delete(falta: Object) {
-        return this.http.delete(
-            `${API_CONFIG.baseUrl}/falta`,
-            falta);
+    delete(id : Number) : Observable <FaltaDTO> {
+        return this.http.delete<FaltaDTO>(`${API_CONFIG.baseUrl}/falta/${id}`)
     }
 
 

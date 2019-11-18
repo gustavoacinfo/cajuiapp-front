@@ -111,7 +111,14 @@ export class AvaliacaoProfessorPage {
             this.notaAvaliacaoService.notasPorAvaliacao(avaliacaoId.toString())
             .subscribe(response => {
               this.notas = response;
-              console.log(avaliacaoId);
+              
+              for(let i=0; i<this.notas.length; i++){
+                this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
+                .subscribe(response => {
+
+                },
+                error => {});
+              }
               this.avaliacaoService.delete(avaliacaoId)
               .subscribe(response => {
                 loader.dismiss();
@@ -120,13 +127,6 @@ export class AvaliacaoProfessorPage {
               error => {
                 loader.dismiss();
               });
-              for(let i=0; i<this.notas.length; i++){
-                this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
-                .subscribe(response => {
-
-                },
-                error => {});
-              }
             },
             error => {});
             

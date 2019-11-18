@@ -38,11 +38,16 @@ export class RegistroProfessorPage {
 
   quantRegistros : number;
 
+  faltas : FaltaDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public registroService : RegistroService,
-    public modalCtrl : ModalController) {
+    public modalCtrl : ModalController,
+    public alertCtrl : AlertController,
+    public loadingCtrl : LoadingController,
+    public faltaService : FaltaService ) {
 
     this.oferta = this.navParams.data.obj;
 
@@ -74,6 +79,73 @@ export class RegistroProfessorPage {
   editarRegistro(obj : Object){
     let modal = this.modalCtrl.create(EditarRegistroPage, {obj});
     modal.present();
+  }
+
+  excluirRegistro(registro : Object, registroId : Number){
+    
+    let alert = this.alertCtrl.create({
+      title: 'Atenção!',
+      message: 'Tem certeza que deseja excluir este registro de aula? A exclusão desse registro também irá excluir todas as frequências lançadas!',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            const loader = this.loadingCtrl.create({
+              content: "Excluindo registro de aula e suas frequencias..."
+            });
+            loader.present();
+            this.faltaService.faltasPorRegistro(registroId.toString())
+            .subscribe(response => {
+              this.faltas = response;
+             
+              for(let i=0; i<this.faltas.length; i++){
+                this.faltaService.delete(parseInt(this.faltas[i].id))
+                .subscribe(response => {
+
+                },
+                error => {});
+              }
+
+              this.registroService.delete(registroId)
+              .subscribe(response => {
+                loader.dismiss();
+                this.showDeleteOk();
+              },
+              error => {
+                loader.dismiss();
+              });
+            },
+            error => {});
+            
+          }
+        },
+        {
+          text: 'Não',
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showDeleteOk(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Registro de aula excluido com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   lancarFrequencia(obj : Object){
