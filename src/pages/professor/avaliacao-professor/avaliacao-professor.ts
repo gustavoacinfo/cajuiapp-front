@@ -94,7 +94,7 @@ export class AvaliacaoProfessorPage {
     modal.present();
   }
 
-  excluirAvaliacao(avaliacao : AvaliacaoDTO){
+  excluirAvaliacao(avaliacao : Object, avaliacaoId : Number){
     
     let alert = this.alertCtrl.create({
       title: 'Atenção!',
@@ -108,11 +108,20 @@ export class AvaliacaoProfessorPage {
               content: "Excluindo avaliação e seus registros de notas..."
             });
             loader.present();
-            this.notaAvaliacaoService.notasPorAvaliacao(avaliacao.id)
+            this.notaAvaliacaoService.notasPorAvaliacao(avaliacaoId.toString())
             .subscribe(response => {
               this.notas = response;
+              console.log(avaliacaoId);
+              this.avaliacaoService.delete(avaliacaoId)
+              .subscribe(response => {
+                loader.dismiss();
+                this.showDeleteOk();
+              },
+              error => {
+                loader.dismiss();
+              });
               for(let i=0; i<this.notas.length; i++){
-                this.notaAvaliacaoService.delete(this.notas[i])
+                this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
                 .subscribe(response => {
 
                 },
@@ -120,15 +129,7 @@ export class AvaliacaoProfessorPage {
               }
             },
             error => {});
-            console.log(avaliacao);
-            this.avaliacaoService.delete(avaliacao.id)
-            .subscribe(response => {
-              loader.dismiss();
-              this.showDeleteOk();
-            },
-            error => {
-              loader.dismiss();
-            });
+            
           }
         },
         {
@@ -151,6 +152,7 @@ export class AvaliacaoProfessorPage {
         {
           text: 'Ok',
           handler: () => {
+            this.navCtrl.pop();
           }
         }
       ]

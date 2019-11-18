@@ -18,8 +18,10 @@
       </h5>
       <h6>{{registro.descricao.substring(0,30)}} <br> Data: {{registro.data.substring(8,10)}}/{{registro.data.substring(5,7)}}/{{registro.data.substring(0,4)}}</h6>
       <p style="text-align: right;">Total {{quantAlunos}} itens</p>
+      
       <hr>
       <ng-container *ngIf="quantFrequencias == 0" >
+          <p style="color: orange;"><b>As frequências desse registro ainda não foram lançadas!</b></p>
       <form (ngSubmit)="salvarFrequencias()" [formGroup]="form" #formRef="ngForm">
       <ion-list>
         <ng-container *ngIf="form && frequencias.controls" >

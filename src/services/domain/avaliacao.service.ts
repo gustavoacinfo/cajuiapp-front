@@ -40,11 +40,8 @@ export class AvaliacaoService{
             });
     }
 
-    delete(avaliacao: Object) {
-        return this.http.delete(
-            `${API_CONFIG.baseUrl}/avaliacao`,
-            avaliacao,
-            );
+    delete(id : Number) : Observable <AvaliacaoDTO[]> {
+        return this.http.delete<AvaliacaoDTO[]>(`${API_CONFIG.baseUrl}/avaliacao/${id}`)
     }
 
     

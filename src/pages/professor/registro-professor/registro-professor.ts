@@ -109,6 +109,8 @@ export class EditarRegistroPage {
 
   quantHorarios : number;
 
+  quantHorarioAnterior : number;
+
   horaInicial : string;
 
   usuario : UsuarioDTO;
@@ -149,6 +151,7 @@ export class EditarRegistroPage {
     .subscribe(response => {
       this.registros = response;
       this.quantHorarios = this.registros.length;
+      this.quantHorarioAnterior = this.quantHorarios;
       this.horaInicial = this.registros[0].horaInicio;
     },
     error => {});
@@ -157,6 +160,10 @@ export class EditarRegistroPage {
   }
 
   editarRegistro(quantHorarios : number, horaInicial : string){
+
+    if(this.quantHorarioAnterior != quantHorarios){
+      this.showInsertErro();
+    }else{
 
     for(let i=0; i<quantHorarios; i++){
       this.registro.id = this.registros[i].id;
@@ -176,6 +183,9 @@ export class EditarRegistroPage {
         this.registroService.changeDados(this.registro)
           .subscribe(response => {
              loader.dismiss();
+             if(i == quantHorarios-1){
+              this.showInsertOk();
+           }
           },
          error => {
            loader.dismiss();
@@ -185,8 +195,8 @@ export class EditarRegistroPage {
       horaInicial = horaFim;
 
     }
+  }
     
-    this.showInsertOk();
   }
 
   showInsertOk(){
@@ -200,6 +210,20 @@ export class EditarRegistroPage {
           handler: () => {
             this.navCtrl.pop();
           }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertErro(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro!',
+      message: 'Não é possivel alterar a quantidade de horários. Exclua o registro e cadastre um novo com a quantidade desejada!',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
         }
       ]
     });

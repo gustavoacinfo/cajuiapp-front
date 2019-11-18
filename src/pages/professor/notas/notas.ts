@@ -13,6 +13,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, IonicPage, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { LogoutPage } from '../../login/login';
 import { NotaAvaliacaoDTO } from '../../../models/nota-avaliacao.dto';
+import { RecuperacaoDTO } from '../../../models/recuperacao.dto';
 
 /**
  * Generated class for the NotasPage page.
@@ -130,6 +131,7 @@ export class NotaAlunoPage {
   freqMinima : number;
 
   recuperacao = {
+    id : "",
     matriculaId : {
       id: ""
     },
@@ -139,6 +141,10 @@ export class NotaAlunoPage {
     createdBy:"",
     updatedBy:""
   }
+
+  editrecuperacao : RecuperacaoDTO;
+
+  existeRecuperacao : boolean;
 
   constructor(
     public navCtrl: NavController, 
@@ -159,6 +165,8 @@ export class NotaAlunoPage {
 
   ionViewDidLoad() {
 
+    
+
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
         this.usuario = response;
@@ -171,6 +179,31 @@ export class NotaAlunoPage {
           }else{
             this.pontosDistribuidos = response;
           }
+
+          
+
+          if(this.pontosDistribuidos == 100 && this.aluno != null){
+            this.recuperacaoService.recuperacoesPorMatricula(this.aluno.id)
+          .subscribe(response => {
+            this.editrecuperacao = response;
+            console.log(this.editrecuperacao);
+            if(this.editrecuperacao == null){
+              this.existeRecuperacao = false;
+              console.log('false');
+            }else if(this.editrecuperacao.nota >= 0){
+              console.log('true');
+              this.existeRecuperacao = true;
+              this.recuperacao.nota = this.editrecuperacao.nota.toString();
+              this.recuperacao.id = this.editrecuperacao.id;
+              this.recuperacao.matriculaId.id = this.editrecuperacao.matriculaId.id;
+              this.recuperacao.createdAt = this.editrecuperacao.createdAt;
+              this.recuperacao.createdBy = this.editrecuperacao.createdBy; 
+            }
+          },
+          error => {});
+          }
+
+
         },
         error => {});
 
@@ -222,7 +255,10 @@ export class NotaAlunoPage {
           }
 
         },
-        error => {});  
+        error => {});
+
+        
+      
 
   }
 
@@ -254,10 +290,52 @@ export class NotaAlunoPage {
 
   }
 
+  editarRecuperacao(){
+    if(parseInt(this.recuperacao.nota) < 0 || parseInt(this.recuperacao.nota) > 100 ){
+      this.showInsertNotaInvalida();
+    }else{
+    
+    let timestamp = Math.floor(Date.now() / 1000);
+    this.recuperacao.updatedAt = JSON.parse(timestamp.toString());
+    this.recuperacao.updatedBy = JSON.parse(this.usuario.id); 
+    const loader = this.loadingCtrl.create({
+      content: "Atualizando nota da recuperacao..."
+    });
+    loader.present();
+     this.recuperacaoService.changeDados(this.recuperacao)
+       .subscribe(response => {
+          loader.dismiss();
+          this.showInsertOk2();
+       },
+      error => {
+        loader.dismiss();
+      });
+    }
+
+
+  }
+
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
       message: 'Cadastro efetuado com sucesso.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showInsertOk2(){
+    let alert = this.alertCtrl.create({
+      title: 'Sucesso!',
+      message: 'Atualização efetuada com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
