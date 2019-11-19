@@ -165,6 +165,16 @@ export class NotaAlunoPage {
     
       this.aluno = navParams.data.obj;
 
+      this.notaavaliacaoService.pontosObtidos(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+          .subscribe(response => {
+            if(response[0] === null){
+              this.pontosObtidos = 0;
+            }else{
+              this.pontosObtidos = response;
+            }
+          },
+          error => {});
+
   }
 
   ionViewDidLoad() {
@@ -220,15 +230,6 @@ export class NotaAlunoPage {
         },
         error => {});
 
-        this.notaavaliacaoService.pontosObtidos(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
-        .subscribe(response => {
-          if(response[0] === null){
-            this.pontosObtidos = 0;
-          }else{
-            this.pontosObtidos = response;
-          }
-        },
-        error => {});
 
         this.faltaService.faltasPorOferta(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
         .subscribe(response => {
@@ -240,11 +241,21 @@ export class NotaAlunoPage {
               faltas = faltas + 1;
             }
           }
+
+          this.notaavaliacaoService.pontosObtidos(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+          .subscribe(response => {
+            if(response[0] === null){
+              this.pontosObtidos = 0;
+            }else{
+              this.pontosObtidos = response;
+            }
+          },
+          error => {});
+
           this.numFaltas = faltas;
 
           this.freqAluno = (this.numFaltas * 100 )/ this.aluno.curriculoId.disciplinaId.horaAula;
           this.freqMinima = this.aluno.curriculoId.disciplinaId.horaAula - ((this.aluno.curriculoId.disciplinaId.horaAula * this.aluno.ofertaId.periodoLetivoId.frequenciaMinima) / 100);
-
 
           if(this.freqAluno > this.freqMinima){
             this.situacao = 0;
@@ -255,6 +266,7 @@ export class NotaAlunoPage {
           }else{
             this.situacao = 3;
           }
+
 
         },
         error => {});

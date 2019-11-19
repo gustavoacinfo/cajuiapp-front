@@ -566,6 +566,10 @@ export class EditarAvaliacaoPage {
 
   usuario : UsuarioDTO;
 
+  valorAntes : number;
+
+  notas : NotaAvaliacaoDTO[];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -575,9 +579,12 @@ export class EditarAvaliacaoPage {
     public alertCtrl : AlertController,
     public modalCtrl : ModalController,
     public usuarioService : UsuarioService,
-    public storage : StorageService) {
+    public storage : StorageService,
+    public notaAvaliacaoService : NotaAvaliacaoService) {
 
       this.avaliacao = navParams.data.obj;
+
+      this.valorAntes = this.avaliacao.maxPontos;
 
   }
 
@@ -600,6 +607,68 @@ export class EditarAvaliacaoPage {
   }
 
   editarAvaliacao() {
+    if(this.valorAntes != this.avaliacao.maxPontos){
+     
+      let alert = this.alertCtrl.create({
+        title: 'Atenção!',
+        message: 'Tem certeza que deseja alterar o valor máximo dessa avaliação? Para isso será necessário lançar as notas novamente!',
+        enableBackdropDismiss: false,
+        buttons: [
+          {
+            text: 'Sim',
+            handler: () => {
+
+              this.notaAvaliacaoService.notasPorAvaliacao(this.avaliacao.id)
+              .subscribe(response => {
+                this.notas = response;
+  
+                  for(let i=0; i<this.notas.length; i++){
+                    this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
+                    .subscribe(response => {
+
+                      if(i == this.notas.length-1){
+
+                        const loader = this.loadingCtrl.create({
+                          content: "Alterando avaliacão..."
+                        });
+                        loader.present();
+                        let timestamp = Math.floor(Date.now() / 1000)
+                        this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
+                        this.avaliacao.updatedBy = JSON.parse(this.usuario.id); 
+                        this.avaliacaoService.changeDados(this.avaliacao)
+                          .subscribe(response => {
+                            loader.dismiss();
+                            switch(response.status) {
+                              case 200:
+                                  this.handle200();
+                                break;
+                            }
+                          }, 
+                          error => {
+                            loader.dismiss();
+                          });
+                        
+                      }
+
+                    },
+                    error => {});
+                  }
+               
+              },
+              error => {});
+              
+            }
+          },
+          {
+            text: 'Não',
+          }
+        ]
+      });
+      alert.present();
+
+
+    }else{
+
     const loader = this.loadingCtrl.create({
       content: "Alterando avaliacão..."
     });
@@ -619,6 +688,7 @@ export class EditarAvaliacaoPage {
       error => {
         loader.dismiss();
       });
+    }
   }
 
   handle200() {
