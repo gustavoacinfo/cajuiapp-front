@@ -111,22 +111,44 @@ export class AvaliacaoProfessorPage {
             this.notaAvaliacaoService.notasPorAvaliacao(avaliacaoId.toString())
             .subscribe(response => {
               this.notas = response;
-              
-              for(let i=0; i<this.notas.length; i++){
-                this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
-                .subscribe(response => {
 
-                },
-                error => {});
+              console.log(this.notas);
+
+              if(this.notas.length === 0){
+                this.avaliacaoService.delete(avaliacaoId)
+                      .subscribe(response => {
+                        loader.dismiss();
+                        this.showDeleteOk();
+                      },
+                      error => {
+                        loader.dismiss();
+                      });
+                
+              }else{
+
+                for(let i=0; i<this.notas.length; i++){
+                  this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
+                  .subscribe(response => {
+
+                    if(i == this.notas.length-1){
+                      this.avaliacaoService.delete(avaliacaoId)
+                      .subscribe(response => {
+                        loader.dismiss();
+                        this.showDeleteOk();
+                      },
+                      error => {
+                        loader.dismiss();
+                      });
+                    }
+                    
+                      
+                    
+                  },
+                  error => {});
+                }
+
               }
-              this.avaliacaoService.delete(avaliacaoId)
-              .subscribe(response => {
-                loader.dismiss();
-                this.showDeleteOk();
-              },
-              error => {
-                loader.dismiss();
-              });
+             
             },
             error => {});
             

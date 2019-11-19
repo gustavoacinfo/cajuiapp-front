@@ -146,6 +146,10 @@ export class NotaAlunoPage {
 
   existeRecuperacao : boolean;
 
+  notaMinima : number;
+
+  notaSemestre : number;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -165,7 +169,7 @@ export class NotaAlunoPage {
 
   ionViewDidLoad() {
 
-    
+    this.notaMinima = this.aluno.ofertaId.periodoLetivoId.notaMinima;
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
@@ -194,7 +198,8 @@ export class NotaAlunoPage {
               this.recuperacao.id = this.editrecuperacao.id;
               this.recuperacao.matriculaId.id = this.editrecuperacao.matriculaId.id;
               this.recuperacao.createdAt = this.editrecuperacao.createdAt;
-              this.recuperacao.createdBy = this.editrecuperacao.createdBy; 
+              this.recuperacao.createdBy = this.editrecuperacao.createdBy;
+              this.notaSemestre = this.editrecuperacao.nota;
             }
           },
           error => {});

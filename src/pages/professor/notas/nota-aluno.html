@@ -75,6 +75,7 @@
               </ion-row>
               <ng-container *ngIf="pontosDistribuidos == 100 && situacao == 2">
                 <ng-container *ngIf="existeRecuperacao == false">
+                  <hr>
                     <form #recForm="ngForm">
                         <ion-row>
                             <ion-col col-2>
@@ -98,8 +99,10 @@
                             </ion-col>
                           </ion-row>
                           </form>
+                          <hr>
                 </ng-container>
                 <ng-container *ngIf="existeRecuperacao == true">
+                    <hr>
                     <form #editForm="ngForm">
                         <ion-row>
                             <ion-col col-2>
@@ -113,17 +116,25 @@
                             </ion-col>
                           </ion-row>
                           <ion-row>
-                            <ion-col col-2>
+                            <ion-col col-5>
                           
                             </ion-col>
-                            <ion-col col-6> 
+                            <ion-col col-3>
+                                <button ion-button small color="danger" (click)="excluirRecuperacao()">EXCLUIR</button> 
                             </ion-col>
                             <ion-col col-4>
                                 <button [disabled]="!editForm.valid" ion-button small (click)="editarRecuperacao()" color="secondary">ATUALIZAR</button>
-                                <button ion-button small color="danger" (click)="excluirRecuperacao()">EXCLUIR</button>
+                                
                             </ion-col>
                           </ion-row>
                           </form>
+                          <ng-container *ngIf="((notaSemestre + pontosObtidos)/2) > notaMinima">
+                              <p>Situação final:</p><p style="color: green"> <b> APROVADO </b> </p>
+                          </ng-container>
+                          <ng-container *ngIf="((notaSemestre + pontosObtidos)/2) < notaMinima">
+                              <p>Situação final:</p><p style="color: red"> <b> REPROVADO </b> </p>
+                          </ng-container>
+                          <hr>
                 </ng-container>
               </ng-container>
               </ion-grid>
