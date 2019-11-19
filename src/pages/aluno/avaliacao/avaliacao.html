@@ -25,10 +25,37 @@
               <h6 style="text-align: float left;">Data: <b> {{item.avaliacaoId.dataAvaliacao.substring(8,10)}}/{{item.avaliacaoId.dataAvaliacao.substring(5,7)}}/{{item.avaliacaoId.dataAvaliacao.substring(0,4)}}</b>  </h6>
               <h6 style="text-align: float right;">Nota: <b>{{item.nota}}</b></h6>
             </ion-item>
+            <ng-container *ngIf="quantAvaliacoes > 0" >
+                <ion-item>
+                    <p>Situação:</p>
+                    <p *ngIf="situacao == 0" style="color: red"> <b> REPROVADO POR FALTA</b> </p>
+                    <p *ngIf="situacao == 1" style="color: red"> <b> REPROVADO DIRETO </b> </p>
+                    <p *ngIf="situacao == 2" style="color: orange"> <b> RECUPERAÇÃO </b> </p>
+                    <p *ngIf="situacao == 3" style="color: green"> <b> APROVADO </b> </p>
+                </ion-item>
+            </ng-container>
+            <ng-container *ngIf="existeRecuperacao == true" >
+                <ion-item>
+                    <h6 style="text-align: float left;"><b>Recuperação</b> </h6>
+                    <h6 style="text-align: float right;">Nota: <b>{{recuperacao.nota}}</b></h6>
+                </ion-item>
+                <ion-item>
+                    <p>Situação Final:</p>
+                    <p *ngIf="situacaoFinal == true" style="color: green"> <b> APROVADO </b> </p>
+                    <p *ngIf="situacaoFinal == false" style="color: red"> <b> REPROVADO </b> </p>
+                </ion-item>
+            </ng-container>
+            
           </ion-list>
           <hr>
           <h5>Total de pontos lançados: <b> {{pontosDistribuidos}} </b></h5>
           <h5>Total de pontos obtidos: <b> {{pontosObtidos}} </b></h5>
+          <ng-container *ngIf="existeRecuperacao == false && pontosDistribuidos == 100">
+              <h5>Nota Final na Disciplina: <b> {{pontosObtidos}} </b></h5>
+          </ng-container>
+          <ng-container *ngIf="existeRecuperacao == true && pontosDistribuidos == 100">
+              <h5>Nota Final na Disciplina: <b> {{notaFinal}} </b></h5>
+          </ng-container>
           <hr>
       </ion-navbar>
   

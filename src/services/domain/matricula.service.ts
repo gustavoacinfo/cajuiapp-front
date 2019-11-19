@@ -15,6 +15,10 @@ export class MatriculaService{
         return this.http.get<MatriculaDTO[]>(`${API_CONFIG.baseUrl}/matricula/oferta/${id}`)
     }
 
+    matriculaDoAluno(ofertaId : string, alunoId : string) : Observable <MatriculaDTO> {
+        return this.http.get<MatriculaDTO>(`${API_CONFIG.baseUrl}/matricula/oferta/${ofertaId}/aluno/${alunoId}`)
+    }
+
     
 
 

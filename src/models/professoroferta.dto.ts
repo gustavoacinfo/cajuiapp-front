@@ -23,8 +23,9 @@ export interface ProfessorOfertaDTO{
             }
             dataInicio : string;
             dataFim : string;
-            frequenciaMinima : string;
-            notaMinima : string;
+            frequenciaMinima : number;
+            notaMinima : number;
+            notaLiberaRecuperacao : number;
         };
         curriculoId : {
             id : string;

@@ -249,23 +249,26 @@ export class NotaAlunoPage {
             }else{
               this.pontosObtidos = response;
             }
+
+            this.numFaltas = faltas;
+
+            this.freqAluno = (this.numFaltas * 100 )/ this.aluno.curriculoId.disciplinaId.horaAula;
+            this.freqMinima = this.aluno.curriculoId.disciplinaId.horaAula - ((this.aluno.curriculoId.disciplinaId.horaAula * this.aluno.ofertaId.periodoLetivoId.frequenciaMinima) / 100);
+
+            if(this.freqAluno > this.freqMinima){
+              this.situacao = 0;
+            }else if(this.freqAluno <= this.freqMinima && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao){
+              this.situacao = 1;
+            }else if(this.pontosObtidos >= this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaMinima){
+              this.situacao = 2;
+            }else{
+              this.situacao = 3;
+            }
+
           },
           error => {});
 
-          this.numFaltas = faltas;
-
-          this.freqAluno = (this.numFaltas * 100 )/ this.aluno.curriculoId.disciplinaId.horaAula;
-          this.freqMinima = this.aluno.curriculoId.disciplinaId.horaAula - ((this.aluno.curriculoId.disciplinaId.horaAula * this.aluno.ofertaId.periodoLetivoId.frequenciaMinima) / 100);
-
-          if(this.freqAluno > this.freqMinima){
-            this.situacao = 0;
-          }else if(this.freqAluno <= this.freqMinima && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao){
-            this.situacao = 1;
-          }else if(this.pontosObtidos >= this.aluno.ofertaId.periodoLetivoId.notaLiberaRecuperacao && this.pontosObtidos < this.aluno.ofertaId.periodoLetivoId.notaMinima){
-            this.situacao = 2;
-          }else{
-            this.situacao = 3;
-          }
+          
 
 
         },
