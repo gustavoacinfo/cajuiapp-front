@@ -53,15 +53,6 @@ export class RegistroProfessorPage {
 
   }
 
-  ionViewWillEnter(){
-    this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
-    .subscribe(response => {
-      this.items = response;
-      this.quantRegistros = this.items.length;
-    },
-    error => {});
-  }
-
   ionViewDidLoad() {
     
     this.registroService.registrosPorOferta(this.oferta.ofertaId.id)
@@ -98,23 +89,41 @@ export class RegistroProfessorPage {
             this.faltaService.faltasPorRegistro(registroId.toString())
             .subscribe(response => {
               this.faltas = response;
-             
-              for(let i=0; i<this.faltas.length; i++){
-                this.faltaService.delete(parseInt(this.faltas[i].id))
-                .subscribe(response => {
 
-                },
-                error => {});
+
+              if(this.faltas.length === 0){
+                this.registroService.delete(registroId)
+                      .subscribe(response => {
+                        loader.dismiss();
+                        this.showDeleteOk();
+                      },
+                      error => {
+                        loader.dismiss();
+                      });
+                
+              }else{
+
+                for(let i=0; i<this.faltas.length; i++){
+                  this.faltaService.delete(parseInt(this.faltas[i].id))
+                  .subscribe(response => {
+  
+                    if(i == this.faltas.length-1){
+                      this.registroService.delete(registroId)
+                      .subscribe(response => {
+                        loader.dismiss();
+                        this.showDeleteOk();
+                      },
+                      error => {
+                        loader.dismiss();
+                      });
+                    }
+  
+                  },
+                  error => {});
+                }
+
               }
-
-              this.registroService.delete(registroId)
-              .subscribe(response => {
-                loader.dismiss();
-                this.showDeleteOk();
-              },
-              error => {
-                loader.dismiss();
-              });
+              
             },
             error => {});
             
@@ -140,7 +149,7 @@ export class RegistroProfessorPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
+            this.ionViewDidLoad();
           }
         }
       ]
@@ -153,8 +162,8 @@ export class RegistroProfessorPage {
     modal.present();
   }
 
-  adicionarRegistro(id : Number) {
-    let modal = this.modalCtrl.create(AdicionarRegistroPage, {id});
+  adicionarRegistro(obj : Object) {
+    let modal = this.modalCtrl.create(AdicionarRegistroPage, {obj});
     modal.present();
   }
 
@@ -344,7 +353,7 @@ export class AdicionarRegistroPage {
 
   horaInicial : string;
 
-  professorOfertaId : string;
+  professorOfertaId : ProfessorOfertaDTO;
 
   profOferta : ProfessorOfertaDTO;
 
@@ -368,7 +377,7 @@ export class AdicionarRegistroPage {
     public storage : StorageService
     ) {
 
-    this.professorOfertaId = this.navParams.data.id;
+    this.professorOfertaId = navParams.data.obj;
     
       
   }
@@ -388,7 +397,7 @@ export class AdicionarRegistroPage {
       },
       error => {});
 
-    this.professorofertaService.findById(parseInt(this.professorOfertaId))
+    this.professorofertaService.findById(parseInt(this.professorOfertaId.id))
     .subscribe(response => {
       this.profOferta = response;
       this.equivaleHorario = this.profOferta.ofertaId.curriculoId.disciplinaId.equivalenciaMinutos;
@@ -460,7 +469,7 @@ export class AdicionarRegistroPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
+            this.paginaAnterior(this.professorOfertaId);
           }
         }
       ]
@@ -494,6 +503,10 @@ export class AdicionarRegistroPage {
       ]
     });
     alert.present();
+  }
+
+  paginaAnterior(obj : Object){
+    this.navCtrl.setRoot('RegistroProfessorPage', {obj} )
   }
 
   home(){

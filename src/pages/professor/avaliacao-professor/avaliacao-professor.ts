@@ -112,8 +112,6 @@ export class AvaliacaoProfessorPage {
             .subscribe(response => {
               this.notas = response;
 
-              console.log(this.notas);
-
               if(this.notas.length === 0){
                 this.avaliacaoService.delete(avaliacaoId)
                       .subscribe(response => {
@@ -174,7 +172,7 @@ export class AvaliacaoProfessorPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
+            this.ionViewDidLoad();
           }
         }
       ]
@@ -187,8 +185,8 @@ export class AvaliacaoProfessorPage {
     modal.present();
   }
 
-  adicionarAvaliacao(id : Number){
-    let modal = this.modalCtrl.create(AdicionarAvaliacaoPage, {id});
+  adicionarAvaliacao(obj: Object){
+    let modal = this.modalCtrl.create(AdicionarAvaliacaoPage, {obj});
     modal.present();
   }
 
@@ -441,7 +439,7 @@ export class AdicionarAvaliacaoPage {
     updatedBy:""
   }
 
-  oferta : string;
+  oferta : ProfessorOfertaDTO;
 
   pontosDistribuidos : number;
 
@@ -460,7 +458,7 @@ export class AdicionarAvaliacaoPage {
     public storage : StorageService,
     public usuarioService : UsuarioService) {
 
-      this.oferta = navParams.data.id;
+      this.oferta = navParams.data.obj;
       
   }
 
@@ -472,7 +470,7 @@ export class AdicionarAvaliacaoPage {
       .subscribe(response => {
         this.usuario = response;
 
-        this.avaliacaoService.pontosDistribuidos(this.oferta, this.usuario.id)
+        this.avaliacaoService.pontosDistribuidos(this.oferta.ofertaId.id, this.usuario.id)
         .subscribe(response => {
           this.pontosDistribuidos = response;
         },
@@ -488,7 +486,7 @@ export class AdicionarAvaliacaoPage {
       this.showInsertNotaMaior();
     }else{
 
-    this.avaliacao.ofertaId.id = this.oferta;
+    this.avaliacao.ofertaId.id = this.oferta.ofertaId.id;
     let timestamp = Math.floor(Date.now() / 1000)
     this.avaliacao.createdAt = JSON.parse(timestamp.toString());
     this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
@@ -520,7 +518,7 @@ export class AdicionarAvaliacaoPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
+            this.paginaAnterior(this.oferta);
           }
         }
       ]
@@ -544,6 +542,10 @@ export class AdicionarAvaliacaoPage {
 
   home(){
     this.navCtrl.push('HomeProfessorPage');
+  }
+
+  paginaAnterior(obj : Object){
+    this.navCtrl.setRoot('AvaliacaoProfessorPage', {obj} )
   }
 
   dismiss() {

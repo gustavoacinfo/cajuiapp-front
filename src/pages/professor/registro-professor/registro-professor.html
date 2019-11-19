@@ -16,7 +16,7 @@
           <hr>
           <h5> {{oferta.ofertaId.curriculoId.disciplinaId.nome}} </h5>
           <h6 class="title"><ion-icon name="stats"></ion-icon> Registros</h6>
-          <button full ion-button slot="end" color="secondary" (click)="adicionarRegistro(oferta.id)">Adicionar</button>
+          <button full ion-button slot="end" color="secondary" (click)="adicionarRegistro(oferta)">Adicionar</button>
           <h6 class="title"><ion-icon name="search"></ion-icon> Lista de Registros</h6>
           <hr>
           <h6 *ngIf="quantRegistros == 0" ><ion-icon name="alert"></ion-icon>Ainda não foram lançados registros!</h6>
