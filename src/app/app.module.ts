@@ -24,6 +24,7 @@ import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { NotaAlunoPage } from '../pages/professor/notas/notas';
 
+
 @NgModule({
   declarations: [
     MyApp,

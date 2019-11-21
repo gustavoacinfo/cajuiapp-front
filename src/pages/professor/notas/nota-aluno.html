@@ -128,12 +128,25 @@
                             </ion-col>
                           </ion-row>
                           </form>
-                          <ng-container *ngIf="((notaSemestre + pontosObtidos)/2) > notaMinima">
-                              <p>Situação final:</p><p style="color: green"> <b> APROVADO </b> </p>
-                          </ng-container>
-                          <ng-container *ngIf="((notaSemestre + pontosObtidos)/2) < notaMinima">
-                              <p>Situação final:</p><p style="color: red"> <b> REPROVADO </b> </p>
-                          </ng-container>
+                          <ion-row>
+                              <ion-col col-3>
+                                
+                              </ion-col>
+                              <ion-col col-4> 
+                                <p><b>Situação Final:</b></p>
+                                <p><b>Nota Final:</b></p>
+                              </ion-col>
+                              <ion-col col-5>
+                                  <ng-container *ngIf="situacaoFinal == true">
+                                      <p style="color: green"> <b> APROVADO </b> </p>
+                                  </ng-container>
+                                  <ng-container *ngIf="situacaoFinal == false">
+                                      <p style="color: red"> <b> REPROVADO </b> </p>
+                                  </ng-container>
+                                  {{notaFinal}}
+                              </ion-col>
+                            </ion-row>
+                          
                           <hr>
                 </ng-container>
               </ng-container>

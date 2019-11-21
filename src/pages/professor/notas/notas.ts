@@ -150,6 +150,10 @@ export class NotaAlunoPage {
 
   notaSemestre : number;
 
+  notaFinal : number;
+
+  situacaoFinal : boolean;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -194,36 +198,8 @@ export class NotaAlunoPage {
             this.pontosDistribuidos = response;
           }
 
-          
 
-          if(this.pontosDistribuidos == 100 && this.aluno != null){
-            this.recuperacaoService.recuperacoesPorMatricula(this.aluno.id)
-          .subscribe(response => {
-            this.editrecuperacao = response;
-            if(this.editrecuperacao == null){
-              this.existeRecuperacao = false;
-            }else if(this.editrecuperacao.nota >= 0){
-              this.existeRecuperacao = true;
-              this.recuperacao.nota = this.editrecuperacao.nota.toString();
-              this.recuperacao.id = this.editrecuperacao.id;
-              this.recuperacao.matriculaId.id = this.editrecuperacao.matriculaId.id;
-              this.recuperacao.createdAt = this.editrecuperacao.createdAt;
-              this.recuperacao.createdBy = this.editrecuperacao.createdBy;
-              this.notaSemestre = this.editrecuperacao.nota;
-            }
-          },
-          error => {});
-          }
-
-
-        },
-        error => {});
-
-      },
-      error => {});
-
-
-    this.notaavaliacaoService.avaliacoesPorOferta(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
+          this.notaavaliacaoService.avaliacoesPorOferta(this.aluno.ofertaId.id, this.aluno.contratoId.alunoId.id)
         .subscribe(response => {
           this.items = response;
           this.quantAvaliacoes = this.items.length;
@@ -265,6 +241,34 @@ export class NotaAlunoPage {
               this.situacao = 3;
             }
 
+            if(this.pontosDistribuidos == 100 && this.aluno != null){
+              this.recuperacaoService.recuperacoesPorMatricula(this.aluno.id)
+            .subscribe(response => {
+              this.editrecuperacao = response;
+              if(this.editrecuperacao == null){
+                this.existeRecuperacao = false;
+              }else if(this.editrecuperacao.nota >= 0){
+                this.existeRecuperacao = true;
+                
+                this.recuperacao.nota = this.editrecuperacao.nota.toString();
+                this.recuperacao.id = this.editrecuperacao.id;
+                this.recuperacao.matriculaId.id = this.editrecuperacao.matriculaId.id;
+                this.recuperacao.createdAt = this.editrecuperacao.createdAt;
+                this.recuperacao.createdBy = this.editrecuperacao.createdBy;
+                this.notaSemestre = this.editrecuperacao.nota;
+
+                this.notaFinal = (parseInt(this.pontosObtidos.toString()) + parseInt(this.recuperacao.nota.toString()))/2;
+               
+                if(this.notaFinal >= this.notaMinima){
+                  this.situacaoFinal = true;
+                }else{
+                  this.situacaoFinal = false;
+                }
+              }
+            },
+            error => {});
+            }
+
           },
           error => {});
 
@@ -273,6 +277,20 @@ export class NotaAlunoPage {
 
         },
         error => {});
+
+          
+
+         
+
+
+        },
+        error => {});
+
+      },
+      error => {});
+
+
+    
 
         
       

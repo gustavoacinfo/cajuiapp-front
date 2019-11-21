@@ -279,6 +279,7 @@ export class LancarNotasPage {
           this.addCredsEdit(
             this.notasLancadas[i].id,
             this.notasLancadas[i].matriculaId.id,
+            this.notasLancadas[i].matriculaId.contratoId.alunoId.nome,
             this.notasLancadas[i].avaliacaoId.id,
             this.notasLancadas[i].nota,
             this.notasLancadas[i].createdAt,
@@ -297,7 +298,7 @@ export class LancarNotasPage {
     return this.formEdit.controls.notasEdit as FormArray;
   }
 
-  addCredsEdit(id, matricula, avaliacao, nota, createdat, createdby) {
+  addCredsEdit(id, matricula, aluno, avaliacao, nota, createdat, createdby) {
     let timestamp = Math.floor(Date.now() / 1000);
     const arraynotasEdit = this.formEdit.controls.notasEdit as FormArray;
     arraynotasEdit.push(this.fbedit.group({
@@ -305,6 +306,7 @@ export class LancarNotasPage {
       matriculaId: new FormGroup({
         id: new FormControl(matricula)
       }),
+      aluno: new FormControl(aluno),
       avaliacaoId : new FormGroup({
         id: new FormControl(avaliacao)
       }),
