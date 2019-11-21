@@ -600,6 +600,7 @@ export class LancarFrequenciaPage {
         this.addFreqEdit(
           this.frequenciasLancadas[i].id,
           this.frequenciasLancadas[i].matriculaId.id,
+          this.frequenciasLancadas[i].matriculaId.contratoId.alunoId.nome,
           this.frequenciasLancadas[i].presenca,
           this.frequenciasLancadas[i].createdBy,
           this.frequenciasLancadas[i].createdAt
@@ -636,7 +637,7 @@ export class LancarFrequenciaPage {
     }));
   }
 
-  addFreqEdit(id, matricula, presenca, createdby, createdat) {
+  addFreqEdit(id, matricula, aluno, presenca, createdby, createdat) {
     let timestamp = Math.floor(Date.now() / 1000);
     const arrayfrequencias = this.formEdit.controls.frequenciasEdit as FormArray;
     arrayfrequencias.push(this.fb.group({
@@ -644,6 +645,7 @@ export class LancarFrequenciaPage {
       matriculaId: new FormGroup({
         id: new FormControl(matricula)
       }),
+      aluno : new FormControl(aluno),
       registroId : new FormGroup({
         id: new FormControl(this.registro.id)
       }),
