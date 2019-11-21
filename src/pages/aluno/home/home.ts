@@ -1,4 +1,3 @@
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { UsuarioService } from './../../../services/domain/usuario.service';
 import { Component } from '@angular/core';
 import { NavController, IonicPage, NavParams, ModalController, AlertController, Platform } from 'ionic-angular';
@@ -88,7 +87,6 @@ export class HomePage {
   }
 
   createPdfNotas() {
-    var i = 0;
     var docDefinition = {
       content: [
         { text: 'RESUMO DE NOTAS POR DISCIPLINAS', style: 'header' },
@@ -124,7 +122,6 @@ export class HomePage {
     this.createPdfNotas();
     if (this.plt.is('cordova')) {
       this.pdfNotas.getBuffer((buffer) => {
-        var blob = new Blob([buffer], { type: 'application/pdf' });
 
         // Save the PDF to the data Directory of our App
         // this.file.writeFile(this.file.dataDirectory, 'myletter.pdf', blob, { replace: true }).then(fileEntry => {

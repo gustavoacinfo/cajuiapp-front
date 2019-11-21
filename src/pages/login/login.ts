@@ -1,6 +1,6 @@
 import { UsuarioService } from './../../services/domain/usuario.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
@@ -31,7 +31,8 @@ export class LoginPage {
     public navParams: NavParams,
     public auth : AuthService,
     public storage : StorageService,
-    public usuarioService : UsuarioService) {
+    public usuarioService : UsuarioService,
+    public modalCtrl : ModalController ) {
   }
 
   ionViewDidEnter(){
@@ -83,6 +84,11 @@ export class LoginPage {
     
   }
 
+  alterarSenha(){
+    let modal = this.modalCtrl.create(AlterarSenhaPage);
+    modal.present();
+  }
+
 }
 
 @Component({
@@ -99,7 +105,8 @@ export class LogoutPage {
     public viewCtrl : ViewController,
     public storage : StorageService,
     public usuarioService : UsuarioService,
-    public auth : AuthService) {
+    public auth : AuthService,
+    public modalCtrl : ModalController ) {
   }
 
   ionViewDidLoad() {
@@ -132,6 +139,44 @@ export class LogoutPage {
     this.navCtrl.setRoot('LoginPage');
   }
 
+  alterarSenha(){
+    let modal = this.modalCtrl.create(AlterarSenhaPage);
+    modal.present();
+  }
+
   
 
 }
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'alterar-senha.html',
+})
+export class AlterarSenhaPage {
+
+  logado : Object;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public viewCtrl : ViewController,
+    public storage : StorageService,
+    public usuarioService : UsuarioService,
+    public auth : AuthService) {
+  }
+
+  ionViewDidLoad() {
+
+    this.logado = this.storage.getLocalUser();
+    
+  }
+
+
+
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+}
+

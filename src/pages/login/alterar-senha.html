@@ -1,0 +1,38 @@
+<ion-header>
+        <ion-navbar color="secondary">
+          <ion-title>
+            Alterar senha
+          </ion-title>
+          <ion-buttons end>
+            <button (click)="dismiss()" ion-button tappable>
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-navbar>
+      </ion-header>
+      
+      <ion-content padding class="body">
+        <ion-navbar color="light" class="body">
+                <form #alterarForm="ngForm">
+                    <ng-container *ngIf="logado == null" >
+                    <ion-item>
+                        <ion-label position="fixed">USUÁRIO</ion-label>
+                        <ion-input name="nome" type="text" required  ></ion-input>
+                    </ion-item>
+                    </ng-container>
+                    <ion-item>
+                        <ion-label position="fixed">SENHA ATUAL:</ion-label>
+                        <ion-input name="nome" type="password" required  ></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="fixed">SENHA NOVA:</ion-label>
+                        <ion-input name="nome" type="password" required  ></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="fixed">CONFIMAR SENHA NOVA:</ion-label>
+                        <ion-input name="nome" type="password" required  ></ion-input>
+                    </ion-item>
+                    <button [disabled]="!alterarForm.valid" ion-button full color="secondary"  > Redefinir </button>
+                </form>
+        </ion-navbar>
+      </ion-content>

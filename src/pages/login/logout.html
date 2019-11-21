@@ -19,7 +19,7 @@
             <h2 text-center>{{usuario?.nome}}</h2>
             <p text-center>Username: {{usuario?.username}}</p>
             <p text-center>E-mail: {{usuario?.email}}</p>
-            <button  ion-button full color="secondary" >Alterar senha</button>
+            <button  ion-button full color="secondary" (click)="alterarSenha()">Alterar senha</button>
             <button  ion-button full color="secondary" (click)="sair()" >Sair</button>
     </ion-navbar>
   </ion-content>

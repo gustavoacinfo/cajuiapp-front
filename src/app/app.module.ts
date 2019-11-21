@@ -2,7 +2,7 @@ import { RecuperacaoService } from './../services/domain/recuperacao.service';
 import { AuthInterceptorProvider } from './../interceptors/auth-interceptor';
 import { UsuarioService } from './../services/domain/usuario.service';
 import { OfertaService } from './../services/domain/oferta.service';
-import { LogoutPage } from './../pages/login/login';
+import { LogoutPage, AlterarSenhaPage } from './../pages/login/login';
 import { AvaliacaoService } from './../services/domain/avaliacao.service';
 import { AdicionarRegistroPage, LancarFrequenciaPage, EditarRegistroPage } from './../pages/professor/registro-professor/registro-professor';
 import { MatriculaService } from './../services/domain/matricula.service';
@@ -35,7 +35,8 @@ import { NotaAlunoPage } from '../pages/professor/notas/notas';
     LogoutPage,
     LancarFrequenciaPage,
     EditarAvaliacaoPage,
-    NotaAlunoPage
+    NotaAlunoPage,
+    AlterarSenhaPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +53,8 @@ import { NotaAlunoPage } from '../pages/professor/notas/notas';
     LogoutPage,
     LancarFrequenciaPage,
     EditarAvaliacaoPage,
-    NotaAlunoPage
+    NotaAlunoPage,
+    AlterarSenhaPage
   ],
   providers: [
     StatusBar,
