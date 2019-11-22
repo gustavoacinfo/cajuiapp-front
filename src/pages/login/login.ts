@@ -1,6 +1,6 @@
 import { UsuarioService } from './../../services/domain/usuario.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController, AlertController, LoadingController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
@@ -156,22 +156,179 @@ export class AlterarSenhaPage {
 
   logado : Object;
 
+  usuario : UsuarioDTO;
+
+  recuperarSenha = {
+    username:"",
+    senhaAtual:"",
+    novaSenha:"",
+    confimacaoSenha:"",
+  }
+
+  creds : CredenciaisDTO = {
+    username: "",
+    senha: ""
+  };
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl : ViewController,
     public storage : StorageService,
     public usuarioService : UsuarioService,
-    public auth : AuthService) {
+    public auth : AuthService,
+    public alertCtrl : AlertController,
+    public loadingCtrl : LoadingController
+    ) {
   }
 
   ionViewDidLoad() {
 
     this.logado = this.storage.getLocalUser();
+
+    if(this.logado != null){
+      this.recuperarSenha.username = this.storage.getLocalUser().username;
+    }
     
   }
 
+  redefinir(){
+    
+      this.creds.username = this.recuperarSenha.username;
+      this.creds.senha = this.recuperarSenha.senhaAtual;
 
+      this.auth.authentication(this.creds)
+      .subscribe(response => {
+
+        let tamanhoSenha = this.recuperarSenha.novaSenha.length;
+
+        let igualAnterior = this.recuperarSenha.senhaAtual.localeCompare(this.recuperarSenha.novaSenha);
+
+        let igual = this.recuperarSenha.novaSenha.localeCompare(this.recuperarSenha.confimacaoSenha);
+
+        if(igualAnterior == 0){
+          this.showMesmaSenha();
+        }else
+        if(tamanhoSenha < 6){
+          this.showTamanhoSenha();
+        }else 
+        if(igual == 1){
+          this.showSenhaIgual();
+        }else{
+
+          this.usuarioService.findByUsername(this.recuperarSenha.username)
+          .subscribe(response => {
+            this.usuario = response;
+
+            if(this.usuario != null){
+
+              const loader = this.loadingCtrl.create({
+                content: "Alterando avaliacão..."
+              });
+              loader.present();
+
+              let timestamp = Math.floor(Date.now() / 1000)
+              this.usuario.updatedAt = JSON.parse(timestamp.toString());
+
+              if(this.usuario.perfis[0] = 'ALUNO'){
+                this.usuario.perfis[0] = 2;
+              }else{
+                this.usuario.perfis[0] = 1;
+              }
+              
+              this.usuario.id = '24';
+
+              this.usuario.authKey = this.recuperarSenha.novaSenha;
+
+              this.usuarioService.changeDados(this.usuario)
+              .subscribe(response => {
+                loader.dismiss();
+                switch(response.status) {
+                  case 200:
+                      this.handle200();
+                    break;
+                }
+              }, 
+              error => {
+                loader.dismiss();
+              });
+
+            }
+
+          },
+          error => {});
+
+        }
+
+
+
+      }, 
+      error => {});
+
+
+    
+    
+
+  }
+
+  handle200() {
+    let alert = this.alertCtrl.create({
+        title: 'Sucesso!',
+        message: 'Senha alterada com sucesso!',
+        enableBackdropDismiss: false,
+        buttons: [
+            {
+                text: 'Ok',
+                handler: () => {
+                  this.navCtrl.setRoot('LoginPage');
+                }
+            }
+        ]
+    });
+    alert.present();
+  }
+
+  showTamanhoSenha(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro! Nova senha inválida!',
+      message: 'A nova senha deve ter no mínimo 6 caracteres.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showSenhaIgual(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro! Senhas diferentes!',
+      message: 'A senha de confirmação está diferente.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showMesmaSenha(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro!',
+      message: 'A nova senha deve ser diferente da senha atual.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
 
 
   dismiss() {

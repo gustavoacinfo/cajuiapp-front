@@ -196,6 +196,10 @@ export class EditarRegistroPage {
 
   usuario : UsuarioDTO;
 
+  dataAtual : String;
+
+  horaAtual : String;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -213,6 +217,10 @@ export class EditarRegistroPage {
   }
 
   ionViewDidLoad() {
+
+    this.dataAtual = moment().format("YYYY-MM-DD");
+
+    this.horaAtual = moment().format('HH:mm');
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
@@ -365,6 +373,10 @@ export class AdicionarRegistroPage {
 
   quantRegistros : number;
 
+  dataAtual : String;
+
+  horaAtual : String;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -383,6 +395,10 @@ export class AdicionarRegistroPage {
   }
 
   ionViewDidLoad() {
+
+    this.dataAtual =  moment().format("YYYY-MM-DD");
+
+    this.horaAtual = moment().format('HH:mm');
 
     this.horaInicial = moment().format('HH:mm');
 

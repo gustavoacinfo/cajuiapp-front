@@ -47,8 +47,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     handle401() {
         let alert = this.alertCtrl.create({
-            title: "Erro: Falha de Autenticação",
-            message: "E-mail ou senha incorretos!",
+            title: "Erro!",
+            message: "Usuário ou senha incorretos!",
             enableBackdropDismiss: false,
             buttons: [
                 {

@@ -449,6 +449,8 @@ export class AdicionarAvaliacaoPage {
 
   usuario : UsuarioDTO;
 
+  dataAtual : String;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -467,6 +469,8 @@ export class AdicionarAvaliacaoPage {
   ionViewDidLoad() {
 
     this.avaliacao.dataAvaliacao = moment().format("YYYY-MM-DD");
+
+    this.dataAtual =  moment().format("YYYY-MM-DD");
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
@@ -572,6 +576,8 @@ export class EditarAvaliacaoPage {
 
   notas : NotaAvaliacaoDTO[];
 
+  dataAtual : String;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -591,6 +597,8 @@ export class EditarAvaliacaoPage {
   }
 
   ionViewDidLoad() {
+
+    this.dataAtual =  moment().format("YYYY-MM-DD");
 
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
     .subscribe(response => {

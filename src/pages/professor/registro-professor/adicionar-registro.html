@@ -18,11 +18,11 @@
             <form #adicionarForm="ngForm">
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
-                    <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
+                    <ion-datetime [max]="dataAtual" doneText="Ok" cancelText="Cancelar" [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label>HORA DE INÍCIO*:</ion-label>
-                    <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm" value ></ion-datetime>
+                    <ion-datetime [max]="horaAtual" doneText="Ok" cancelText="Cancelar" [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm" value ></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label position="fixed">Nº DE HORÁRIOS*:</ion-label>

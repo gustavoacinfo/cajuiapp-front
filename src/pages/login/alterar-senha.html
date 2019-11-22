@@ -13,24 +13,22 @@
       
       <ion-content padding class="body">
         <ion-navbar color="light" class="body">
-                <form #alterarForm="ngForm">
-                    <ng-container *ngIf="logado == null" >
+                <form (ngSubmit)="redefinir()" #alterarForm="ngForm">
                     <ion-item>
-                        <ion-label position="fixed">USUÁRIO</ion-label>
-                        <ion-input name="nome" type="text" required  ></ion-input>
+                        <ion-label position="fixed">USUÁRIO:</ion-label>
+                        <ion-input [(ngModel)]="recuperarSenha.username" name="usuario" type="text" required  ></ion-input>
                     </ion-item>
-                    </ng-container>
                     <ion-item>
                         <ion-label position="fixed">SENHA ATUAL:</ion-label>
-                        <ion-input name="nome" type="password" required  ></ion-input>
+                        <ion-input [(ngModel)]="recuperarSenha.senhaAtual" name="senhaAtual" type="password" required  ></ion-input>
                     </ion-item>
                     <ion-item>
-                        <ion-label position="fixed">SENHA NOVA:</ion-label>
-                        <ion-input name="nome" type="password" required  ></ion-input>
+                        <ion-label position="fixed">NOVA SENHA:</ion-label>
+                        <ion-input [(ngModel)]="recuperarSenha.novaSenha" name="novaSenha" type="password" required  ></ion-input>
                     </ion-item>
                     <ion-item>
-                        <ion-label position="fixed">CONFIMAR SENHA NOVA:</ion-label>
-                        <ion-input name="nome" type="password" required  ></ion-input>
+                        <ion-label position="fixed">CONFIMAR NOVA SENHA:</ion-label>
+                        <ion-input [(ngModel)]="recuperarSenha.confimacaoSenha" name="confirmacaoSenha" type="password" required  ></ion-input>
                     </ion-item>
                     <button [disabled]="!alterarForm.valid" ion-button full color="secondary"  > Redefinir </button>
                 </form>
