@@ -259,7 +259,7 @@ export class EditarRegistroPage {
       this.registro.professorOfertaId.id = this.profOferta.id;
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.updatedAt = JSON.parse(timestamp.toString());
-      this.registro.updatedBy = JSON.parse(this.usuario.id);
+      this.registro.updatedBy = this.usuario.id;
       this.registro.horaInicio = horaInicial;
       var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
       this.registro.horaFim = horaFim;

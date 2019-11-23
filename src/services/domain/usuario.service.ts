@@ -19,6 +19,7 @@ export class UsuarioService{
     }
 
     changeDados(usuario: Object) {
+        console.log(usuario);
         return this.http.put(
             `${API_CONFIG.baseUrl}/usuario`,
             usuario,

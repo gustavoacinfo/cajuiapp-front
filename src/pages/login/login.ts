@@ -230,14 +230,6 @@ export class AlterarSenhaPage {
               let timestamp = Math.floor(Date.now() / 1000)
               this.usuario.updatedAt = JSON.parse(timestamp.toString());
 
-              if(this.usuario.perfis[0] = 'ALUNO'){
-                this.usuario.perfis[0] = 2;
-              }else{
-                this.usuario.perfis[0] = 1;
-              }
-              
-              this.usuario.id = '24';
-
               this.usuario.authKey = this.recuperarSenha.novaSenha;
 
               this.usuarioService.changeDados(this.usuario)
