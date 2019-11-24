@@ -232,6 +232,13 @@ export class AlterarSenhaPage {
 
               this.usuario.authKey = this.recuperarSenha.novaSenha;
 
+              if(this.usuario.perfis === ["PROFESSOR"]){
+                this.usuario.perfis = [1];
+              }else{
+                 this.usuario.perfis = [2];
+               }
+              
+
               this.usuarioService.changeDados(this.usuario)
               .subscribe(response => {
                 loader.dismiss();
@@ -272,6 +279,7 @@ export class AlterarSenhaPage {
             {
                 text: 'Ok',
                 handler: () => {
+                  this.auth.logout();
                   this.navCtrl.setRoot('LoginPage');
                 }
             }

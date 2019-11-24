@@ -53,7 +53,7 @@ export interface ProfessorOfertaDTO{
                 nome : string;
             }
             nome : String;
-    
+            
     }
 }
 

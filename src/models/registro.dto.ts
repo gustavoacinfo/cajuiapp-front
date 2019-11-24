@@ -54,6 +54,7 @@ export interface RegistroDTO {
                     nome : string;
                 }
                 nome : String;
+                perfis: Array<any>;
         
         }
         }

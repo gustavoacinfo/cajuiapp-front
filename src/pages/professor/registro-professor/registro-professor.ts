@@ -49,7 +49,7 @@ export class RegistroProfessorPage {
     public loadingCtrl : LoadingController,
     public faltaService : FaltaService ) {
 
-    this.oferta = this.navParams.data.obj;
+    this.oferta = navParams.data.obj;
 
   }
 
@@ -220,8 +220,6 @@ export class EditarRegistroPage {
 
     this.dataAtual = moment().format("YYYY-MM-DD");
 
-    this.horaAtual = moment().format('HH:mm');
-
     this.usuarioService.findByUsername(this.storage.getLocalUser().username)
       .subscribe(response => {
         this.usuario = response;
@@ -241,7 +239,16 @@ export class EditarRegistroPage {
       this.registros = response;
       this.quantHorarios = this.registros.length;
       this.quantHorarioAnterior = this.quantHorarios;
-      this.horaInicial = this.registros[0].horaInicio;
+      let array = [];
+      for(let i=0; i<this.quantHorarios; i++){
+        array.push(this.registros[i].horaInicio);
+      }
+
+      array.sort();
+
+
+      this.horaInicial = array[0];
+
     },
     error => {});
 
@@ -263,10 +270,13 @@ export class EditarRegistroPage {
       this.registro.horaInicio = horaInicial;
       var horaFim = this.adicionaMinutos(horaInicial, this.equivaleHorario);
       this.registro.horaFim = horaFim;
+      this.registro.professorOfertaId.professorId.perfis = [1];
 
       const loader = this.loadingCtrl.create({
-        content: "Cadastrando "+ quantHorarios +" registros de aula..."
+        content: "Atualizando "+ quantHorarios +" registros de aula..."
       });
+
+      console.log(this.registro);
   
       loader.present();
         this.registroService.changeDados(this.registro)
@@ -291,7 +301,7 @@ export class EditarRegistroPage {
   showInsertOk(){
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
-      message: 'Cadastro efetuado com sucesso.',
+      message: 'Atualização realizada com sucesso.',
       enableBackdropDismiss: false,
       buttons: [
         {
@@ -322,6 +332,10 @@ export class EditarRegistroPage {
   home(){
     this.navCtrl.push('HomeProfessorPage');
   }
+
+  // atualiza(obj : Object){
+  //   this.navCtrl.setRoot('RegistroProfessorPage', obj)
+  // }
 
   dismiss() {
     this.viewCtrl.dismiss();
@@ -457,6 +471,8 @@ export class AdicionarRegistroPage {
       });
   
       loader.present();
+
+      console.log(this.registro.data)
         this.registroService.insert(this.registro)
           .subscribe(response => {
             loader.dismiss();
