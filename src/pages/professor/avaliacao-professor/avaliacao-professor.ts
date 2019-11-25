@@ -630,7 +630,10 @@ export class EditarAvaliacaoPage {
 
               this.notaAvaliacaoService.notasPorAvaliacao(this.avaliacao.id)
               .subscribe(response => {
+                console.log(response);
                 this.notas = response;
+
+                if(this.notas.length != 0 ){
   
                   for(let i=0; i<this.notas.length; i++){
                     this.notaAvaliacaoService.delete(parseInt(this.notas[i].id))
@@ -663,6 +666,28 @@ export class EditarAvaliacaoPage {
                     },
                     error => {});
                   }
+                }else{
+                  const loader = this.loadingCtrl.create({
+                    content: "Alterando avaliacão..."
+                  });
+                  loader.present();
+                  let timestamp = Math.floor(Date.now() / 1000)
+                  this.avaliacao.updatedAt = JSON.parse(timestamp.toString());
+                  this.avaliacao.updatedBy = JSON.parse(this.usuario.id); 
+                  this.avaliacaoService.changeDados(this.avaliacao)
+                    .subscribe(response => {
+                      loader.dismiss();
+                      switch(response.status) {
+                        case 200:
+                            this.handle200();
+                          break;
+                      }
+                    }, 
+                    error => {
+                      loader.dismiss();
+                    });
+
+                }
                
               },
               error => {});

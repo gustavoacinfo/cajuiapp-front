@@ -318,7 +318,7 @@ export class EditarRegistroPage {
   showInsertErro(){
     let alert = this.alertCtrl.create({
       title: 'Erro!',
-      message: 'Não é possivel alterar a quantidade de horários. Exclua o registro e cadastre um novo com a quantidade desejada!',
+      message: 'Não é possivel alterar a quantidade de horários. Exclua os registros e cadastre um novo com a quantidade desejada!',
       enableBackdropDismiss: false,
       buttons: [
         {
