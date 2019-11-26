@@ -1,3 +1,4 @@
+import { ContratoService } from './../services/domain/contrato.service';
 import { RecuperacaoService } from './../services/domain/recuperacao.service';
 import { AuthInterceptorProvider } from './../interceptors/auth-interceptor';
 import { UsuarioService } from './../services/domain/usuario.service';
@@ -72,7 +73,8 @@ import { NotaAlunoPage } from '../pages/professor/notas/notas';
     AuthService,
     StorageService,
     UsuarioService,
-    RecuperacaoService
+    RecuperacaoService,
+    ContratoService
   ],
 })
 export class AppModule {}

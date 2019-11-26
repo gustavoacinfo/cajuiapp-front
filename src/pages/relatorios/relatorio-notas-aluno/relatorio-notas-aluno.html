@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>
+      <img (click)="home()"  src="assets/imgs/logo.png" alt="logo">
+    </ion-title>
+    <ion-buttons end>
+      <button (click)="logout()" ion-button tappable>
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="body">
+    <ion-navbar color="light" class="body">
+      <ng-container *ngIf="usuario != null && contrato != null" >
+          <h5><ion-icon name="clipboard"></ion-icon> Relatório de Notas</h5>
+          <hr>
+          <h6> Nome: {{usuario.nome}}</h6>
+          <h6> Curso: {{contrato.ocorrenciaCursoId.cursoId.sigla}} - {{contrato.ocorrenciaCursoId.cursoId.nome}}</h6>
+          <h6> Turma: {{contrato.turmaId.nome}}</h6>
+          <hr>
+      </ng-container>
+
+      <p>Selecione uma disciplina:</p>
+      <ion-item>
+          <ion-label>Disciplinas</ion-label>
+          <ion-select [(ngModel)]="profOfertaId">
+            <ion-option *ngFor="let item of items" [value]="item.id" > {{item.ofertaId.curriculoId.disciplinaId.nome}}</ion-option>
+          </ion-select>
+      </ion-item>
+      <button ion-button small (click)="relatorioNotas()" color="secondary">GERAR</button>
+      
+    </ion-navbar>
+
+  
+</ion-content>

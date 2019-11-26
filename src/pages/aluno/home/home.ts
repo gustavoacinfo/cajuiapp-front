@@ -23,8 +23,6 @@ export class HomePage {
 
   usuario : UsuarioDTO;
 
-  pdfNotas = null;
-
   constructor(
     public navCtrl: NavController, 
     public NavParams: NavParams,
@@ -32,8 +30,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     public storage : StorageService,
     public alertCtrl : AlertController,
-    public usuarioService : UsuarioService, 
-    private plt: Platform) {
+    public usuarioService : UsuarioService) {
 
 
   }
@@ -81,61 +78,14 @@ export class HomePage {
     this.navCtrl.push('DisciplinaPage', {obj});
   }
 
+  relatorioNotas(){
+    this.navCtrl.push('RelatorioNotasAlunoPage')
+  }
+
   logout(){
     let modal = this.modalCtrl.create(LogoutPage);
     modal.present();
   }
-
-  createPdfNotas() {
-    var docDefinition = {
-      content: [
-        { text: 'RESUMO DE NOTAS POR DISCIPLINAS', style: 'header' },
-        { text: new Date().toTimeString(), alignment: 'right' },
-
-        { text: 'Aluno: '+ this.usuario.nome , style: 'subheader' },
-        { text: 'E-mail: '+ this.usuario.email , style: 'subheader' },
-        
-        { text: 'Notas por Disciplinas', style: 'story', margin: [0, 20, 0, 20] },
-
-      ],
-      styles: {
-        header: {
-          fontSize: 14,
-          bold: true,
-        },
-        subheader: {
-          fontSize: 12,
-          bold: true,
-          margin: [0, 15, 0, 0]
-        },
-        story: {
-          italic: true,
-          alignment: 'center',
-          width: '50%',
-        }
-      }
-    }
-    this.pdfNotas = pdfMake.createPdf(docDefinition);
-  }
-
-  downloadPdf() {
-    this.createPdfNotas();
-    if (this.plt.is('cordova')) {
-      this.pdfNotas.getBuffer((buffer) => {
-
-        // Save the PDF to the data Directory of our App
-        // this.file.writeFile(this.file.dataDirectory, 'myletter.pdf', blob, { replace: true }).then(fileEntry => {
-        //   // Open the PDf with the correct OS tools
-        //   this.fileOpener.open(this.file.dataDirectory + 'myletter.pdf', 'application/pdf');
-        // })
-      });
-    } else {
-      // On a browser simply use download!
-      this.pdfNotas.download();
-    }
-  }
-
-
 
 }
 
