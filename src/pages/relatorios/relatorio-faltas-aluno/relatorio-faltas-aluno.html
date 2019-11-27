@@ -14,7 +14,7 @@
   <ion-content padding class="body">
       <ion-navbar color="light" class="body">
           <ng-container *ngIf="usuario != null && contrato != null" >
-              <h5><ion-icon name="clipboard"></ion-icon> Relatório de Notas</h5>
+              <h5><ion-icon name="clipboard"></ion-icon> Relatório de Faltas</h5>
               <hr>
               <h6> Nome: {{usuario.nome}}</h6>
               <h6> Curso: {{contrato.ocorrenciaCursoId.cursoId.sigla}} - {{contrato.ocorrenciaCursoId.cursoId.nome}}</h6>
@@ -36,7 +36,30 @@
           <ion-navbar color="light" class="body">
             <h5>{{profOfertaId.ofertaId.curriculoId.disciplinaId.nome}}</h5>
             <hr>
-            
+            <p *ngIf="taxaFrequencia == 0"> Ainda não possui frequências para gerar relatório!</p>
+            <ion-item *ngIf="taxaFrequencia > 0" >
+                <ion-icon name="stats" item-start></ion-icon>
+                Frequências lançadas:
+                <ion-badge  item-end>{{quantFrequencia}}</ion-badge>
+              </ion-item>
+            <ion-item *ngIf="taxaFrequencia > 0" >
+              <ion-icon name="stats" item-start></ion-icon>
+              Porcentagem de Faltas:
+              <ion-badge *ngIf="taxaFrequencia >= 25" color="danger" item-end>{{taxaFrequencia}} %</ion-badge>
+              <ion-badge *ngIf="taxaFrequencia < 25" color="secondary" item-end>{{taxaFrequencia}} %</ion-badge>
+            </ion-item>
+            <ion-item *ngIf="taxaFrequencia > 0" >
+                <ion-icon name="thumbs-down" item-start></ion-icon>
+                Número de Faltas:
+                <ion-badge color="danger" item-end>{{numFaltas}}</ion-badge>
+            </ion-item>
+            <ng-container *ngIf="taxaFrequencia > 0" >
+                <h5><ion-icon name="stats" item-start></ion-icon>
+                  Datas e Horários das Faltas </h5>
+            <ion-item *ngFor="let item of datasFaltas" >
+                <h6 style="text-align: center;"> <ion-icon name="fastforward" item-start></ion-icon> {{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}} - De {{item.registroId.horaInicio}} ás {{item.registroId.horaFim}}</h6>
+            </ion-item>
+          </ng-container>
           </ion-navbar>
         </ng-container>
   
