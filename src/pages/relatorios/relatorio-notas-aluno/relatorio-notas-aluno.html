@@ -29,7 +29,7 @@
             <ion-option *ngFor="let item of items" [value]="item" > {{item.ofertaId.curriculoId.disciplinaId.nome}}</ion-option>
           </ion-select>
       </ion-item>
-      <button ion-button small (click)="relatorioNotas()" color="secondary">GERAR</button>
+      <button ion-button small (click)="relatorioNotas()" color="secondary">ATUALIZAR</button>
     </ion-navbar>
     <br>
     <ng-container *ngIf="profOfertaId != null" >

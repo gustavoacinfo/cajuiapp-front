@@ -138,9 +138,6 @@ export class RelatorioNotasAlunoPage {
         },
         error => {});
 
-        
-
-
   }
 
   logout(){

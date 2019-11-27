@@ -77,7 +77,11 @@ export class HomePage {
   }
 
   relatorioNotas(){
-    this.navCtrl.push('RelatorioNotasAlunoPage')
+    this.navCtrl.push('RelatorioNotasAlunoPage');
+  }
+
+  relatorioFaltas(){
+    this.navCtrl.push('RelatorioFaltasAlunoPage');
   }
 
   logout(){
