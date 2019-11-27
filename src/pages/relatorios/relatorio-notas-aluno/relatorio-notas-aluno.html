@@ -26,12 +26,48 @@
       <ion-item>
           <ion-label>Disciplinas</ion-label>
           <ion-select [(ngModel)]="profOfertaId">
-            <ion-option *ngFor="let item of items" [value]="item.id" > {{item.ofertaId.curriculoId.disciplinaId.nome}}</ion-option>
+            <ion-option *ngFor="let item of items" [value]="item" > {{item.ofertaId.curriculoId.disciplinaId.nome}}</ion-option>
           </ion-select>
       </ion-item>
       <button ion-button small (click)="relatorioNotas()" color="secondary">GERAR</button>
-      
     </ion-navbar>
+    <br>
+    <ng-container *ngIf="profOfertaId != null" >
+      <ion-navbar color="light" class="body">
+        <h5>{{profOfertaId.ofertaId.curriculoId.disciplinaId.nome}}</h5>
+        <hr>
+        <p *ngIf="aproveitamento == 0"> Ainda não possui notas para gerar relatório!</p>
+        <ion-item *ngIf="aproveitamento > 0" >
+          <ion-icon name="medal" item-start></ion-icon>
+          Aproveitamento:
+          <ion-badge *ngIf="aproveitamento < 40" color="danger" item-end>{{aproveitamento}} %</ion-badge>
+          <ion-badge *ngIf="aproveitamento >= 40 && aproveitamento < 60" color="orange" item-end>{{aproveitamento}} %</ion-badge>
+          <ion-badge *ngIf="aproveitamento >= 60" color="secondary" item-end>{{aproveitamento}} %</ion-badge>
+        </ion-item>
+        <ion-item *ngIf="aproveitamento > 0" >
+            <ion-icon name="trending-up" item-start></ion-icon>
+            Pontos alcançados:
+            <ion-badge color="secondary" item-end>{{pontosObtidos}}</ion-badge>
+        </ion-item>
+        <ion-item *ngIf="aproveitamento > 0" >
+            <ion-icon name="trending-down" item-start></ion-icon>
+            Pontos perdidos:
+            <ion-badge color="danger" item-end>{{pontosDistribuidos - pontosObtidos}}</ion-badge>
+        </ion-item>
+        <ion-item *ngIf="aproveitamento > 0" >
+            <ion-icon name="thumbs-up" item-start></ion-icon>
+            Maior pontuação:
+            <ion-badge color="secondary" item-end>{{maiorNota}}</ion-badge>
+        </ion-item>
+        <ion-item *ngIf="aproveitamento > 0" >
+            <ion-icon name="thumbs-down" item-start></ion-icon>
+            Menor pontuação:
+            <ion-badge color="danger" item-end>{{menorNota}}</ion-badge>
+        </ion-item>
+        <ion-item  *ngIf="aproveitamento > 0" >
+            <button ion-button full (click)="verNotas(profOfertaId)" >VER NOTAS</button>
+        </ion-item>
+      </ion-navbar>
+    </ng-container>
 
-  
 </ion-content>

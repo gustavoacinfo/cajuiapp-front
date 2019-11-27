@@ -1,14 +1,12 @@
 import { UsuarioService } from './../../../services/domain/usuario.service';
 import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams, ModalController, AlertController, Platform } from 'ionic-angular';
+import { NavController, IonicPage, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { ProfessorOfertaService } from '../../../services/domain/professoroferta.service';
 import { ProfessorOfertaDTO } from '../../../models/professoroferta.dto';
 import { LogoutPage } from '../../login/login';
 import { StorageService } from '../../../services/storage.service';
 import { UsuarioDTO } from '../../../models/usuario.dto';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 @IonicPage()
 @Component({
