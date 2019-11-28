@@ -28,6 +28,7 @@
                 <ion-col col-8><b>Aluno</b></ion-col>
                 <ion-col col-3><b>Ação</b></ion-col>
               </ion-row>
+              <p *ngIf="quantAlunos == 0" > Não existem alunos matriculados nessa disciplina!</p>
               <div *ngFor="let item of matriculas; let i = index">
               <ion-row>
                 <ion-col col-1>

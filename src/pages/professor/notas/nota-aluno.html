@@ -28,6 +28,7 @@
                   <ion-col col-2><b>Nota</b></ion-col>
                 </ion-row>
                 <hr>
+                <p *ngIf="quantAvaliacoes == 0">Não foram lançadas notas para esse aluno!</p>
                 <div *ngFor="let item of items; let i = index">
                 <ion-row>
                   <ion-col col-1>
@@ -64,7 +65,7 @@
                   
                 </ion-col>
                 <ion-col col-4> 
-                  <p><b>Situação:</b></p>
+                  <p><b>Status atual:</b></p>
                 </ion-col>
                 <ion-col col-5>
                   <p *ngIf="situacao == 0" style="color: red"> <b> REPROVADO POR FALTA</b> </p>

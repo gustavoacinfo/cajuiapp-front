@@ -36,4 +36,19 @@
         </button>
       </div>
     </ion-navbar>
+    <br>
+      <ion-navbar color="light" class="body">
+        <h5><ion-icon name="clipboard"></ion-icon> Relatórios </h5>
+        <hr>
+        <ion-list>
+            <button ion-item detail="true" (click)="relatorioFrequencia(items)">
+              <h4  style="font-size: 17px;"> <b> Relatório de Frequência </b> </h4>
+              <h6 style="text-align: right; color: blue;"> ACESSAR</h6>
+            </button>
+            <button ion-item detail="true" >
+              <h4  style="font-size: 17px;"> <b> Relatório de Faltas </b> </h4>
+              <h6 style="text-align: right; color: blue;">ACESSAR </h6>
+            </button>
+        </ion-list>
+    </ion-navbar>
   </ion-content>

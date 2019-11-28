@@ -17,18 +17,25 @@
           <h6 style="text-align: right; color: gray;">Pontos restantes: {{100 - pontosDistribuidos}}</h6>
           <hr>
             <form #adicionarForm="ngForm">
+                <p>* Campos obrigatórios.</p>
                 <ion-item>
                     <ion-label position="fixed">AVALIAÇÃO*:</ion-label>
-                    <ion-textarea [(ngModel)]="avaliacao.nome" name="nome" required #nome="ngModel" rows="2"></ion-textarea>
+                    <ion-textarea [(ngModel)]="avaliacao.nome" name="nome" required #nome="ngModel" minlength="5" rows="2"></ion-textarea>
                 </ion-item>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="nome.invalid">Informe o nome da avaliação (5 ou mais caracteres)</div>
+
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
                     <ion-datetime [max]="dataAtual" doneText="Ok" cancelText="Cancelar" [(ngModel)]="avaliacao.dataAvaliacao" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="data.invalid">Informe a data</div>
+
                 <ion-item>
                     <ion-label position="fixed">MÁX. PONTOS*:</ion-label>
-                    <ion-input [(ngModel)]="avaliacao.maxPontos" name="maxpontos" required #maxpontos="ngModel" type="number" [max]="100 - pontosDistribuidos"></ion-input>
+                    <ion-input [(ngModel)]="avaliacao.maxPontos" name="maxpontos" required #maxpontos="ngModel" type="number" [min]="1" [max]="100 - pontosDistribuidos"></ion-input>
                 </ion-item>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="maxpontos.invalid">Informe o valor máximo</div>
+
                 <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" (click)="salvarAvaliacao()" >Cadastrar</button>
             </form>
         </ion-navbar>

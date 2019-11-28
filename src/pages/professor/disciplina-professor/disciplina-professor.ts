@@ -74,6 +74,10 @@ export class DisciplinaProfessorPage {
     this.navCtrl.push('NotasPage', {obj});
   }
 
+  relatorioFrequencia(obj : Object){
+    this.navCtrl.push('RelatorioFrequenciaProfessorPage', {obj});
+  }
+
   home(){
     this.navCtrl.push('HomeProfessorPage');
   }

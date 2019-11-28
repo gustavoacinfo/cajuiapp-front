@@ -200,6 +200,8 @@ export class EditarRegistroPage {
 
   horaAtual : String;
 
+  arrayId : Array<number>;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -217,6 +219,8 @@ export class EditarRegistroPage {
   }
 
   ionViewDidLoad() {
+
+    this.arrayId = new Array();
 
     this.dataAtual = moment().format("YYYY-MM-DD");
 
@@ -242,7 +246,11 @@ export class EditarRegistroPage {
       let array = [];
       for(let i=0; i<this.quantHorarios; i++){
         array.push(this.registros[i].horaInicio);
+        this.arrayId.push(parseInt(this.registros[i].id));
       }
+
+      this.arrayId.sort(this.compararNumeros);
+
 
       array.sort();
 
@@ -262,7 +270,9 @@ export class EditarRegistroPage {
     }else{
 
     for(let i=0; i<quantHorarios; i++){
-      this.registro.id = this.registros[i].id;
+      
+      this.registro.id = this.arrayId[0].toString();
+      this.arrayId.splice(0, 1);
       this.registro.professorOfertaId.id = this.profOferta.id;
       let timestamp = Math.floor(Date.now() / 1000)
       this.registro.updatedAt = JSON.parse(timestamp.toString());
@@ -275,8 +285,6 @@ export class EditarRegistroPage {
       const loader = this.loadingCtrl.create({
         content: "Atualizando "+ quantHorarios +" registros de aula..."
       });
-
-      console.log(this.registro);
   
       loader.present();
         this.registroService.changeDados(this.registro)
@@ -317,7 +325,7 @@ export class EditarRegistroPage {
 
   showInsertErro(){
     let alert = this.alertCtrl.create({
-      title: 'Erro!',
+      title: 'Erro no número de horários!',
       message: 'Não é possivel alterar a quantidade de horários. Exclua os registros e cadastre um novo com a quantidade desejada!',
       enableBackdropDismiss: false,
       buttons: [
@@ -333,10 +341,6 @@ export class EditarRegistroPage {
     this.navCtrl.push('HomeProfessorPage');
   }
 
-  // atualiza(obj : Object){
-  //   this.navCtrl.setRoot('RegistroProfessorPage', obj)
-  // }
-
   dismiss() {
     this.viewCtrl.dismiss();
   }
@@ -344,6 +348,10 @@ export class EditarRegistroPage {
   adicionaMinutos(hora : string, minutos : string){
     const horario = moment(hora, "HH:mm").add(minutos,"minutes").toLocaleString().substring(16,24);
     return horario;
+  }
+
+  compararNumeros(a, b) {
+    return a - b;
   }
 
  
@@ -451,7 +459,7 @@ export class AdicionarRegistroPage {
 
   salvarRegistro(quantHorarios : number, horaInicial : string){
 
-    if(quantHorarios > (this.profOferta.ofertaId.curriculoId.disciplinaId.horaAula - this.quantRegistros)){
+    if(quantHorarios > (this.profOferta.ofertaId.curriculoId.disciplinaId.horaAula - this.quantRegistros) || quantHorarios <= 0){
       this.showInsertQuantRegistros();
     }else{
 
@@ -472,7 +480,6 @@ export class AdicionarRegistroPage {
   
       loader.present();
 
-      console.log(this.registro.data)
         this.registroService.insert(this.registro)
           .subscribe(response => {
             loader.dismiss();
@@ -525,7 +532,7 @@ export class AdicionarRegistroPage {
 
   showInsertQuantRegistros(){
     let alert = this.alertCtrl.create({
-      title: 'Erro!',
+      title: 'Erro! Quantidade de horários inválida!',
       message: 'Não é possível salvar essa quantidade de registros.',
       enableBackdropDismiss: false,
       buttons: [

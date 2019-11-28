@@ -488,7 +488,7 @@ export class AdicionarAvaliacaoPage {
   }
 
   salvarAvaliacao(){
-    if(parseInt(this.avaliacao.maxPontos) > (100 - this.pontosDistribuidos)){
+    if(parseInt(this.avaliacao.maxPontos) > (100 - this.pontosDistribuidos) || parseInt(this.avaliacao.maxPontos) <= 0){
       this.showInsertNotaMaior();
     }else{
 
@@ -535,7 +535,7 @@ export class AdicionarAvaliacaoPage {
   showInsertNotaMaior(){
     let alert = this.alertCtrl.create({
       title: 'Erro! Valor de avaliação inválido!',
-      message: 'Não é possível salvar a avaliação com nota máxima acima da quantidade de pontos restantes.',
+      message: 'Não é possível salvar a avaliação com nota máxima 0 ou acima da quantidade de pontos restantes.',
       enableBackdropDismiss: false,
       buttons: [
         {
@@ -617,6 +617,9 @@ export class EditarAvaliacaoPage {
   }
 
   editarAvaliacao() {
+    if(this.avaliacao.maxPontos > (100 - this.pontosDistribuidos) || this.avaliacao.maxPontos <= 0){
+      this.showInsertNotaMaior();
+    }else
     if(this.valorAntes != this.avaliacao.maxPontos){
      
       let alert = this.alertCtrl.create({
@@ -630,7 +633,6 @@ export class EditarAvaliacaoPage {
 
               this.notaAvaliacaoService.notasPorAvaliacao(this.avaliacao.id)
               .subscribe(response => {
-                console.log(response);
                 this.notas = response;
 
                 if(this.notas.length != 0 ){
@@ -739,6 +741,20 @@ export class EditarAvaliacaoPage {
                 }
             }
         ]
+    });
+    alert.present();
+  }
+
+  showInsertNotaMaior(){
+    let alert = this.alertCtrl.create({
+      title: 'Erro! Valor de avaliação inválido!',
+      message: 'Não é possível salvar a avaliação com nota máxima 0 ou acima da quantidade de pontos restantes.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
     });
     alert.present();
   }

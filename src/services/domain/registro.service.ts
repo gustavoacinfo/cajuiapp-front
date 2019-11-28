@@ -20,7 +20,6 @@ export class RegistroService{
     }
 
     insert(obj : Object){
-        console.log(obj);
         return this.http.post(
             `${API_CONFIG.baseUrl}/registro`,
             obj,

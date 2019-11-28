@@ -16,23 +16,32 @@
           <h5>Cadastrar Registro de Aula</h5>
           <hr>
             <form #adicionarForm="ngForm">
+                <p>* Campos obrigatórios.</p>
                 <ion-item>
                     <ion-label>DATA*:</ion-label>
                     <ion-datetime [max]="dataAtual" doneText="Ok" cancelText="Cancelar" [(ngModel)]="registro.data" name="data" required #data="ngModel" displayFormat="DD/MM/YY" placeholder="dd/mm/yy"></ion-datetime>
                 </ion-item>
                 <ion-item>
+                    <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="data.invalid">Informe o data</div>
+
                     <ion-label>HORA DE INÍCIO*:</ion-label>
                     <ion-datetime doneText="Ok" cancelText="Cancelar" [(ngModel)]="horaInicial" name="horaInicio" required #horaInicio="ngModel" displayFormat="HH:mm" value ></ion-datetime>
                 </ion-item>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="horaInicio.invalid">Informe o hora de início</div>
+
                 <ion-item>
                     <ion-label position="fixed">Nº DE HORÁRIOS*:</ion-label>
-                    <ion-input [(ngModel)]="quantHorarios" name="horarios" required #horarios="ngModel"></ion-input>
+                    <ion-input [(ngModel)]="quantHorarios" name="horarios" type="number" [min]="1" required #horarios="ngModel"></ion-input>
                 </ion-item>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="horarios.invalid">Informe o número de horários (No mínimo 1)</div>
+
                 <ion-item>
                     <ion-label position="floating">CONTEÚDO*:</ion-label>
-                    <ion-textarea [(ngModel)]="registro.descricao" name="descricao" required #descricao="ngModel" rows="3"></ion-textarea>
+                    <ion-textarea [(ngModel)]="registro.descricao" name="descricao" minlength="5" required #descricao="ngModel" rows="3"></ion-textarea>
                 </ion-item>
-                <button ion-button full color="secondary" (click)="salvarRegistro(quantHorarios, horaInicial)" >Cadastrar</button>
+                <div style="margin-left: 15px; color: red; font-size: 14px"  *ngIf="descricao.invalid">Informe o conteúdo (5 ou mais caracteres)</div>
+
+                <button [disabled]="!adicionarForm.valid" ion-button full color="secondary" (click)="salvarRegistro(quantHorarios, horaInicial)" >Cadastrar</button>
             </form>
         </ion-navbar>
       </ion-content>
