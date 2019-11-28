@@ -18,8 +18,9 @@
           <h5><ion-icon name="document"></ion-icon> Avaliações</h5>
           <hr>
           <h6 *ngIf="quantAvaliacoes == 0" ><ion-icon name="alert"></ion-icon> Ainda não foram lançadas notas das avaliações!</h6>
+          <ion-searchbar placeholder="Pesquisar descrição" (ionInput)="getItems($event)"></ion-searchbar>
           <ion-list>
-            <ion-item *ngFor="let item of items">
+            <ion-item *ngFor="let item of itemsFilter">
               <h6 style="text-align: float left;"> Avaliação: <b>{{item.avaliacaoId.nome}}</b> </h6>
               <h6 style="text-align: float right;"> Max. Pontos: <b>{{item.avaliacaoId.maxPontos}}</b></h6>
               <h6 style="text-align: float left;">Data: <b> {{item.avaliacaoId.dataAvaliacao.substring(8,10)}}/{{item.avaliacaoId.dataAvaliacao.substring(5,7)}}/{{item.avaliacaoId.dataAvaliacao.substring(0,4)}}</b>  </h6>

@@ -54,6 +54,7 @@ export class RelatorioFrequenciaProfessorPage {
     public faltaService : FaltaService) {
 
       this.profOferta = navParams.data.obj;
+
   }
 
   ngOnInit() {
@@ -71,8 +72,10 @@ export class RelatorioFrequenciaProfessorPage {
     .subscribe(response => {
       this.matriculas = response;
       this.quantAlunos = this.matriculas.length;
-      this.alunoId = this.matriculas[0];
-      this.relatorioFrequencia();
+      if(this.quantAlunos > 0){
+        this.alunoId = this.matriculas[0];
+        this.relatorioFrequencia();
+      }
     },
     error => {});
 
@@ -80,31 +83,35 @@ export class RelatorioFrequenciaProfessorPage {
 
   relatorioFrequencia(){
 
-    
-    this.datasFaltas.length = 0;
+    if(this.quantAlunos > 0){
 
-    this.faltaService.faltasPorOferta(this.profOferta.ofertaId.id, this.alunoId.contratoId.alunoId.id)
-    .subscribe(response => {
-      this.faltas = response;
-      this.quantFrequencia = this.faltas.length;
-      let falta = 0;
-      for(let i=0; i<this.quantFrequencia; i++){
-        if(this.faltas[i].presenca === false){
-          falta = falta + 1;
-          this.adicionaFaltas(this.faltas[i]);
+      this.datasFaltas.length = 0;
+
+      this.faltaService.faltasPorOferta(this.profOferta.ofertaId.id, this.alunoId.contratoId.alunoId.id)
+      .subscribe(response => {
+        this.faltas = response;
+        this.quantFrequencia = this.faltas.length;
+        let falta = 0;
+        for(let i=0; i<this.quantFrequencia; i++){
+          if(this.faltas[i].presenca === false){
+            falta = falta + 1;
+            this.adicionaFaltas(this.faltas[i]);
+          }
         }
-      }
-
-
-      if(this.quantFrequencia > 0){
-        this.numFaltas = falta;
-        this.taxaFrequencia = (this.numFaltas * 100) / this.quantFrequencia;
-      }else{
-        this.taxaFrequencia = 0;
-      }
-      
-    },
-    error => {});
+  
+  
+        if(this.quantFrequencia > 0){
+          this.numFaltas = falta;
+          this.taxaFrequencia = (this.numFaltas * 100) / this.quantFrequencia;
+        }else{
+          this.taxaFrequencia = 0;
+        }
+        
+      },
+      error => {});
+    }
+    
+   
 
   }
 

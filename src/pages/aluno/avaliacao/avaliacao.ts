@@ -33,6 +33,8 @@ export class AvaliacaoPage {
 
   items : NotaAvaliacaoDTO[];
 
+  itemsFilter : NotaAvaliacaoDTO[];
+
   pontosDistribuidos : number;
 
   pontosObtidos : number;
@@ -90,6 +92,7 @@ export class AvaliacaoPage {
         .subscribe(response => {
           this.items = response;
           this.quantAvaliacoes = this.items.length;
+          this.initializeItems();
         },
         error => {});
 
@@ -203,6 +206,20 @@ export class AvaliacaoPage {
 
     
 
+  }
+
+  initializeItems() {
+    this.itemsFilter = this.items;
+  }
+
+  getItems(ev: any) {
+    this.initializeItems();
+    const val = ev.target.value;
+    if (val && val.trim() != '') {
+      this.itemsFilter = this.itemsFilter.filter((item) => {
+        return (item.avaliacaoId.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   home(){

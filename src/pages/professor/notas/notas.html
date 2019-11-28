@@ -20,6 +20,7 @@
     <p> Pontos distribuidos: {{pontosDistribuidos}}</p>
     <p style="text-align: right;">Total {{quantAlunos}} itens</p>
     <hr>
+    <ion-searchbar placeholder="Pesquisar descrição" (ionInput)="getItems($event)"></ion-searchbar>
     <ion-list>
           <div>
             <ion-grid>
@@ -29,7 +30,7 @@
                 <ion-col col-3><b>Ação</b></ion-col>
               </ion-row>
               <p *ngIf="quantAlunos == 0" > Não existem alunos matriculados nessa disciplina!</p>
-              <div *ngFor="let item of matriculas; let i = index">
+              <div *ngFor="let item of itemsFilter; let i = index">
               <ion-row>
                 <ion-col col-1>
                   {{i+1}}

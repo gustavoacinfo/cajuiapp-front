@@ -34,6 +34,8 @@ export class RegistroProfessorPage {
 
   items : RegistroDTO[];
 
+  itemsFilter : RegistroDTO[];
+
   iguais : RegistroDTO[];
 
   quantRegistros : number;
@@ -59,6 +61,7 @@ export class RegistroProfessorPage {
     .subscribe(response => {
       this.items = response;
       this.quantRegistros = this.items.length;
+      this.initializeItems();
     },
     error => {});
   }
@@ -70,6 +73,20 @@ export class RegistroProfessorPage {
   editarRegistro(obj : Object){
     let modal = this.modalCtrl.create(EditarRegistroPage, {obj});
     modal.present();
+  }
+
+  initializeItems() {
+    this.itemsFilter = this.items;
+  }
+
+  getItems(ev: any) {
+    this.initializeItems();
+    const val = ev.target.value;
+    if (val && val.trim() != '') {
+      this.itemsFilter = this.itemsFilter.filter((item) => {
+        return (item.descricao.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   excluirRegistro(registro : Object, registroId : Number){

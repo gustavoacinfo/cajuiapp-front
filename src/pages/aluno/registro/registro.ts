@@ -26,9 +26,9 @@ export class RegistroPage {
 
   oferta : ProfessorOfertaDTO;
 
-  items : RegistroDTO[];
-
   faltas : FaltaDTO[];
+
+  itemsFilter : FaltaDTO[];
 
   quantFalta : number;
 
@@ -61,14 +61,27 @@ export class RegistroPage {
         .subscribe(response => {
           this.faltas = response;
           this.quantFrequencia = this.faltas.length;
+          this.initializeItems();
         },
         error => {});
 
       },
       error => {});
 
-    
+  }
 
+  initializeItems() {
+    this.itemsFilter = this.faltas;
+  }
+
+  getItems(ev: any) {
+    this.initializeItems();
+    const val = ev.target.value;
+    if (val && val.trim() != '') {
+      this.itemsFilter = this.itemsFilter.filter((item) => {
+        return (item.registroId.descricao.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
 

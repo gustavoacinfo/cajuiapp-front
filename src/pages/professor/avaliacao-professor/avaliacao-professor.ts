@@ -33,6 +33,8 @@ export class AvaliacaoProfessorPage {
 
   items : AvaliacaoDTO[];
 
+  itemsFilter : AvaliacaoDTO[];
+
   notas : NotaAvaliacaoDTO[];
 
   quantAvaliacoes : number;
@@ -66,6 +68,7 @@ export class AvaliacaoProfessorPage {
         .subscribe(response => {
           this.items = response;
           this.quantAvaliacoes = this.items.length;
+          this.initializeItems();
         },
         error => {});
 
@@ -83,6 +86,20 @@ export class AvaliacaoProfessorPage {
       },
       error => {});
 
+  }
+
+  initializeItems() {
+    this.itemsFilter = this.items;
+  }
+
+  getItems(ev: any) {
+    this.initializeItems();
+    const val = ev.target.value;
+    if (val && val.trim() != '') {
+      this.itemsFilter = this.itemsFilter.filter((item) => {
+        return (item.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   home(){

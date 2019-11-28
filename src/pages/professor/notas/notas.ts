@@ -33,6 +33,8 @@ export class NotasPage {
 
   matriculas : MatriculaDTO[];
 
+  itemsFilter : MatriculaDTO[];
+
   quantAlunos : number;
 
   usuario : UsuarioDTO;
@@ -79,6 +81,7 @@ export class NotasPage {
     .subscribe(response => {
       this.matriculas = response;
       this.quantAlunos = this.matriculas.length;
+      this.initializeItems();
     },
     error => {});
   }
@@ -86,6 +89,20 @@ export class NotasPage {
   verAluno(obj : Object){
     let modal = this.modalCtrl.create(NotaAlunoPage, {obj});
     modal.present();
+  }
+
+  initializeItems() {
+    this.itemsFilter = this.matriculas;
+  }
+
+  getItems(ev: any) {
+    this.initializeItems();
+    const val = ev.target.value;
+    if (val && val.trim() != '') {
+      this.itemsFilter = this.itemsFilter.filter((item) => {
+        return (item.contratoId.alunoId.nome.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   
