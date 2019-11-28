@@ -45,8 +45,8 @@
             <ion-item *ngIf="taxaFrequencia > 0" >
               <ion-icon name="stats" item-start></ion-icon>
               Porcentagem de Faltas:
-              <ion-badge *ngIf="taxaFrequencia >= 25" color="danger" item-end>{{taxaFrequencia}} %</ion-badge>
-              <ion-badge *ngIf="taxaFrequencia < 25" color="secondary" item-end>{{taxaFrequencia}} %</ion-badge>
+              <ion-badge *ngIf="taxaFrequencia >= 25" color="danger" item-end>{{taxaFrequencia.toPrecision(4)}} %</ion-badge>
+              <ion-badge *ngIf="taxaFrequencia < 25" color="secondary" item-end>{{taxaFrequencia.toPrecision(4)}} %</ion-badge>
             </ion-item>
             <ion-item *ngIf="taxaFrequencia > 0" >
                 <ion-icon name="thumbs-down" item-start></ion-icon>
