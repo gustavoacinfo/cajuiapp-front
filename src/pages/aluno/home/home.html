@@ -25,6 +25,7 @@
         </ion-list>
       </ion-navbar>
       <br>
+      <ng-container *ngIf="quantDisciplinas > 0" >
       <ion-navbar color="light" class="body">
         <h5><ion-icon name="clipboard"></ion-icon> Relatórios </h5>
         <hr>
@@ -39,5 +40,6 @@
             </button>
         </ion-list>
     </ion-navbar>
+  </ng-container>
   </ion-content>
 
