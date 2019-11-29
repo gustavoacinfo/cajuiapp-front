@@ -36,7 +36,7 @@
           <ion-navbar color="light" class="body">
               <h5>Aluno: {{alunoId.contratoId.alunoId.nome}}</h5>
               <hr>
-              <p *ngIf="taxaFrequencia == 0"> Ainda não possui frequências para gerar relatório!</p>
+              <p *ngIf="taxaFrequencia == 0"> Ainda não possui faltas para gerar relatório!</p>
               <ion-item *ngIf="taxaFrequencia > 0" >
                   <ion-icon name="stats" item-start></ion-icon>
                   Frequências lançadas:
