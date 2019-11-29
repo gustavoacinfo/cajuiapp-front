@@ -34,7 +34,7 @@
       <br>
       <ng-container *ngIf="alunoId != null && profOferta != null" >
           <ion-navbar color="light" class="body">
-              <h5>{{alunoId.contratoId.alunoId.nome}}</h5>
+              <h5>Aluno: {{alunoId.contratoId.alunoId.nome}}</h5>
               <hr>
               <p *ngIf="taxaFrequencia == 0"> Ainda não possui frequências para gerar relatório!</p>
               <ion-item *ngIf="taxaFrequencia > 0" >
@@ -57,7 +57,8 @@
                   <h5><ion-icon name="stats" item-start></ion-icon>
                     Datas e Horários das Faltas </h5>
               <ion-item *ngFor="let item of datasFaltas" >
-                  <h6 style="text-align: center;"> <ion-icon name="fastforward" item-start></ion-icon> {{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}} - De {{item.registroId.horaInicio}} ás {{item.registroId.horaFim}}</h6>
+                <h6 style="text-align: center;"> <ion-icon name="fastforward" item-start></ion-icon> Conteúdo: {{item.registroId.descricao.substring(0,35)}} </h6>
+                <h6 style="text-align: center;">{{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}} - De {{item.registroId.horaInicio}} ás {{item.registroId.horaFim}} </h6>
               </ion-item>
             </ng-container>
           </ion-navbar>

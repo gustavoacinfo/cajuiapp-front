@@ -21,7 +21,7 @@
           <ion-searchbar placeholder="Pesquisar descrição" (ionInput)="getItems($event)"></ion-searchbar>
           <ion-list>
           <ion-item *ngFor="let item of itemsFilter" >
-              <h6> <b>Descrição:</b> {{item.registroId.descricao}}</h6>
+              <h6> <b>Descrição:</b> {{item.registroId.descricao.substring(0,35)}}</h6>
               <h6>Data: <b> {{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}}</b>  Hora início: <b>{{item.registroId.horaInicio}}</b></h6>
               <h6 *ngIf="item.presenca == false"  class="red"><b>FALTA</b></h6>
               <h6 *ngIf="item.presenca == true"  class="green"><b>PRESENTE</b></h6>

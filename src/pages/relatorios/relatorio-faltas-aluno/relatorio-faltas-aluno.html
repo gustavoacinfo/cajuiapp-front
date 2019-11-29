@@ -44,7 +44,7 @@
               </ion-item>
             <ion-item *ngIf="taxaFrequencia > 0" >
               <ion-icon name="stats" item-start></ion-icon>
-              Porcentagem de Faltas:
+              Porcent. de Faltas:
               <ion-badge *ngIf="taxaFrequencia >= 25" color="danger" item-end>{{taxaFrequencia.toPrecision(4)}} %</ion-badge>
               <ion-badge *ngIf="taxaFrequencia < 25" color="secondary" item-end>{{taxaFrequencia.toPrecision(4)}} %</ion-badge>
             </ion-item>
@@ -57,7 +57,8 @@
                 <h5><ion-icon name="stats" item-start></ion-icon>
                   Datas e Horários das Faltas </h5>
             <ion-item *ngFor="let item of datasFaltas" >
-                <h6 style="text-align: center;"> <ion-icon name="fastforward" item-start></ion-icon> {{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}} - De {{item.registroId.horaInicio}} ás {{item.registroId.horaFim}}</h6>
+                <h6 style="text-align: center;"> <ion-icon name="fastforward" item-start></ion-icon> Conteúdo: {{item.registroId.descricao.substring(0,35)}} </h6>
+                <h6 style="text-align: center;">{{item.registroId.data.substring(8,10)}}/{{item.registroId.data.substring(5,7)}}/{{item.registroId.data.substring(0,4)}} - De {{item.registroId.horaInicio}} ás {{item.registroId.horaFim}} </h6>
             </ion-item>
           </ng-container>
           </ion-navbar>

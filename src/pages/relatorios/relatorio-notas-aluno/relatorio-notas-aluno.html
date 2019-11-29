@@ -40,9 +40,9 @@
         <ion-item *ngIf="aproveitamento > 0" >
           <ion-icon name="medal" item-start></ion-icon>
           Aproveitamento:
-          <ion-badge *ngIf="aproveitamento < 40" color="danger" item-end>{{aproveitamento}} %</ion-badge>
-          <ion-badge *ngIf="aproveitamento >= 40 && aproveitamento < 60" color="orange" item-end>{{aproveitamento}} %</ion-badge>
-          <ion-badge *ngIf="aproveitamento >= 60" color="secondary" item-end>{{aproveitamento}} %</ion-badge>
+          <ion-badge *ngIf="aproveitamento < 40" color="danger" item-end>{{aproveitamento.toPrecision(4)}} %</ion-badge>
+          <ion-badge *ngIf="aproveitamento >= 40 && aproveitamento < 60" color="orange" item-end>{{aproveitamento.toPrecision(4)}} %</ion-badge>
+          <ion-badge *ngIf="aproveitamento >= 60" color="secondary" item-end>{{aproveitamento.toPrecision(4)}} %</ion-badge>
         </ion-item>
         <ion-item *ngIf="aproveitamento > 0" >
             <ion-icon name="trending-up" item-start></ion-icon>
