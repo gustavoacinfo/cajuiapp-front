@@ -70,7 +70,7 @@
                       {{i+1}}
                     </ion-col>
                     <ion-col col-9> 
-                        <ion-input disabled required formControlName="aluno" type="text"></ion-input>
+                        {{ group.get('aluno').value }}
                     </ion-col>
                     <ion-col col-2>
                         <ion-checkbox color="secondary" formControlName="presenca"></ion-checkbox>
