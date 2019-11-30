@@ -22,7 +22,7 @@
                 <p *ngIf="quantAlunos == 0" > Essa disciplina não possui alunos matriculados!</p>
                 <ion-item>
                     <ion-label>Alunos</ion-label>
-                    <ion-select [(ngModel)]="alunoId">
+                    <ion-select [(ngModel)]="alunoId" cancelText="Cancelar">
                       <ion-option *ngFor="let item of matriculas" [value]="item" > {{item.contratoId.alunoId.nome}}</ion-option>
                     </ion-select>
                 </ion-item>

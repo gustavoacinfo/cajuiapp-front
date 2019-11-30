@@ -25,7 +25,7 @@
           <p>Selecione uma disciplina:</p>
           <ion-item>
               <ion-label>Disciplinas</ion-label>
-              <ion-select [(ngModel)]="profOfertaId">
+              <ion-select [(ngModel)]="profOfertaId" cancelText="Cancelar">
                 <ion-option *ngFor="let item of items" [value]="item" > {{item.ofertaId.curriculoId.disciplinaId.nome}}</ion-option>
               </ion-select>
           </ion-item>
