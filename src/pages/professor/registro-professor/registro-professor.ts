@@ -332,7 +332,7 @@ export class EditarRegistroPage {
         {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.pop();
+            this.paginaAnterior(this.profOferta);
           }
         }
       ]
@@ -352,6 +352,10 @@ export class EditarRegistroPage {
       ]
     });
     alert.present();
+  }
+
+  paginaAnterior(obj : Object){
+    this.navCtrl.setRoot('RegistroProfessorPage', {obj} )
   }
 
   home(){
