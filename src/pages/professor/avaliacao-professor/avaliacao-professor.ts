@@ -624,6 +624,7 @@ export class EditarAvaliacaoPage {
       this.avaliacaoService.pontosDistribuidos(this.avaliacao.ofertaId.id, this.usuario.id)
       .subscribe(response => {
         this.pontosDistribuidos = response;
+        this.pontosDistribuidos = this.pontosDistribuidos - this.valorAntes;
       },
       error => {});
 
