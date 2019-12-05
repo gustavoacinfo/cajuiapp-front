@@ -269,7 +269,7 @@ export class EditarRegistroPage {
       this.arrayId.sort(this.compararNumeros);
 
 
-      array.sort();
+      //array.sort();
 
 
       this.horaInicial = array[0];
